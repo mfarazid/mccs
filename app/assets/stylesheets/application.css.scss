@@ -18,9 +18,10 @@
  *= require_tree .
  */
 
- .top-header {
+.top-header {
   background: url(image_path('top-bg-ground.png')) bottom center no-repeat;
   background-size: cover;
   height: 275px;
   text-align: center;
+  margin-top: 50px;
 }

@@ -55,9 +55,7 @@ body.skin-red .navbar-default .navbar-brand {
 body.skin-red .navbar-default .navbar-toggle .icon-bar {
   background-color: #ffffff;
 }
-.skin-red .navbar {
-  opacity: .75;
-}
+
 
 #top_logo {
   margin-top: -10px;
@@ -472,7 +470,7 @@ img {
   background-color: #85144b !important;
 }
 .bg-dark-red {
-  background-color: #d30a2f !important;
+  background-color: #8f0223 !important;
 }
 /* Text colors */
 .text-red {

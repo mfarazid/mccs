@@ -48,7 +48,7 @@
                     %i.caret
                 %ul.dropdown-menu
                   / User image
-                  %li.user-header.bg-light-blue
+                  %li.user-header.bg-dark-red
                     - avatar = avatar_url(current_user.email)
                     - if avatar == "http://gravatar.com/avatar/89affc239bd0c1b6481faaec3cf0c39a.png"
                       = image_tag "default_pic.png"
@@ -64,14 +64,14 @@
                   %li.user-footer
                     - if current_user.authorizations.any?
                       .pull-left
-                        = link_to "<i class='fa fa-edit fa-fw'></i> Profile".html_safe, edit_user_path(current_user), :class => 'btn btn-default btn-flat'
+                        = link_to "<i class='fa fa-edit fa-fw'></i> Profile".html_safe, edit_user_path(current_user), :class => 'btn btn-warning btn-flat'
                       .pull-right
-                        = link_to "<i class='fa fa-sign-out fa-fw'></i> Logout".html_safe, destroy_user_session_path, method: :delete, :class => 'btn btn-default btn-flat'
+                        = link_to "<i class='fa fa-sign-out fa-fw'></i> Logout".html_safe, destroy_user_session_path, method: :delete, :class => 'btn btn-danger btn-flat'
                     - else
                       .pull-left
-                        = link_to "<i class='fa fa-edit fa-fw'></i> Edit Profile".html_safe, edit_user_registration_path, :class => 'btn btn-default btn-flat'
+                        = link_to "<i class='fa fa-edit fa-fw'></i> Edit Profile".html_safe, edit_user_registration_path, :class => 'btn btn-warning btn-flat'
                       .pull-right
-                        = link_to "<i class='fa fa-sign-out fa-fw'></i> Logout".html_safe, destroy_user_session_path, method: :delete, :class => 'btn btn-default btn-flat'
+                        = link_to "<i class='fa fa-sign-out fa-fw'></i> Logout".html_safe, destroy_user_session_path, method: :delete, :class => 'btn btn-danger btn-flat'
             - else
               %li
                 = link_to "Register", new_user_registration_path, :class => 'item'
