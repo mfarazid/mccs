@@ -1,0 +1,13 @@
+.row.well
+  .col-lg-6
+    = bootstrap_form_for(@user, inline_errors: false) do |f|
+      - if @user.errors.any?
+        - @user.errors.full_messages.each do |msg|
+          :javascript
+            var msg = " #{msg} ";
+            Command: toastr.error(msg);
+
+      = f.text_field :name, label: "Full Name", prepend: "<i class='fa fa-user'></i>".html_safe, required: true
+      = f.email_field :email, prepend: "<i class='fa fa-envelope-o'></i>".html_safe, required: true  
+
+      = f.submit 'Update User', :class => 'btn bg-navy'
