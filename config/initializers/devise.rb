@@ -232,9 +232,9 @@ Devise.setup do |config|
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
 
-  config.omniauth :facebook, ENV["DEV_FACEBOOK_KEY"], ENV["DEV_FACEBOOK_SECRET"], { :scope => 'email, offline_access', client_options: {ssl: {ca_file: Rails.root.join("cacert.pem").to_s}}}
-  config.omniauth :twitter, ENV["DEV_TWITTER_KEY"], ENV["DEV_TWITTER_SECRET"], { :scope => 'r_fullprofile, r_emailaddress', client_options: {ssl: {ca_file: Rails.root.join("cacert.pem").to_s}}}
-  config.omniauth :google_oauth2, ENV['DEV_GOOGLE_KEY'], ENV['DEV_GOOGLE_SECRET'], { :scope => 'email', client_options: {ssl: {ca_file: Rails.root.join("cacert.pem").to_s}}}
+  config.omniauth :facebook, ENV["FACEBOOK_KEY"], ENV["FACEBOOK_SECRET"], { :scope => 'email, offline_access', client_options: {ssl: {ca_file: Rails.root.join("cacert.pem").to_s}}}
+  config.omniauth :twitter, ENV["TWITTER_KEY"], ENV["TWITTER_SECRET"], { :scope => 'r_fullprofile, r_emailaddress', client_options: {ssl: {ca_file: Rails.root.join("cacert.pem").to_s}}}
+  config.omniauth :google_oauth2, ENV['GOOGLE_KEY'], ENV['GOOGLE_SECRET'], { :scope => 'email', client_options: {ssl: {ca_file: Rails.root.join("cacert.pem").to_s}}}
 
   # ==> OmniAuth
   # Add a new OmniAuth provider. Check the wiki for more information on setting
