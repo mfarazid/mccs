@@ -1,0 +1,11 @@
+.col-xs-12.col-sm-9
+  %section.box.box-default
+    .box-header
+      %h3.box-title Editing team      
+    .box-body  
+      = render 'form'
+    .box-footer
+      = link_to '<i class="fa fa-fw fa-arrow-circle-left"></i> Back'.html_safe, teams_path, :class => "btn btn-default"
+      = link_to '<i class="fa fa-fw fa-eye"></i> Show'.html_safe, @team, :class => "btn bg-maroon pull-right" 
+  %br
+= render 'sidenavbar'  

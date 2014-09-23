@@ -25,20 +25,20 @@
         :javascript
           Command: toastr.#{type}(#{raw(message.inspect)});
 
-    %nav.navbar.navbar-default.navbar-fixed-top{:role => "navigation"}
-      .container
-        .navbar-header
-          %button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", :type => "button"}
-            %span.sr-only Toggle navigation
-            %span.icon-bar
-            %span.icon-bar
-            %span.icon-bar
-          %a.navbar-brand{:href => root_path}
-            %figure
-              = image_tag 'mccs-logo.png', :alt => "top-logo", :id => "top_logo"
-        .navbar-collapse.collapse
-          %ul.nav.navbar-nav.navbar-right
-
+    %header.header
+      %span.logo
+        %a{:href => "/"} 
+          = image_tag 'mccs-logo.png', :alt => "top-logo"
+      / Header Navbar: style can be found in header.less
+      %nav.navbar.navbar-fixed-top{role: "navigation"}
+        / Sidebar toggle button
+        %button.navbar-btn.sidebar-toggle{"data-toggle" => "offcanvas", :type => "button"}
+          %span.sr-only Toggle navigation
+          %span.icon-bar
+          %span.icon-bar
+          %span.icon-bar
+        .navbar-right
+          %ul.nav.navbar-nav
             - if user_signed_in?
               %li.dropdown.user.user-menu
                 %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
@@ -51,7 +51,7 @@
                   %li.user-header.bg-dark-red
                     - avatar = avatar_url(current_user.email)
                     - if avatar == "http://gravatar.com/avatar/89affc239bd0c1b6481faaec3cf0c39a.png"
-                      = image_tag "default_pic.png"
+                      = image_tag "default_user.png"
                     - else
                       = image_tag avatar_url(current_user.email)
                     %p
@@ -77,13 +77,13 @@
                 = link_to "Register", new_user_registration_path, :class => 'item'
               %li
                 = link_to "Login", new_user_session_path, :class => 'item'
-        / /.nav-collapse
     %header.row
       %section.jumbotron.top-header
         %figure
-          = image_tag 'logo.png', :alt => "logo", :class => "header_image_responsive"
+          = image_tag 'logo.png', :alt => "logo", :class => "header_image_responsive"  
     %section.container
-      = yield
+      .row.row-offcanvas.row-offcanvas-right
+        = yield
     %footer.footer
       %p
         Develop by Faraz Ali, all rights reserved

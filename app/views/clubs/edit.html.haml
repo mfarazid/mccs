@@ -1,0 +1,11 @@
+.col-xs-12.col-sm-9
+  %section.box.box-default
+    .box-header
+      %h3.box-title Editing club      
+    .box-body  
+      = render 'form'
+    .box-footer
+      %span= link_to '<i class="fa fa-arrow-circle-left"></i> Back'.html_safe, clubs_path, :class => "btn btn-default"
+      %span= link_to '<i class="fa fa-fw fa-eye"></i> Show'.html_safe, @club, :class => "btn bg-maroon pull-right" 
+  %br
+= render 'sidenavbar'  

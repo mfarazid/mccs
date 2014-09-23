@@ -1,0 +1,26 @@
+.row
+  .col-sm-6
+    %p.center
+      = image_tag 'teams/default-team.png', :class => 'flag_large', :id =>"team_flag" 
+
+  .col-sm-6
+    = bootstrap_form_for(@team, inline_errors: false) do |f|
+      - if @team.errors.any?
+        :javascript
+          var count = "Please resolve"+' '+  #{@team.errors.count}  +' '+ "error before submitting your request." ;
+            Command: toastr.warning(count);    
+      - @team.errors.full_messages.each do |msg|
+        :javascript
+          var msg = " #{msg} ";
+          Command: toastr.error(msg);
+
+      = f.text_field :name, label: "Team Name"
+      = f.text_field :city, label: "Team City"
+      = f.collection_select :team_flag_id, TeamFlag.all, :id, :name, prompt: true
+      - if Club.where(:user_id => current_user.id).exists?
+        = f.collection_select :club_id, Club.where(:user_id => current_user.id), :id, :name, prompt: true
+      - else
+        .callout.callout-warning 
+          %h4 Oh Snap! No clubs found, Please add new club to continue! #{link_to 'New Club', new_club_path, :class => 'btn btn-xs btn-success btn-flat'}
+      = f.hidden_field :user_id
+      = f.submit 'Submit', :class => 'btn btn-primary' 

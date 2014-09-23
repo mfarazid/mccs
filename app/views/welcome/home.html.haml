@@ -1,2 +1,10 @@
-%h1 Welcome#home
-%p Find me in app/views/welcome/home.html.haml
+.col-xs-12.col-sm-9
+  %section.box.box-default
+    .box-header
+      .box-title
+        %h3 Welcome to MyClubCricketStats!
+    .box-body  
+      %p MyClubCricketStats is a club cricket statics management application where user's can create/manage the Club's, Team's, and Player's. MyClubCricketStats will calculate and populates each player and team stats after entering and saving the data. 
+    .box-footer
+      = link_to 'Start here!', clubs_path, :class => 'btn btn-block btn-success btn-flat' 
+= render 'sidenavbar'   

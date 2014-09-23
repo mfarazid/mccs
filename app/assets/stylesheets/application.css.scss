@@ -12,9 +12,9 @@
  *= require bootstrap
  *= require toastr
  *= require font-awesome
- *= require redactor-rails
  *= require social-share-button
  *= require rails_bootstrap_forms
+ *= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
  *= require_tree .
  */
 
@@ -23,5 +23,4 @@
   background-size: cover;
   height: 275px;
   text-align: center;
-  margin-top: 50px;
 }

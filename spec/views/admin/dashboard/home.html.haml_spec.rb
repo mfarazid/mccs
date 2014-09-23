@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec.describe "dashboard/home.html.haml", :type => :view do
  

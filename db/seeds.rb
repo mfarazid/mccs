@@ -1,7 +1,21 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
+require 'csv'
+ClubFlag.destroy_all
+TeamFlag.destroy_all
+##################################
+# Flags
+##################################
+puts "Importing Club_Flags..."
+CSV.foreach(Rails.root.join('db', "club-flags.csv"), headers: true) do |row|
+  ClubFlag.create! do |image|
+    image.name = row[0]
+    image.file_name = row[1]
+  end
+end
+
+puts "Importing Team_Flags..."
+CSV.foreach(Rails.root.join('db', "team-flags.csv"), headers: true) do |row|
+  TeamFlag.create! do |image|
+    image.name = row[0]
+    image.file_name = row[1]
+  end
+end

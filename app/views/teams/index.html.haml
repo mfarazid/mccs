@@ -1,0 +1,28 @@
+.col-xs-12.col-sm-9
+  %section.box.box-default
+    .box-header
+      .pull-right.box-tools
+        = link_to 'New Team', new_team_path, :class => 'btn btn-success btn-flat pull-right'
+      %h3.box-title Teams      
+    .box-body  
+      .table-responsive 
+        %table.table.table-bordered.table-condensed{id: 'teams'}
+          %thead.team_head
+            %tr
+              %th Name
+              %th City
+              %th Club
+              %th User
+              %th
+          %tbody    
+            - @teams.each do |team|
+              %tr
+                %td #{image_tag "teams/#{team.team_flag.file_name}", :class => 'flag_icon'} &nbsp; #{link_to "#{team.name}", team}
+                %td= team.city
+                %td= team.club.name
+                %td= team.user.name
+                %td
+                  = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_team_path(team), :class => 'btn btn-xs btn-flat btn-default'
+                  = link_to '<i class="fa fa-trash-o"></i>'.html_safe, team, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-default'
+
+= render 'sidenavbar'  

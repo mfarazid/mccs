@@ -42,9 +42,8 @@ gem 'bootstrap_form'
 # display nicer notifications using bootstrap 
 gem 'toastr-rails'
 gem 'font-awesome-rails'
-gem 'will_paginate-bootstrap'
-gem 'redactor-rails'
-gem "html_truncator", "~>0.2"
+gem 'jquery-datatables-rails', '~> 2.1.10.0.2'
+gem 'lodash-rails'
 
 # ############################
 # Testing

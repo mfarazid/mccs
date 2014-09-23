@@ -1,7 +1,11 @@
 Mccs::Application.routes.draw do
 
+  resources :teams
+  resources :team_flags, only: [:show]
+  resources :clubs
+  resources :club_flags, only: [:show]  
+  
   get "welcome/home"
-  mount RedactorRails::Engine => '/redactor_rails'
   root to: "welcome#home"
   devise_for :users, path_names: {sign_in: "login", sign_out: "logout"}, 
       controllers: {omniauth_callbacks: "omniauth_callbacks"}
@@ -15,4 +19,5 @@ Mccs::Application.routes.draw do
     resources :authorizations, only: [:index, :destroy]
     resources :users, only: [:index, :show, :destroy]
   end
+  
 end
