@@ -1,33 +1,36 @@
 .col-xs-12.col-sm-9
   %section.club_info_box
-    %span= link_to '<i class="fa fa-arrow-circle-left"></i> Back'.html_safe, clubs_path, :class => "btn btn-default pull-left"
-    %span= link_to '<i class="fa fa-edit"></i> Edit'.html_safe, edit_club_path(@club), :class => 'btn btn-default pull-right' 
     %figure= image_tag "clubs/#{@club.club_flag.file_name}", :class => 'flag_small'
     %h4= @club.name
-    %p= @club.county
-
+    - if current_user.present? && @club.user_id == current_user.id
+      %p #{@club.county} ( #{link_to '<i class="fa fa-edit"></i>'.html_safe, edit_club_path(@club)} )
+    - else
+      %p= @club.county
   %section.box.box-default
     .box-header 
       %h3.box-title Teams     
     .box-body
-      / .table-responsive 
-      /   %table.table.table-bordered.table-condensed{id: 'clubs'}
-      /     %thead.club_head
-      /       %tr
-      /         %th Name
-      /         %th County
-      /         %th User
-      /         %th
-
-          
-      /     %tbody
-      /       - @clubs.each do |club|
-      /         %tr
-      /           %td #{image_tag "clubs/#{club.club_flag.file_name}", :class => 'flag_icon'} &nbsp; #{link_to "#{club.name}", club}
-      /           %td= club.county
-      /           %td= club.user.name
-      /           %td
-      /             = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_club_path(club), :class => 'btn btn-sm btn-flat btn-default'
-      /             = link_to '<i class="fa fa-trash-o"></i>'.html_safe, club, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-sm btn-flat btn-default'
-
+      - if @teams.exists?
+        .table-responsive 
+          %table.table.table-bordered.table-condensed
+            %thead.team_head
+              %tr
+                %th Name
+                %th City
+                %th Club
+                %th User
+                %th
+            %tbody    
+              - @teams.each do |team|
+                %tr
+                  %td #{image_tag "teams/#{team.team_flag.file_name}", :class => 'flag_icon'} &nbsp; #{link_to "#{team.name}", team}
+                  %td= team.city
+                  %td= team.club.name
+                  %td= team.user.name
+                  %td
+                    = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_team_path(team), :class => 'btn btn-xs btn-flat btn-default'
+                    = link_to '<i class="fa fa-trash-o"></i>'.html_safe, team, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-default'
+  %p= link_to '<i class="fa fa-arrow-circle-left"></i> Back'.html_safe, clubs_path, :class => "btn btn-default"
+  %br
+  %br
 = render 'sidenavbar'  

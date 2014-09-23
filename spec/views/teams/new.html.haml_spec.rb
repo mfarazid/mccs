@@ -5,7 +5,6 @@ RSpec.describe "teams/new", :type => :view do
     assign(:team, Team.new(
       :name => "MyString",
       :city => "MyString",
-      :flag_url => "MyString",
       :team_flag_id => 1,
       :user_id => 1,
       :club_id => 1
@@ -20,8 +19,6 @@ RSpec.describe "teams/new", :type => :view do
       assert_select "input#team_name[name=?]", "team[name]"
 
       assert_select "input#team_city[name=?]", "team[city]"
-
-      assert_select "input#team_flag_url[name=?]", "team[flag_url]"
 
       assert_select "input#team_team_flag_id[name=?]", "team[team_flag_id]"
 

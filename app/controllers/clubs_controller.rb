@@ -5,12 +5,16 @@ class ClubsController < ApplicationController
   # GET /clubs
   # GET /clubs.json
   def index
-    @clubs = Club.all
+    if current_user.prasent?
+      @clubs = Club.where(:user_id => current_user.id)
+    else
+      @clubs = Club.all
   end
 
   # GET /clubs/1
   # GET /clubs/1.json
   def show
+    @teams = Team.where(:club_id => @club.id)
   end
 
   # GET /clubs/new
@@ -55,7 +59,7 @@ class ClubsController < ApplicationController
 
   # DELETE /clubs/1
   # DELETE /clubs/1.json
-  def destroy
+  def destroy 
     @club.destroy
     respond_to do |format|
       format.html { redirect_to clubs_url, toast('success','Club was successfully removed!')}
