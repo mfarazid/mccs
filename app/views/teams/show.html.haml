@@ -2,9 +2,9 @@
   %section.club_info_box
     %figure= image_tag "teams/#{@team.team_flag.file_name}", :class => 'flag_small'   
     %h3 #{@team.name} (#{@team.city}) 
-    %h5 #{image_tag "clubs/#{@team.club.club_flag.file_name}", :class => 'flag_icon'} &nbsp; #{link_to "#{@team.club.name}", club_path(@team.club.id)} 
+    %h5 #{image_tag "clubs/#{@team.club.club_flag.file_name}", :class => 'flag_icon'} &nbsp; #{link_to "#{@team.club.name}", club_path(@team.club.id), :title => "View this club"} 
     - if current_user.present? && @team.user_id == current_user.id
-      %p.pull-right= link_to '<i class="fa fa-edit"></i> Edit'.html_safe, edit_team_path(@team)
+      %p.pull-right= link_to '<i class="fa fa-edit"></i>'.html_safe, edit_team_path(@team), :title => "Edit this teams"
   %section.box.box-default
     .box-header 
       %h3.box-title Players     
@@ -28,7 +28,7 @@
       /           %td
       /             = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_club_path(club), :class => 'btn btn-sm btn-flat btn-default'
       /             = link_to '<i class="fa fa-trash-o"></i>'.html_safe, club, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-sm btn-flat btn-default'
-  %p= link_to '<i class="fa fa-arrow-circle-left"></i> Back'.html_safe, teams_path, :class => "btn btn-default"
+  %p= link_to '<i class="fa fa-arrow-circle-left"></i>'.html_safe, teams_path, :class => "btn btn-default", :title => "Back to teams"
   %br
   %br    
 = render 'sidenavbar'  

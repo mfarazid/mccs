@@ -5,7 +5,7 @@
     .box-body  
       = render 'form'
     .box-footer
-      = link_to '<i class="fa fa-fw fa-arrow-circle-left"></i> Back'.html_safe, teams_path, :class => "btn btn-default"
-      = link_to '<i class="fa fa-fw fa-eye"></i> Show'.html_safe, @team, :class => "btn bg-maroon pull-right" 
+      = link_to '<i class="fa fa-fw fa-arrow-circle-left"></i>'.html_safe, teams_path, :class => "btn btn-default", :title => "Back to teams" 
+      = link_to '<i class="fa fa-fw fa-eye"></i>'.html_safe, @team, :class => "btn bg-maroon pull-right", :title => "View this team"  
   %br
 = render 'sidenavbar'  

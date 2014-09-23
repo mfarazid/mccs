@@ -18,13 +18,13 @@
           %tbody    
             - @teams.each do |team|
               %tr
-                %td #{image_tag "teams/#{team.team_flag.file_name}", :class => 'flag_icon'} &nbsp; #{link_to "#{team.name}", team}
+                %td #{image_tag "teams/#{team.team_flag.file_name}", :class => 'flag_icon'} &nbsp; #{link_to "#{team.name}", team, :title => "View this team" }
                 %td= team.city
                 %td= team.club.name
                 %td= team.user.name
                 - if current_user.present? && team.user_id == current_user.id
                   %td
-                    = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_team_path(team), :class => 'btn btn-xs btn-flat btn-default'
-                    = link_to '<i class="fa fa-trash-o"></i>'.html_safe, team, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-default'
+                    = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_team_path(team), :class => 'btn btn-xs btn-flat btn-default', :title => "Edit this team" 
+                    = link_to '<i class="fa fa-trash-o"></i>'.html_safe, team, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-default', :title => "Remove this team" 
 
 = render 'sidenavbar'  

@@ -149,6 +149,9 @@ $(function() {
     });
 
     //Activate tooltips
+    $(function(){
+      $('a[title]').tooltip();
+    });
     // $("[data-toggle='tooltip']").tooltip();
 
     /*

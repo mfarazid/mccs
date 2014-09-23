@@ -5,10 +5,11 @@ class TeamsController < ApplicationController
   # GET /teams
   # GET /teams.json
   def index
-    if current_user.prasent?
+    if current_user.present?
       @teams = Team.where(:user_id => current_user.id)
     else
       @teams = Team.all
+    end
   end
 
   # GET /teams/1

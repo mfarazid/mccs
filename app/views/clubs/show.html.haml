@@ -3,7 +3,7 @@
     %figure= image_tag "clubs/#{@club.club_flag.file_name}", :class => 'flag_small'
     %h4= @club.name
     - if current_user.present? && @club.user_id == current_user.id
-      %p #{@club.county} ( #{link_to '<i class="fa fa-edit"></i>'.html_safe, edit_club_path(@club)} )
+      %p #{@club.county} ( #{link_to '<i class="fa fa-edit"></i>'.html_safe, edit_club_path(@club), :title => "Edit this club"} )
     - else
       %p= @club.county
   %section.box.box-default
@@ -23,14 +23,14 @@
             %tbody    
               - @teams.each do |team|
                 %tr
-                  %td #{image_tag "teams/#{team.team_flag.file_name}", :class => 'flag_icon'} &nbsp; #{link_to "#{team.name}", team}
+                  %td #{image_tag "teams/#{team.team_flag.file_name}", :class => 'flag_icon'} &nbsp; #{link_to "#{team.name}", team, :title => "View this team"}
                   %td= team.city
                   %td= team.club.name
                   %td= team.user.name
                   %td
-                    = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_team_path(team), :class => 'btn btn-xs btn-flat btn-default'
-                    = link_to '<i class="fa fa-trash-o"></i>'.html_safe, team, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-default'
-  %p= link_to '<i class="fa fa-arrow-circle-left"></i> Back'.html_safe, clubs_path, :class => "btn btn-default"
+                    = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_team_path(team), :class => 'btn btn-xs btn-flat btn-default', :title => "Edit this team"
+                    = link_to '<i class="fa fa-trash-o"></i>'.html_safe, team, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-default', :title => "Remove this team"
+  %p= link_to '<i class="fa fa-arrow-circle-left"></i>'.html_safe, clubs_path, :class => "btn btn-default", :title => "Back to Clubs"
   %br
   %br
 = render 'sidenavbar'  

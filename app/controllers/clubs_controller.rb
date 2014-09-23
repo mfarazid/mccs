@@ -5,10 +5,11 @@ class ClubsController < ApplicationController
   # GET /clubs
   # GET /clubs.json
   def index
-    if current_user.prasent?
+    if current_user.present?
       @clubs = Club.where(:user_id => current_user.id)
     else
       @clubs = Club.all
+    end
   end
 
   # GET /clubs/1

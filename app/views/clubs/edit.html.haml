@@ -5,7 +5,7 @@
     .box-body  
       = render 'form'
     .box-footer
-      %span= link_to '<i class="fa fa-arrow-circle-left"></i> Back'.html_safe, clubs_path, :class => "btn btn-default"
-      %span= link_to '<i class="fa fa-fw fa-eye"></i> Show'.html_safe, @club, :class => "btn bg-maroon pull-right" 
+      %span= link_to '<i class="fa fa-arrow-circle-left"></i>'.html_safe, clubs_path, :class => "btn btn-default", :title => "Back to clubs"
+      %span= link_to '<i class="fa fa-eye"></i>'.html_safe, @club, :class => "btn bg-maroon pull-right", :title => "View this club" 
   %br
 = render 'sidenavbar'  
