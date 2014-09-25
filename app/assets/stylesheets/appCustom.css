@@ -91,6 +91,43 @@ border-top: 5px solid #E46F61;
 #links span {
   display: block;
 }
+
+thead.player_thead  {
+  border-top: 5px solid #76A7FA;
+}
+
+thead.player_thead tr th {
+  padding: 5px;
+
+}
+
+tbody.player_fields tr td {
+  padding: 5px;
+  text-align: center;
+}
+
+tbody.player_fields > tr > td > div.form-group {
+  margin-bottom: 0;
+  text-align: center;
+}
+
+tbody.player_fields > tr > td > div > input {
+  width: 150px;
+}
+
+tbody.player_fields > tr > td > div > select {
+  width: 120px;
+}
+
+#player {
+  margin-bottom: 5px;
+}
+
+.player_pic_small {
+  width: 30px;
+  height: 30px;
+}
+
 /*left side - contains sidebar*/
 .left-side {
   position: absolute;

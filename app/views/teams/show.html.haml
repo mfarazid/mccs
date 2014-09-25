@@ -3,32 +3,40 @@
     %figure= image_tag "teams/#{@team.team_flag.file_name}", :class => 'flag_small'   
     %h3 #{@team.name} (#{@team.city}) 
     %h5 #{image_tag "clubs/#{@team.club.club_flag.file_name}", :class => 'flag_icon'} &nbsp; #{link_to "#{@team.club.name}", club_path(@team.club.id), :title => "View this club"} 
-    - if current_user.present? && @team.user_id == current_user.id
-      %p.pull-right= link_to '<i class="fa fa-edit"></i>'.html_safe, edit_team_path(@team), :title => "Edit this teams"
+
   %section.box.box-default
     .box-header 
       %h3.box-title Players     
     .box-body
-      / .table-responsive 
-      /   %table.table.table-bordered.table-condensed{id: 'clubs'}
-      /     %thead.club_head
-      /       %tr
-      /         %th Name
-      /         %th County
-      /         %th User
-      /         %th
+      .table-responsive
+        %table.table.table-bordered.table-striped
+          %thead.player_thead
+            %tr
+              %th Picture
+              %th Name
+              %th Age
+              %th Title
+              %th Played for
+              %th Batting style
+              %th Bowling style
+          %tbody
+            - @team.players.each do |player|
+              %tr
+                - if player.picture_url?
+                  %td= image_tag player.picture_url, :class => "player_pic_small"
+                - else
+                  %td= image_tag "player_default_pic.png", :class => "player_pic_small"
+                %td= link_to "#{player.name}", player, :title => "View player details" 
+                %td= player.age(player.date_of_birth) if player.date_of_birth?
+                %td= player.player_type.name
+                %td= player.team.name
+                %td= player.player_batting_style
+                %td= player.player_bowling_style.name
 
-          
-      /     %tbody
-      /       - @clubs.each do |club|
-      /         %tr
-      /           %td #{image_tag "clubs/#{club.club_flag.file_name}", :class => 'flag_icon'} &nbsp; #{link_to "#{club.name}", club}
-      /           %td= club.county
-      /           %td= club.user.name
-      /           %td
-      /             = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_club_path(club), :class => 'btn btn-sm btn-flat btn-default'
-      /             = link_to '<i class="fa fa-trash-o"></i>'.html_safe, club, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-sm btn-flat btn-default'
+  - if current_user.present? && @team.user_id == current_user.id
+    %p= link_to '<i class="fa fa-edit"></i>'.html_safe, edit_team_path(@team), :class => "btn btn-default pull-right", :title => "Edit this teams"
   %p= link_to '<i class="fa fa-arrow-circle-left"></i>'.html_safe, teams_path, :class => "btn btn-default", :title => "Back to teams"
+
   %br
   %br    
 = render 'sidenavbar'  

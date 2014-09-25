@@ -1,0 +1,24 @@
+.row
+  .col-lg-12
+    = bootstrap_form_for(@player,inline_errors: false) do |f|
+      - if @player.errors.any?
+        :javascript
+          var count = "Please resolve"+' '+  #{@player.errors.count}  +' '+ "error before submitting your request." ;
+            Command: toastr.warning(count);    
+      - @player.errors.full_messages.each do |msg|
+        :javascript
+          var msg = " #{msg} ";
+          Command: toastr.error(msg);
+
+      = f.text_field :name
+      = f.text_field :player_batting_style
+      = f.text_field :best_performance
+      = f.text_field :worst_performance
+      = f.text_field :picturl_url
+      = f.number_field :player_type_id
+      = f.number_field :player_blowing_style_id
+      = f.date_select :date_of_birth
+      = f.date_select :odi_debut
+      = f.date_select :test_debut
+      = f.date_select :t20_debut
+      = f.submit 'Update'

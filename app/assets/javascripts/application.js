@@ -15,6 +15,7 @@
 //= require bootstrap
 //= require social-share-button
 //= require toastr
+//= require jquery_nested_form
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 //= require_tree .
@@ -116,6 +117,21 @@ $(document).ready(function() {
   $('#clubs_filter label').css("color", "white" );
   $('#clubs_filter label input').css('width', '130px');
   $('#clubs_filter label input').attr('placeholder', 'Search');
+
+  // Add Players fields to team form
+  $('form').on('click', '.add_fields', function(event) {
+    var regexp, time;
+    time = new Date().getTime();
+    regexp = new RegExp($(this).data('id'), 'g');
+    $(this).before($(this).data('fields').replace(regexp, time));
+    event.preventDefault();
+  });
+  // Remove Players fields from team form
+  $('form').on('click', '.remove_fields', function(event) {
+    $(this).prev('input[type=hidden]').val('1');
+    $(this).closest('section').hide();
+    event.preventDefault();
+  });
 
 });  
 

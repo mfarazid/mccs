@@ -44,7 +44,7 @@ gem 'toastr-rails'
 gem 'font-awesome-rails'
 gem 'jquery-datatables-rails', '~> 2.1.10.0.2'
 gem 'lodash-rails'
-
+gem "nested_form"
 # ############################
 # Testing
 # ############################

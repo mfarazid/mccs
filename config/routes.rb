@@ -1,5 +1,7 @@
 Mccs::Application.routes.draw do
 
+  resources :players
+
   resources :teams
   resources :team_flags, only: [:show]
   resources :clubs

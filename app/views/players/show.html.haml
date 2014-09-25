@@ -1,0 +1,45 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @player.name
+%p
+  %b Player batting style:
+  = @player.player_batting_style
+%p
+  %b Best performance:
+  = @player.best_performance
+%p
+  %b Worst performance:
+  = @player.worst_performance
+%p
+  %b Picturl url:
+  = @player.picturl_url
+%p
+  %b Team:
+  = @player.team_id
+%p
+  %b User:
+  = @player.user_id
+%p
+  %b Player type:
+  = @player.player_type_id
+%p
+  %b Player blowing style:
+  = @player.player_blowing_style_id
+%p
+  %b Date of birth:
+  = @player.date_of_birth
+%p
+  %b Odi debut:
+  = @player.odi_debut
+%p
+  %b Test debut:
+  = @player.test_debut
+%p
+  %b T20 debut:
+  = @player.t20_debut
+
+= link_to 'Edit', edit_player_path(@player)
+\|
+= link_to 'Back', players_path

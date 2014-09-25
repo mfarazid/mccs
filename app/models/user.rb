@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_many :authorizations
   has_many :clubs
   has_many :teams
+  has_many :players
 
   def self.new_with_session(params,session)
     if session["devise.user_attributes"]

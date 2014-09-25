@@ -1,7 +1,10 @@
 .row
   .col-sm-6
     %p.center
-      = image_tag 'clubs/default-club.png', :class => 'flag_large', :id =>"club_flag"   
+      - if params[:action] == 'edit' && @club.club_flag.file_name.present? 
+        = image_tag "clubs/#{@club.club_flag.file_name}", :class => 'flag_large', :id =>"club_flag"
+      - else 
+        = image_tag 'clubs/default-club.png', :class => 'flag_large', :id =>"club_flag"   
   .col-sm-6
     = bootstrap_form_for(@club,inline_errors: false) do |f|
       - if @club.errors.any?
@@ -13,8 +16,8 @@
           var msg = " #{msg} ";
           Command: toastr.error(msg);
 
-      = f.text_field :name, label: "Club Name"
-      = f.text_field :county, label: "Club County"
+      = f.text_field :name, label: "Club Name", :maxlength => 30
+      = f.text_field :county, label: "Club County", :maxlength => 30
       = f.collection_select :club_flag_id, ClubFlag.all, :id, :name, prompt: true
       = f.hidden_field :user_id
       = f.submit 'Submit', :class => 'btn btn-primary' 

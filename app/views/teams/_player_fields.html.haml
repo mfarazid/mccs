@@ -1,0 +1,21 @@
+%section.table-responsive{:id =>"player"}
+  %table.table.table-bordered.table-striped
+    %thead.player_thead
+      %tr
+        %th 
+        %th Full Name
+        %th Type
+        %th Batting Style
+        %th Bowling Style
+        %th 
+    %tbody.player_fields
+      %tr
+        %td
+          %i.fa.fa-user.fa-2x
+        %td= f.text_field :name, placeholder: "Player name", :maxlength => 15, hide_label: true
+        %td= f.collection_select :player_type_id, PlayerType.all, :id, :name, hide_label: true, :prompt => "select"
+        %td= f.select :player_batting_style, [["Right-handed", "Right-handed"], ["Left-handed", "Left-handed"]], hide_label: true, :prompt => "select"
+        %td= f.collection_select :player_bowling_style_id, PlayerBowlingStyle.all, :id, :name, hide_label: true, :prompt => "select"
+        %td
+          = f.hidden_field :_destroy
+          = link_to '<i class="fa fa-trash-o"></i>'.html_safe, '#', :class => "btn btn-sm btn-danger remove_fields"
