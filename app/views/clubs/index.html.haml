@@ -1,28 +1,50 @@
-.col-xs-12.col-sm-9
-  %section.box.box-default
-    .box-header
-      .pull-right.box-tools
-        = link_to 'New Club', new_club_path, :class => 'btn btn-success btn-flat pull-right'
-      %h3.box-title Clubs      
-    .box-body
-      .table-responsive 
-        %table.table.table-bordered.table-condensed{id: 'clubs'}
-          %thead.club_head
-            %tr
-              %th Name
-              %th County
-              %th User
-              - if current_user.present? && @clubs.select {|c| c.user_id == current_user.id}
-                %th
+.wrapper.row-offcanvas.row-offcanvas-left
+  / Left side column. contains the logo and sidebar
+  %aside.left-side.sidebar-offcanvas
+    = render 'sidenavbar'
+  / Right side column. Contains the navbar and content of the page
+  %aside.right-side
+    %header.row
+      %section.jumbotron.top-header
+        %figure
+          = image_tag 'logo.png', :alt => "logo", :class => "header_image_responsive" 
+    %section.content-header     
+      %h1 Home
+      %ol.breadcrumb
+        %li
+          %a{:href => root_path}
+            %i.fa.fa-home
+            Home    
+        %li.active
+          %a{:href => clubs_path}
+            %i.fa.fa-star
+            Clubs
+    / /.content-header
+    %section.content
+      %section.box.box-default
+        .box-header
+          .pull-right.box-tools
+            = link_to 'New Club', new_club_path, :class => 'btn btn-success btn-flat pull-right'
+          %h3.box-title Clubs      
+        .box-body
+          .table-responsive 
+            %table.table.table-bordered.table-condensed{id: 'clubs'}
+              %thead.club_head
+                %tr
+                  %th Name
+                  %th County
+                  %th User
+                  - if current_user.present? && @clubs.select {|c| c.user_id == current_user.id}
+                    %th
 
-          %tbody
-            - @clubs.each do |club|
-              %tr
-                %td #{image_tag "clubs/#{club.club_flag.file_name}", :class => 'flag_icon'} &nbsp; #{link_to "#{club.name}", club, :title => "View this club"}
-                %td= club.county
-                %td= club.user.name
-                - if current_user.present? && club.user_id == current_user.id
-                  %td
-                    = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_club_path(club), :class => 'btn btn-xs btn-flat btn-default', :title => "Edit this club"
-                    = link_to '<i class="fa fa-trash-o"></i>'.html_safe, club, method: :delete, data: { confirm: 'This club may have one or more teams assigned and by deleting this club will also delete all the teams which are assigned to this club. Are you sure you want to delete?' }, :class => 'btn btn-xs btn-flat btn-default', :title => "Remove this club"    
-= render 'sidenavbar'  
+              %tbody
+                - @clubs.each do |club|
+                  %tr
+                    %td #{image_tag "clubs/#{club.club_flag.file_name}", :class => 'flag_icon'} &nbsp; #{link_to "#{club.name}", club, :title => "View club"}
+                    %td= club.county
+                    %td= club.user.name
+                    - if current_user.present? && club.user_id == current_user.id
+                      %td
+                        = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_club_path(club), :class => 'btn btn-xs btn-flat btn-default', :title => "Edit club"
+                        = link_to '<i class="fa fa-trash-o"></i>'.html_safe, club, method: :delete, data: { confirm: 'This club may have one or more teams assigned and by deleting this club will also delete all the teams which are assigned to this club. Are you sure you want to delete?' }, :class => 'btn btn-xs btn-flat btn-default', :title => "Remove club"
+      %br        

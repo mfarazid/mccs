@@ -15,6 +15,9 @@
 //= require bootstrap
 //= require social-share-button
 //= require toastr
+//= require pickadate/picker 
+//= require pickadate/picker.date
+//= require pickadate/picker.time 
 //= require jquery_nested_form
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
@@ -35,6 +38,122 @@
 // } 
 
 $(document).ready(function() {
+  
+  if ($('.odi_datepicker').length) {
+    var maxYear = new Date().getFullYear();
+    var maxMonth = new Date().getMonth()+1;
+    var maxDay = new Date().getDay();    
+    var minYear = new Date().getFullYear()-10;
+    $('.odi_datepicker').pickadate({
+      // Escape any “rule” characters with an exclamation mark (!).
+      format: 'mmmm dd, yyyy',
+      formatSubmit: 'yyyy/mm/dd',
+      hiddenPrefix: 'prefix__',
+      hiddenSuffix: '__suffix',
+      selectYears: true,
+      selectMonths: true,
+      selectYears: 10,
+      min: [minYear,1,1],
+      max: [maxYear,maxMonth,maxDay],
+      onStart: function() {
+        if ($('.odi_datepicker').val() !== "") {
+          var year = parseInt($('.odi_datepicker').val().substr(0, 4), 10);
+          var month = parseInt($('.odi_datepicker').val().substr(5, 2), 10);
+          var day = parseInt($('.odi_datepicker').val().substr(8, 2), 10);
+          //months are zero indexed
+          formattedDate = moment(new Date(year,month-1,day)).format('LL');
+          $('.odi_datepicker').val(formattedDate);    
+        }
+      }
+    });
+  }
+
+  if ($('.test_datepicker').length) {
+    var maxYear = new Date().getFullYear();
+    var maxMonth = new Date().getMonth()+1;
+    var maxDay = new Date().getDay();    
+    var minYear = new Date().getFullYear()-10;
+    $('.test_datepicker').pickadate({
+      // Escape any “rule” characters with an exclamation mark (!).
+      format: 'mmmm dd, yyyy',
+      formatSubmit: 'yyyy/mm/dd',
+      hiddenPrefix: 'prefix__',
+      hiddenSuffix: '__suffix',
+      selectYears: true,
+      selectMonths: true,
+      selectYears: 10,
+      min: [minYear,1,1],
+      max: [maxYear,maxMonth,maxDay],
+      onStart: function() {
+        if ($('.test_datepicker').val() !== "") {
+          var year = parseInt($('.test_datepicker').val().substr(0, 4), 10);
+          var month = parseInt($('.test_datepicker').val().substr(5, 2), 10);
+          var day = parseInt($('.test_datepicker').val().substr(8, 2), 10);
+          //months are zero indexed
+          formattedDate = moment(new Date(year,month-1,day)).format('LL');
+          $('.test_datepicker').val(formattedDate);    
+        }
+      }
+    });
+  }
+
+  if ($('.t20_datepicker').length) {
+    var maxYear = new Date().getFullYear();
+    var maxMonth = new Date().getMonth()+1;
+    var maxDay = new Date().getDay();    
+    var minYear = new Date().getFullYear()-10;
+    $('.t20_datepicker').pickadate({
+      // Escape any “rule” characters with an exclamation mark (!).
+      format: 'mmmm dd, yyyy',
+      formatSubmit: 'yyyy/mm/dd',
+      hiddenPrefix: 'prefix__',
+      hiddenSuffix: '__suffix',
+      selectYears: true,
+      selectMonths: true,
+      selectYears: 10,
+      min: [minYear,1,1],
+      max: [maxYear,maxMonth,maxDay],
+      onStart: function() {
+        if ($('.t20_datepicker').val() !== "") {
+          var year = parseInt($('.t20_datepicker').val().substr(0, 4), 10);
+          var month = parseInt($('.t20_datepicker').val().substr(5, 2), 10);
+          var day = parseInt($('.t20_datepicker').val().substr(8, 2), 10);
+          //months are zero indexed
+          formattedDate = moment(new Date(year,month-1,day)).format('LL');
+          $('.t20_datepicker').val(formattedDate);    
+        }
+      }
+    });
+  }
+
+ 
+  if ($('.dob_datepicker').length) {
+    var maxYear= new Date().getFullYear()-10;
+    var minYear= new Date().getFullYear()-40;
+    $('.dob_datepicker').pickadate({
+      // Escape any “rule” characters with an exclamation mark (!).
+      format: 'mmmm dd, yyyy',
+      formatSubmit: 'yyyy/mm/dd',
+      hiddenPrefix: 'prefix__',
+      hiddenSuffix: '__suffix',
+      selectYears: true,
+      selectMonths: true,
+      selectYears: 40,
+      min: [minYear,1,1],
+      max: [maxYear,1,1],
+      onStart: function() {
+        if ($('.dob_datepicker').val() !== "") {
+          var year = parseInt($('.dob_datepicker').val().substr(0, 4), 10);
+          var month = parseInt($('.dob_datepicker').val().substr(5, 2), 10);
+          var day = parseInt($('.dob_datepicker').val().substr(8, 2), 10);
+          //months are zero indexed
+          formattedDate = moment(new Date(year,month-1,day)).format('LL');
+          $('.dob_datepicker').val(formattedDate);    
+        }
+      }
+    });
+  }  
+
   $('#clubs').dataTable();
   $('#teams').dataTable();
   

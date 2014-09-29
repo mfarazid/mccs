@@ -12,29 +12,8 @@ class PlayersController < ApplicationController
   def show
   end
 
-  # GET /players/new
-  def new
-    @player = Player.new
-  end
-
   # GET /players/1/edit
   def edit
-  end
-
-  # POST /players
-  # POST /players.json
-  def create
-    @player = Player.new(player_params)
-
-    respond_to do |format|
-      if @player.save
-        format.html { redirect_to @player, notice: 'Player was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @player }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @player.errors, status: :unprocessable_entity }
-      end
-    end
   end
 
   # PATCH/PUT /players/1
@@ -42,7 +21,7 @@ class PlayersController < ApplicationController
   def update
     respond_to do |format|
       if @player.update(player_params)
-        format.html { redirect_to @player, notice: 'Player was successfully updated.' }
+        format.html { redirect_to @player, toast('success',"Player was successfully updated!") }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -56,7 +35,7 @@ class PlayersController < ApplicationController
   def destroy
     @player.destroy
     respond_to do |format|
-      format.html { redirect_to players_url }
+      format.html { redirect_to team_path(@player.team_id), toast('success',"Player was successfully removed from #{@player.team.name}!") }
       format.json { head :no_content }
     end
   end

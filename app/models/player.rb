@@ -1,4 +1,5 @@
 class Player < ActiveRecord::Base
+
   belongs_to :team
   belongs_to :user
   belongs_to :player_type
@@ -8,7 +9,14 @@ class Player < ActiveRecord::Base
   validates_presence_of :player_type, :message => 'required.'
   validates_presence_of :player_batting_style, :message => "required."
   validates_presence_of :player_bowling_style, :message => 'required.'
-
+  
+  has_attached_file :picture_url
+  validates_attachment_content_type :picture_url, 
+      :content_type => ["image/jpg", "image/jpeg", "image/png"]
+  
+  validates_attachment_size :picture_url, 
+      :less_than => 2.megabytes, message: "File size must be less than 2 MB"
+  
   def age(dob)
     now = Time.now.utc.to_date
     now.year - dob.year - ((now.month > dob.month || (now.month == dob.month && now.day >= dob.day)) ? 0 : 1)

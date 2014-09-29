@@ -1,28 +1,50 @@
-.col-md-12.well
-  .col-sm-5
-    %h3 Register 
-    = bootstrap_form_for(resource, as: resource_name, url: registration_path(resource_name), inline_errors: false) do |f|
-      = devise_error_messages!  
-      = f.text_field :name, hide_label: true , prepend: "<i class='fa fa-user'></i>".html_safe, required: true, placeholder: "Full Name"
-      = f.email_field :email, hide_label: true, prepend: "<i class='fa fa-envelope-o'></i>".html_safe, required: true, placeholder: "Email"
-      = f.password_field :password, autocomplete: "off", hide_label: true, help: "Must be at least #{@minimum_password_length} characters long", prepend: "<i class='fa fa-lock'></i>".html_safe, required: true, placeholder: "Password"    
-      = f.password_field :password_confirmation, hide_label: true, autocomplete: "off", prepend: "<i class='fa fa-lock'></i>".html_safe, placeholder: "Password Confirmation" 
-      = f.submit "Register", :class => 'btn bg-navy'
-  #max_divider
-    .col-sm-2
-    .ui.vertical.divider 
-      or
-  #min_divider
-    .col-sm-2
-    .ui.horizontal.divider 
-      or
-  .col-sm-5
-    %h3 Login
-    %br
-    %br
-    - if devise_mapping.omniauthable?
-      - resource_class.omniauth_providers.each do |provider|
-        - if provider.to_s == "google_oauth2" 
-          %p= link_to "<i class='fa fa-google-plus'></i> Login with Google".html_safe, omniauth_authorize_path(resource_name, provider), :class => "btn btn-block btn-social btn-lg btn-google-plus"
-        - else
-          %p= link_to "<i class='fa fa-#{provider}'></i> Login with #{provider.to_s.titleize}".html_safe, omniauth_authorize_path(resource_name, provider), :class => "btn btn-block btn-social btn-lg btn-#{provider}"   
+.wrapper.row-offcanvas.row-offcanvas-left
+  / Left side column. contains the logo and sidebar
+  %aside.left-side.sidebar-offcanvas
+    = render 'sidenavbar'
+  / Right side column. Contains the navbar and content of the page
+  %aside.right-side
+    %header.row
+      %section.jumbotron.top-header
+        %figure
+          = image_tag 'logo.png', :alt => "logo", :class => "header_image_responsive" 
+    %section.content-header     
+      %h1 Home
+      %ol.breadcrumb
+        %li.active
+          %a{:href => root_path}
+            %i.fa.fa-home
+            Home     
+    / /.content-header
+    %section.content
+      %section.box.box-default   
+        .box-body 
+          .row
+            .col-md-12
+              .col-sm-5
+                %h3 Register 
+                = bootstrap_form_for(resource, as: resource_name, url: registration_path(resource_name), inline_errors: false) do |f|
+                  = devise_error_messages!  
+                  = f.text_field :name, hide_label: true , prepend: "<i class='fa fa-user'></i>".html_safe, required: true, placeholder: "Full Name"
+                  = f.email_field :email, hide_label: true, prepend: "<i class='fa fa-envelope-o'></i>".html_safe, required: true, placeholder: "Email"
+                  = f.password_field :password, autocomplete: "off", hide_label: true, help: "Must be at least #{@minimum_password_length} characters long", prepend: "<i class='fa fa-lock'></i>".html_safe, required: true, placeholder: "Password"    
+                  = f.password_field :password_confirmation, hide_label: true, autocomplete: "off", prepend: "<i class='fa fa-lock'></i>".html_safe, placeholder: "Password Confirmation" 
+                  = f.submit "Register", :class => 'btn bg-navy'
+              #max_divider
+                .col-sm-2
+                .ui.vertical.divider 
+                  or
+              #min_divider
+                .col-sm-2
+                .ui.horizontal.divider 
+                  or
+              .col-sm-5
+                %h3 Login
+                %br
+                %br
+                - if devise_mapping.omniauthable?
+                  - resource_class.omniauth_providers.each do |provider|
+                    - if provider.to_s == "google_oauth2" 
+                      %p= link_to "<i class='fa fa-google-plus'></i> Login with Google".html_safe, omniauth_authorize_path(resource_name, provider), :class => "btn btn-block btn-social btn-lg btn-google-plus"
+                    - else
+                      %p= link_to "<i class='fa fa-#{provider}'></i> Login with #{provider.to_s.titleize}".html_safe, omniauth_authorize_path(resource_name, provider), :class => "btn btn-block btn-social btn-lg btn-#{provider}"   

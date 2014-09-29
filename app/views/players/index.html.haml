@@ -1,60 +1,58 @@
-.col-xs-12.col-sm-9
-  %section.box.box-default
-    .box-header
-      %h3.box-title Players     
-    .box-body  
-      .table-responsive 
-        %table.table.table-bordered.table-condensed{id: 'players'}
-          %thead.team_head
-            %tr
-              %th 
-              %th Name
-              %th Age
-              %th Type
-              %th Batting style
-              %th Blowing style
-              %th Team
-              - if current_user.present? && @players.select {|c| c.user_id == current_user.id}
-                %th
-          %tbody    
-            - @players.each do |player|
-              %tr
-                - if player.picture_url?
-                  %td #{image_tag player.picture_url, :class => 'player_pic_small'}
-                - else
-                  %td #{image_tag "player_default_pic.png", :class => 'player_pic_small'}                  
-                %td= link_to "#{player.name}", player 
-                %td= player.age(player.date_of_birth) if player.date_of_birth?
-                %td= player.player_type.name
-                %td= player.player_batting_style
-                %td= player.player_blowing_style.name
-                %td= player.team.name               
-                - if current_user.present? && team.user_id == current_user.id
-                  %td
-                    = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_team_path(team), :class => 'btn btn-xs btn-flat btn-default', :title => "Edit this team" 
-                    = link_to '<i class="fa fa-trash-o"></i>'.html_safe, team, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-default', :title => "Remove this team" 
-
-= render 'sidenavbar'  
-
-
-  - @players.each do |player|
-    %tr
-      %td= player.name
-      %td= player.player_batting_style
-      %td= player.best_performance
-      %td= player.worst_performance
-      %td= player.picturl_url
-      %td= player.team_id
-      %td= player.user_id
-      %td= player.player_type_id
-      %td= player.player_blowing_style_id
-      %td= player.date_of_birth
-      %td= player.odi_debut
-      %td= player.test_debut
-      %td= player.t20_debut
-      %td= link_to 'Show', player
-      %td= link_to 'Edit', edit_player_path(player)
-      %td= link_to 'Destroy', player, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
+.wrapper.row-offcanvas.row-offcanvas-left
+  / Left side column. contains the logo and sidebar
+  %aside.left-side.sidebar-offcanvas
+    = render 'sidenavbar'
+  / Right side column. Contains the navbar and content of the page
+  %aside.right-side
+    %header.row
+      %section.jumbotron.top-header
+        %figure
+          = image_tag 'logo.png', :alt => "logo", :class => "header_image_responsive" 
+    %section.content-header     
+      %h1 Home
+      %ol.breadcrumb
+        %li
+          %a{:href => root_path}
+            %i.fa.fa-home
+            Home    
+        %li.active
+          %a{:href => players_path}
+            %i.fa.fa-group
+            Players
+    / /.content-header
+    %section.content
+      .box.box-default
+        .box-header
+          %h3.box-title Players     
+        .box-body  
+          .table-responsive 
+            %table.table.table-bordered.table-condensed{id: 'players'}
+              %thead.player_head
+                %tr
+                  %th Picture
+                  %th Name
+                  %th Age
+                  %th Type
+                  %th Batting style
+                  %th Blowing style
+                  %th Team
+                  - if current_user.present? && @players.select {|c| c.user_id == current_user.id}
+                    %th
+              %tbody    
+                - @players.each do |player|
+                  %tr
+                    - if player.picture_url?
+                      %td #{image_tag player.picture_url, :class => 'player_pic_small'}
+                    - else
+                      %td #{image_tag "player_default_pic.png", :class => 'player_pic_small'}                  
+                    %td= link_to "#{player.name}", player, :title => "View player"  
+                    %td= player.age(player.date_of_birth) if player.date_of_birth?
+                    %td= player.player_type.name
+                    %td= player.player_batting_style
+                    %td= player.player_bowling_style.name
+                    %td= player.team.name               
+                    - if current_user.present? && player.user_id == current_user.id
+                      %td
+                        = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_player_path(player), :class => 'btn btn-xs btn-flat btn-default', :title => "Edit player" 
+                        = link_to '<i class="fa fa-trash-o"></i>'.html_safe, player, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-default', :title => "Remove player" 
+      %br 

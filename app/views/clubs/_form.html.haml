@@ -1,11 +1,11 @@
 .row
-  .col-sm-6
+  .col-sm-5
     %p.center
       - if params[:action] == 'edit' && @club.club_flag.file_name.present? 
         = image_tag "clubs/#{@club.club_flag.file_name}", :class => 'flag_large', :id =>"club_flag"
       - else 
         = image_tag 'clubs/default-club.png', :class => 'flag_large', :id =>"club_flag"   
-  .col-sm-6
+  .col-sm-5
     = bootstrap_form_for(@club,inline_errors: false) do |f|
       - if @club.errors.any?
         :javascript

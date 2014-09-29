@@ -1,45 +1,230 @@
-%p#notice= notice
-
-%p
-  %b Name:
-  = @player.name
-%p
-  %b Player batting style:
-  = @player.player_batting_style
-%p
-  %b Best performance:
-  = @player.best_performance
-%p
-  %b Worst performance:
-  = @player.worst_performance
-%p
-  %b Picturl url:
-  = @player.picturl_url
-%p
-  %b Team:
-  = @player.team_id
-%p
-  %b User:
-  = @player.user_id
-%p
-  %b Player type:
-  = @player.player_type_id
-%p
-  %b Player blowing style:
-  = @player.player_blowing_style_id
-%p
-  %b Date of birth:
-  = @player.date_of_birth
-%p
-  %b Odi debut:
-  = @player.odi_debut
-%p
-  %b Test debut:
-  = @player.test_debut
-%p
-  %b T20 debut:
-  = @player.t20_debut
-
-= link_to 'Edit', edit_player_path(@player)
-\|
-= link_to 'Back', players_path
+.wrapper.row-offcanvas.row-offcanvas-left
+  / Left side column. contains the logo and sidebar
+  %aside.left-side.sidebar-offcanvas
+    = render 'sidenavbar'
+  / Right side column. Contains the navbar and content of the page
+  %aside.right-side
+    %header.row
+      %section.jumbotron.top-header
+        %figure
+          = image_tag 'logo.png', :alt => "logo", :class => "header_image_responsive" 
+    %section.content-header     
+      %h1 Home
+      %ol.breadcrumb
+        %li
+          %a{:href => root_path}
+            %i.fa.fa-home
+            Home    
+        %li.active
+          %a{:href => players_path}
+            %i.fa.fa-group
+            Players
+    / /.content-header
+    %section.content
+      .box.box-default
+        #box.box
+          .space
+          .icon
+            .image
+              - if @player.picture_url.blank?
+                %td= image_tag "player_default_pic.png", :class => "player_pic_small"
+              - else
+                %td= image_tag @player.picture_url, :class => "player_pic_small"
+            .info
+              %h3.title= @player.name
+        
+        .box-body
+          .board
+            .board-inner
+              %ul#myTab.nav.nav-tabs
+                .liner
+                %li.active
+                  %a{"data-toggle" => "tab", :href => "#bio", :title => "Player Information"}
+                    %span.round-tabs.one
+                      %i.fa.fa-user
+                %li
+                  %a{"data-toggle" => "tab", :href => "#t20", :title => "T20 Statistics"}
+                    %span.round-tabs.two
+                      T20
+                      / <i class="glyphicon glyphicon-user"></i>
+                %li
+                  %a{"data-toggle" => "tab", :href => "#odi", :title => "ODI Statistics"}
+                    %span.round-tabs.three
+                      ODI
+                      / <i class="glyphicon glyphicon-gift"></i>
+                %li
+                  %a{"data-toggle" => "tab", :href => "#test", :title => "Test Statistics"}
+                    %span.round-tabs.four
+                      Test
+                      / <i class="glyphicon glyphicon-comment"> Test</i>
+                %li
+                  %a{"data-toggle" => "tab", :href => "#comment", :title => "Comments"}
+                    %span.round-tabs.five
+                      %i.fa.fa-comments
+            .tab-content
+              #bio.tab-pane.fade.in.active
+                %section.narrow
+                  %h3 Player Information
+                  %table.table.table-bordered
+                    %tbody
+                      %tr
+                        %td Title
+                        %td= @player.player_type.name
+                      %tr
+                        %td Age
+                        %td= @player.age(@player.date_of_birth) if @player.date_of_birth?
+                      %tr
+                        %td Played for
+                        %td= @player.team.name
+                      %tr
+                        %td Batting Style
+                        %td= @player.player_batting_style
+                      %tr
+                        %td Bowling Style
+                        %td= @player.player_bowling_style.name
+                      %tr
+                        %td Played For
+                        %td= @player.team.name
+                      %tr
+                        %td Best Performance
+                        %td= @player.best_performance
+                      %tr
+                        %td Worst Performance
+                        %td= @player.worst_performance
+              #t20.tab-pane.fade
+                %section.narrow
+                  %h3 Player T20 Statistics
+                  %p Debut: #{@player.t20_debut.to_formatted_s(:long) if @player.t20_debut?}   
+                  .col-sm-6
+                    %h5 Batting
+                    %table.table.table-bordered
+                      %tbody                
+                        %tr
+                          %td Matches
+                          %td
+                        %tr
+                          %td Innings
+                          %td
+                        %tr
+                          %td Runs
+                          %td
+                        %tr
+                          %td Not out
+                          %td
+                        %tr
+                          %td Average
+                          %td
+                  .col-sm-6
+                    %h5 Bowling
+                    %table.table.table-bordered
+                      %tbody
+                        %tr
+                          %td Matches
+                          %td
+                        %tr
+                          %td Innings
+                          %td
+                        %tr
+                          %td Balls
+                          %td
+                        %tr
+                          %td Runs
+                          %td
+                        %tr
+                          %td Wickets
+                          %td
+              #odi.tab-pane.fade
+                %section.narrow
+                  %h3 Player ODI Statistics
+                  %p Debut: #{@player.odi_debut.to_formatted_s(:long) if @player.odi_debut?}             
+                  .col-sm-6
+                    %h5 Batting
+                    %table.table.table-bordered
+                      %tbody
+                        %tr
+                          %td Matches
+                          %td
+                        %tr
+                          %td Innings
+                          %td
+                        %tr
+                          %td Runs
+                          %td
+                        %tr
+                          %td Not out
+                          %td
+                        %tr
+                          %td Average
+                          %td
+                  .col-sm-6
+                    %h5 Bowling
+                    %table.table.table-bordered
+                      %tbody
+                        %tr
+                          %td Matches
+                          %td
+                        %tr
+                          %td Innings
+                          %td
+                        %tr
+                          %td Balls
+                          %td
+                        %tr
+                          %td Runs
+                          %td
+                        %tr
+                          %td Wickets
+                          %td
+              #test.tab-pane.fade
+                %section.narrow
+                  %h3 Player Test Statistics
+                  %p Debut: #{@player.test_debut.to_formatted_s(:long) if @player.test_debut?}                
+                  .col-sm-6
+                    %h5 Batting
+                    %table.table.table-bordered
+                      %tbody
+                        %tr
+                          %td Matches
+                          %td
+                        %tr
+                          %td Innings
+                          %td
+                        %tr
+                          %td Runs
+                          %td
+                        %tr
+                          %td Not out
+                          %td
+                        %tr
+                          %td Average
+                          %td
+                  .col-sm-6
+                    %h5 Bowling
+                    %table.table.table-bordered
+                      %tbody
+                        %tr
+                          %td Matches
+                          %td
+                        %tr
+                          %td Innings
+                          %td
+                        %tr
+                          %td Balls
+                          %td
+                        %tr
+                          %td Runs
+                          %td
+                        %tr
+                          %td Wickets
+                          %td
+              #comment.tab-pane.fade
+                %section.narrow
+                  %h3 Comments about player
+              .clearfix
+        .box-footer
+          %p
+            = link_to '<i class="fa fa-arrow-circle-left"></i>'.html_safe, players_path, :class => "btn btn-default", :title => "Back to Players"
+            - if current_user.present? && @player.user_id == current_user.id
+              = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_player_path(@player), :class => 'btn btn-default', :title => "Edit player"
+            
+      %br

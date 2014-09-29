@@ -77,13 +77,9 @@
                 = link_to "Register", new_user_registration_path, :class => 'item'
               %li
                 = link_to "Login", new_user_session_path, :class => 'item'
-    %header.row
-      %section.jumbotron.top-header
-        %figure
-          = image_tag 'logo.png', :alt => "logo", :class => "header_image_responsive"  
-    %section.container
-      .row.row-offcanvas.row-offcanvas-right
-        = yield
+
+    %main
+      = yield
     %footer.footer
       %p
         Develop by Faraz Ali, all rights reserved

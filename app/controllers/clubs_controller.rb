@@ -15,7 +15,6 @@ class ClubsController < ApplicationController
   # GET /clubs/1
   # GET /clubs/1.json
   def show
-    @teams = Team.where(:club_id => @club.id)
   end
 
   # GET /clubs/new

@@ -45,6 +45,7 @@ gem 'font-awesome-rails'
 gem 'jquery-datatables-rails', '~> 2.1.10.0.2'
 gem 'lodash-rails'
 gem "nested_form"
+gem 'pickadate-rails'
 # ############################
 # Testing
 # ############################
@@ -62,6 +63,7 @@ group :development, :test do
   gem 'spork'
   gem 'guard-spork'
   gem 'sqlite3'
+  gem 'pg'
 end
 
 # ############################
