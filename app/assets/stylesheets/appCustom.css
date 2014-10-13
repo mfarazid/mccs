@@ -8,6 +8,8 @@
     Core: General style
 ----------------------------
 */
+
+
 html,
 body {
   overflow-x: hidden!important;
@@ -70,6 +72,18 @@ body > .header {
 }
 .player_head {
   border-top: 5px solid #76A7FA;
+}
+.series_head {
+  border-top: 5px solid #00B88A;
+}
+.match_head {
+  border-top: 5px solid #CF0053;
+}
+.umpire_head {
+  border-top: 5px solid #757547;
+}
+.venue_head {
+  border-top: 5px solid #33AD33;
 }
 .flag_icon {
   width: 24px;

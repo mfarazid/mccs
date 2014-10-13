@@ -1,0 +1,39 @@
+%p#notice= notice
+
+%p
+  %b Team a:
+  = @match.team_a_id
+%p
+  %b Team b:
+  = @match.team_b_id
+%p
+  %b Series:
+  = @match.series_id
+%p
+  %b Competition type:
+  = @match.competition_type_id
+%p
+  %b Venue:
+  = @match.venue_id
+%p
+  %b Team won toss:
+  = @match.team_won_toss
+%p
+  %b Team choose to:
+  = @match.team_choose_to
+%p
+  %b Start date time:
+  = @match.start_date_time
+%p
+  %b End date time:
+  = @match.end_date_time
+%p
+  %b Competition overs limit:
+  = @match.competition_overs_limit_id
+%p
+  %b User:
+  = @match.user_id
+
+= link_to 'Edit', edit_match_path(@match)
+\|
+= link_to 'Back', matches_path

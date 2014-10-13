@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b First name:
+  = @umpire.first_name
+%p
+  %b Last name:
+  = @umpire.last_name
+
+= link_to 'Edit', edit_umpire_path(@umpire)
+\|
+= link_to 'Back', umpires_path

@@ -1,0 +1,16 @@
+= form_for @umpire do |f|
+  - if @umpire.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@umpire.errors.count, "error")} prohibited this umpire from being saved:"
+      %ul
+        - @umpire.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :first_name
+    = f.text_field :first_name
+  .field
+    = f.label :last_name
+    = f.text_field :last_name
+  .actions
+    = f.submit 'Save'

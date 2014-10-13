@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @series.name
+%p
+  %b Start date:
+  = @series.start_date
+%p
+  %b End date:
+  = @series.end_date
+
+= link_to 'Edit', edit_series_path(@series)
+\|
+= link_to 'Back', series_index_path

@@ -1,0 +1,39 @@
+%h1 Listing matches
+
+%table
+  %tr
+    %th Team a
+    %th Team b
+    %th Series
+    %th Competition type
+    %th Venue
+    %th Team won toss
+    %th Team choose to
+    %th Start date time
+    %th End date time
+    %th Competition overs limit
+    %th User
+    %th
+    %th
+    %th
+
+  - @matches.each do |match|
+    %tr
+      %td= match.team_a_id
+      %td= match.team_b_id
+      %td= match.series_id
+      %td= match.competition_type_id
+      %td= match.venue_id
+      %td= match.team_won_toss
+      %td= match.team_choose_to
+      %td= match.start_date_time
+      %td= match.end_date_time
+      %td= match.competition_overs_limit_id
+      %td= match.user_id
+      %td= link_to 'Show', match
+      %td= link_to 'Edit', edit_match_path(match)
+      %td= link_to 'Destroy', match, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Match', new_match_path

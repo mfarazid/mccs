@@ -1,0 +1,46 @@
+= bootstrap_form_for @match do |f|
+  - if @match.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@match.errors.count, "error")} prohibited this match from being saved:"
+      %ul
+        - @match.errors.full_messages.each do |msg|
+          %li= msg
+
+  = f.number_field :series_id
+
+  = f.number_field :competition_id
+
+  = f.number_field :competition_type_id
+
+  = f.number_field :venue_id
+
+  = f.number_field :team_a_id
+
+  = f.number_field :team_b_id
+
+  = f.text_field :team_won_toss
+
+  = f.text_field :team_choose_to
+  
+  %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#umpires", :class => 'btn btn-default'}
+    Select two Umpires:
+  #umpires.panel-collapse.collapse
+    = f.collection_check_boxes :umpire_ids, Umpire.all, :id, :name, hide_label: true
+  
+  :javascript
+    var countChecked = function() {
+      var n = $( 'input[name="match[umpire_ids][]"]:checked' ).length;
+      if (n >= 2) {
+        Command: toastr.warning("Umpire selection can only be two");
+        $( 'input[name="match[umpire_ids][]"]' ).not(':checked').attr("disabled",true);
+      }
+      else {
+        $( 'input[name="match[umpire_ids][]"]' ).not(':checked').attr("disabled",false);
+      }
+    };
+    countChecked();
+ 
+    $( 'input[name="match[umpire_ids][]"]' ).on( "click", countChecked ); 
+  
+  = f.collection_check_boxes :team_ids, Team.all, :id, :flag_and_name
+  = f.submit 'Save'

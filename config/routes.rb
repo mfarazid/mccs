@@ -1,5 +1,13 @@
 Mccs::Application.routes.draw do
 
+  resources :matches
+
+  resources :venues
+
+  resources :umpires
+
+  resources :series
+
   root to: "welcome#home"
   devise_for :users, path_names: {sign_in: "login", sign_out: "logout"}, 
       controllers: {omniauth_callbacks: "omniauth_callbacks"}

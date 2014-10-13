@@ -38,7 +38,6 @@
 // } 
 
 $(document).ready(function() {
-  
   if ($('.odi_datepicker').length) {
     var maxYear = new Date().getFullYear();
     var maxMonth = new Date().getMonth()+1;
@@ -153,10 +152,15 @@ $(document).ready(function() {
       }
     });
   }  
-
+  
   $('#clubs').dataTable();
   $('#teams').dataTable();
-  
+  $('#series').dataTable();
+  $('#matches').dataTable();
+  $('#players').dataTable();
+  $('#umpires').dataTable();
+  $('#venues').dataTable();
+ 
   WebFontConfig = {
     google: { families: [ 'Kaushan+Script::latin', 'Source+Sans+Pro:400,300,600,300italic,400italic,600italic:latin' ] }
   };
@@ -236,6 +240,16 @@ $(document).ready(function() {
   $('#clubs_filter label').css("color", "white" );
   $('#clubs_filter label input').css('width', '130px');
   $('#clubs_filter label input').attr('placeholder', 'Search');
+
+  // Venues DataTable search box modification
+  $('#venues_filter label').css("color", "white" );
+  $('#venues_filter label input').css('width', '130px');
+  $('#venues_filter label input').attr('placeholder', 'Search');
+
+  // Umpires DataTable search box modification
+  $('#umpires_filter label').css("color", "white" );
+  $('#umpires_filter label input').css('width', '130px');
+  $('#umpires_filter label input').attr('placeholder', 'Search');
 
   // Add Players fields to team form
   $('form').on('click', '.add_fields', function(event) {

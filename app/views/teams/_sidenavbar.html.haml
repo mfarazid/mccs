@@ -2,7 +2,7 @@
 %section.sidebar
   / sidebar menu: : style can be found in sidebar.less
   %ul.sidebar-menu
-    %li
+    %li.active
       %a{href: root_path}
         %i.fa.fa-home
         %span Home
@@ -10,21 +10,28 @@
       %a{href: clubs_path}
         %i.fa.fa-star
         %span Clubs
-    %li.active
+    %li
       %a{href: teams_path}
         %i.fa.fa-flag
         %span Teams
     %li
-      %a{href: "#"}
+      %a{href: series_index_path}
+        %i.fa.fa-trophy
+        %span Series
+    %li
+      %a{href: matches_path}
         %i.fa.fa-maxcdn
         %span Matches
     %li
       %a{href: players_path}
         %i.fa.fa-group
         %span Players
-    / %li
-    /   %a{href: "#"}
-    /     %i.fa.fa-list-alt
-    /     %span MEdIS Audit
-    / / sidebar menu
+    %li
+      %a{href: umpires_path}
+        %i.ion.ion-android-contacts
+        %span Umpires
+    %li
+      %a{href: venues_path}
+        %i.fa.fa-umbrella
+        %span Venues
 / /.sideba

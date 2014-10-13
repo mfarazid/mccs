@@ -1,0 +1,21 @@
+%h1 Listing umpires
+
+%table
+  %tr
+    %th First name
+    %th Last name
+    %th
+    %th
+    %th
+
+  - @umpires.each do |umpire|
+    %tr
+      %td= umpire.first_name
+      %td= umpire.last_name
+      %td= link_to 'Show', umpire
+      %td= link_to 'Edit', edit_umpire_path(umpire)
+      %td= link_to 'Destroy', umpire, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Umpire', new_umpire_path

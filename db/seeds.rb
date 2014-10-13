@@ -6,6 +6,8 @@ TeamFlag.destroy_all
 Player.destroy_all
 PlayerType.destroy_all
 PlayerBowlingStyle.destroy_all
+CompetitionOversLimit.destroy_all
+CompetitionType.destroy_all
 ##################################
 # Flags
 ##################################
@@ -56,4 +58,36 @@ end
 
 ].each do |bowling_style|
   role = PlayerBowlingStyle.find_or_create_by_name(:name => bowling_style)
+end
+
+##################################
+# Competition Types
+##################################
+[
+  "One Day",
+  "T20",
+  "Test 3 Days",
+  "Test 5 Days"
+
+].each do |compt_type|
+  role = CompetitionType.find_or_create_by_name(:name => compt_type)
+end
+
+##################################
+# Competition_overs_limits 
+##################################
+[
+  "10",
+  "15",
+  "20",
+  "25",
+  "30",
+  "35",
+  "40",
+  "45",
+  "50",
+  "Unlimited"
+
+].each do |compt_overs_limit|
+  role = CompetitionOversLimit.find_or_create_by_overs(:overs => compt_overs_limit)
 end
