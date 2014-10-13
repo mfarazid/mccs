@@ -1,4 +1,5 @@
 class UmpiresController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_umpire, only: [:show, :edit, :update, :destroy]
 
   # GET /umpires
@@ -25,10 +26,11 @@ class UmpiresController < ApplicationController
   # POST /umpires.json
   def create
     @umpire = Umpire.new(umpire_params)
-
+    @umpire.user_id = current_user.id
+    
     respond_to do |format|
       if @umpire.save
-        format.html { redirect_to @umpire, notice: 'Umpire was successfully created.' }
+        format.html { redirect_to @umpire, toast('success','Umpire was successfully created!') }
         format.json { render action: 'show', status: :created, location: @umpire }
       else
         format.html { render action: 'new' }
@@ -42,7 +44,7 @@ class UmpiresController < ApplicationController
   def update
     respond_to do |format|
       if @umpire.update(umpire_params)
-        format.html { redirect_to @umpire, notice: 'Umpire was successfully updated.' }
+        format.html { redirect_to @umpire, toast('success','Umpire was successfully updated!') }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -56,7 +58,7 @@ class UmpiresController < ApplicationController
   def destroy
     @umpire.destroy
     respond_to do |format|
-      format.html { redirect_to umpires_url }
+      format.html { redirect_to umpires_url, toast('success','Umpire was successfully removed!') }
       format.json { head :no_content }
     end
   end

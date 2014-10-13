@@ -8,4 +8,7 @@ class Match < ActiveRecord::Base
 
   belongs_to :user
   belongs_to :venue
+
+  has_many :umpires_in_matches, :dependent => :destroy
+  has_many :umpires, through: :umpires_in_matches
 end

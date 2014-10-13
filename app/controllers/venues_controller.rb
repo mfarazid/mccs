@@ -30,7 +30,7 @@ class VenuesController < ApplicationController
 
     respond_to do |format|
       if @venue.save
-        format.html { redirect_to @venue, notice: 'Venue was successfully created.' }
+        format.html { redirect_to @venue, toast('success','Venue was successfully created!') }
         format.json { render action: 'show', status: :created, location: @venue }
       else
         format.html { render action: 'new' }
@@ -44,7 +44,7 @@ class VenuesController < ApplicationController
   def update
     respond_to do |format|
       if @venue.update(venue_params)
-        format.html { redirect_to @venue, notice: 'Venue was successfully updated.' }
+        format.html { redirect_to @venue, toast('success','Venue was successfully updated!') }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -58,7 +58,7 @@ class VenuesController < ApplicationController
   def destroy
     @venue.destroy
     respond_to do |format|
-      format.html { redirect_to venues_url }
+      format.html { redirect_to venues_url, toast('success','Venue was successfully removed!') }
       format.json { head :no_content }
     end
   end
