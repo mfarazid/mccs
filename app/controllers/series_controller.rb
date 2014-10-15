@@ -1,4 +1,5 @@
 class SeriesController < ApplicationController
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_series, only: [:show, :edit, :update, :destroy]
 
   # GET /series
@@ -25,7 +26,8 @@ class SeriesController < ApplicationController
   # POST /series.json
   def create
     @series = Series.new(series_params)
-
+    @series.user_id = current_user.id
+    
     respond_to do |format|
       if @series.save
         format.html { redirect_to @series, notice: 'Series was successfully created.' }
@@ -69,6 +71,6 @@ class SeriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def series_params
-      params.require(:series).permit(:name, :start_date, :end_date, :user_id)
+      params.require(:series).permit(:name, :start_date, :end_date, :user_id, matches_attributes: [:team_a_id, :team_b_id, :series_id, :competition_type_id, :venue_id, :team_won_toss, :team_choose_to, :start_date_time, :end_date_time, :competition_overs_limit_id, :user_id, :id, :_destroy])
     end
 end

@@ -8,8 +8,8 @@ class CreateMatches < ActiveRecord::Migration
       t.integer :venue_id
       t.string :team_won_toss
       t.string :team_choose_to
-      t.date :start_date_time
-      t.date :end_date_time
+      t.datetime :start_date_time
+      t.datetime :end_date_time
       t.integer :competition_overs_limit_id
       t.integer :user_id
 

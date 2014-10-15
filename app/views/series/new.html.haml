@@ -1,5 +1,32 @@
-%h1 New series
-
-= render 'form'
-
-= link_to 'Back', series_index_path
+.wrapper.row-offcanvas.row-offcanvas-left
+  / Left side column. contains the logo and sidebar
+  %aside.left-side.sidebar-offcanvas
+    = render 'sidenavbar'
+  / Right side column. Contains the navbar and content of the page
+  %aside.right-side
+    %header.row
+      %section.jumbotron.top-header
+        %figure
+          = image_tag 'logo.png', :alt => "logo", :class => "header_image_responsive" 
+    %section.content-header     
+      %h1 Home
+      %ol.breadcrumb
+        %li
+          %a{:href => root_path}
+            %i.fa.fa-home
+            Home    
+        %li.active
+          %a{:href => series_index_path}
+            %i.fa.fa-trophy
+            Series
+    / /.content-header
+    %section.content
+      .box.box-default
+        .box-header
+          %h3.box-title New Series      
+        .box-body  
+          = render 'form'
+        .box-footer
+          %p
+            = link_to '<i class="fa fa-fw fa-arrow-circle-left"></i>'.html_safe, series_index_path, :class => "btn btn-default", :title => "Back to series"           
+      %br  

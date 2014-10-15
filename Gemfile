@@ -46,6 +46,7 @@ gem 'jquery-datatables-rails', '~> 2.1.10.0.2'
 gem 'lodash-rails'
 gem "nested_form"
 gem 'pickadate-rails'
+gem 'icheck-rails',  github: 'ricardodovalle/icheck-rails'
 # ############################
 # Testing
 # ############################

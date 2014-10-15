@@ -1,0 +1,84 @@
+%section.content
+  .box.box-warning
+    .box-header
+      %h3.box-title New Match      
+    .box-body  
+      .row
+        .col-sm-5
+          .panel.panel-default
+            .panel-heading
+              %h3.panel-title Team A
+            .panel-body.team-pic-box
+              = image_tag 'teams/default-team.png', :class => 'image_responsive', :id =>"teamA"
+              %br/
+              %br/
+              = f.collection_select :team_a_id, Team.where(:user_id => current_user.id), :id, :name, hide_label: true, :prompt => "select", :class => 'select'
+        .col-sm-2
+          .vs-box
+            %span.vs vs
+        .col-sm-5
+          .panel.panel-default
+            .panel-heading
+              %h3.panel-title Team B
+            .panel-body.team-pic-box
+              = image_tag 'teams/default-team.png', :class => 'image_responsive', :id =>"teamB"
+              %br/
+              %br/
+              = f.collection_select :team_b_id, Team.where(:user_id => current_user.id), :id, :name, hide_label: true, :prompt => "select", :class => 'select'
+      %hr        
+      .row
+        .col-sm-6
+          = f.collection_select :competition_type_id, CompetitionType.all, :id, :name, label: "Competition Type", :prompt => "select", :class => 'select'
+        .col-sm-6  
+          = f.collection_select :competition_overs_limit_id, CompetitionOversLimit.all, :id, :overs, label: "Competition Overs", :prompt => "select", :class => 'select'
+      .row
+        .col-sm-6
+          = f.select :team_won_toss, [["Team A"], ["Team B"]], label: "Team Won Toss", :prompt => "select", :class => 'select'
+        .col-sm-6  
+          = f.select :team_choose_to, [["Batting First"], ["Bowling First"]], label: "Team Choose To", :prompt => "select", :class => 'select'
+      .row
+        .col-sm-6
+          = f.datetime_select :start_date_time, :class => 'select'
+        .col-sm-6  
+          = f.datetime_select :end_date_time, :class => 'select'
+      .row
+        .col-sm-6
+          = f.collection_select :venue_id, Venue.where(:user_id => current_user.id), :id, :name_with_details, label: "Venue", :prompt => "select", :class => 'select'
+        .col-sm-6
+          .form-group
+            %label.control-label{:for => "umpires"}
+              Choose Umpires
+            %br  
+            
+            %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#umpires", :class => 'btn bg-olive btn-block'}
+              Select two Umpires:
+            #umpires.panel-collapse.collapse         
+              = f.collection_check_boxes :umpire_ids, Umpire.all, :id, :name, hide_label: true
+            
+            :javascript
+              var countChecked = function() {
+                var n = $( 'input[type="checkbox"]:checked' ).length;
+                if (n == 1) {
+                  Command: toastr.warning("Umpire selection can only be two");
+                    $( 'input[type="checkbox"]' ).not(':checked').each(function() {
+                      $(this).iCheck('disable');
+                    });
+                }
+                else {
+                  $( 'input[type="checkbox"]' ).iCheck('enable'); 
+                }
+              };
+              countChecked();
+           
+              $( 'input[name*="[umpire_ids][]"]' ).each(function() {
+
+                  $(this).on('ifClicked', function() {
+                    countChecked();                    
+                  });
+              });
+               
+                        
+    .box-footer
+      %p
+        = f.hidden_field :_destroy
+        = link_to '<i class="fa fa-trash-o"></i>'.html_safe, '#', :class => "btn btn-sm btn-danger remove_fields", :title => "Remove match" 

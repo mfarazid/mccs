@@ -1,3 +1,12 @@
+GIT
+  remote: git://github.com/ricardodovalle/icheck-rails.git
+  revision: e95a01522f9427ddb205fa7e3468fcd81b4e9e4e
+  specs:
+    icheck-rails (1.0.2.2)
+      jquery-rails
+      rails (>= 3.1.0)
+      sass-rails
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -327,6 +336,7 @@ DEPENDENCIES
   guard-spork
   haml
   haml-rails
+  icheck-rails!
   jbuilder (~> 1.2)
   jquery-datatables-rails (~> 2.1.10.0.2)
   jquery-rails

@@ -11,4 +11,7 @@ class Match < ActiveRecord::Base
 
   has_many :umpires_in_matches, :dependent => :destroy
   has_many :umpires, through: :umpires_in_matches
+
+  validates_presence_of :team_a_id, :team_b_id, :competition_type_id, :competition_overs_limit_id, 
+        :team_won_toss, :team_choose_to 
 end

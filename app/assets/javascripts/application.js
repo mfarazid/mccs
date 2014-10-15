@@ -19,6 +19,7 @@
 //= require pickadate/picker.date
 //= require pickadate/picker.time 
 //= require jquery_nested_form
+//= require icheck
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 //= require_tree .
@@ -125,7 +126,6 @@ $(document).ready(function() {
     });
   }
 
- 
   if ($('.dob_datepicker').length) {
     var maxYear= new Date().getFullYear()-10;
     var minYear= new Date().getFullYear()-40;
@@ -152,7 +152,50 @@ $(document).ready(function() {
       }
     });
   }  
-  
+
+  if ($('#series_start_date').length) {
+    $('#series_start_date').pickadate({
+      // Escape any “rule” characters with an exclamation mark (!).
+      format: 'mmmm dd, yyyy',
+      formatSubmit: 'yyyy/mm/dd',
+      hiddenPrefix: 'prefix__',
+      hiddenSuffix: '__suffix',
+      selectYears: true,
+      selectMonths: true,
+      onStart: function() {
+        if ($('#series_start_date').val() !== "") {
+          var year = parseInt($('#series_start_date').val().substr(0, 4), 10);
+          var month = parseInt($('#series_start_date').val().substr(5, 2), 10);
+          var day = parseInt($('#series_start_date').val().substr(8, 2), 10);
+          //months are zero indexed
+          formattedDate = moment(new Date(year,month-1,day)).format('LL');
+          $('#series_start_date').val(formattedDate);    
+        }
+      }
+    });
+  } 
+
+  if ($('#series_end_date').length) {
+    $('#series_end_date').pickadate({
+      // Escape any “rule” characters with an exclamation mark (!).
+      format: 'mmmm dd, yyyy',
+      formatSubmit: 'yyyy/mm/dd',
+      hiddenPrefix: 'prefix__',
+      hiddenSuffix: '__suffix',
+      selectYears: true,
+      selectMonths: true,
+      onStart: function() {
+        if ($('#series_end_date').val() !== "") {
+          var year = parseInt($('#series_end_date').val().substr(0, 4), 10);
+          var month = parseInt($('#series_end_date').val().substr(5, 2), 10);
+          var day = parseInt($('#series_end_date').val().substr(8, 2), 10);
+          //months are zero indexed
+          formattedDate = moment(new Date(year,month-1,day)).format('LL');
+          $('#series_end_date').val(formattedDate);    
+        }
+      }
+    });
+  }
   $('#clubs').dataTable();
   $('#teams').dataTable();
   $('#series').dataTable();
@@ -160,7 +203,7 @@ $(document).ready(function() {
   $('#players').dataTable();
   $('#umpires').dataTable();
   $('#venues').dataTable();
- 
+
   WebFontConfig = {
     google: { families: [ 'Kaushan+Script::latin', 'Source+Sans+Pro:400,300,600,300italic,400italic,600italic:latin' ] }
   };
@@ -204,7 +247,7 @@ $(document).ready(function() {
       });      
     }
     else {
-      $('#club_flag').attr('src', "/assets/clubs/default.png");
+      $('#club_flag').attr('src', "/assets/clubs/default-club.png");
     }
 
 
@@ -226,7 +269,7 @@ $(document).ready(function() {
       });      
     }
     else {
-      $('#team_flag').attr('src', "/assets/teams/default.png");
+      $('#team_flag').attr('src', "/assets/teams/default-team.png");
     }
 
   });
@@ -251,20 +294,123 @@ $(document).ready(function() {
   $('#umpires_filter label input').css('width', '130px');
   $('#umpires_filter label input').attr('placeholder', 'Search');
 
-  // Add Players fields to team form
+  // Series DataTable search box modification
+  $('#series_filter label').css("color", "white" );
+  $('#series_filter label input').css('width', '130px');
+  $('#series_filter label input').attr('placeholder', 'Search');
+
+  // Players DataTable search box modification
+  $('#players_filter label').css("color", "white" );
+  $('#players_filter label input').css('width', '130px');
+  $('#players_filter label input').attr('placeholder', 'Search');
+
+  // Add fields to the form
   $('form').on('click', '.add_fields', function(event) {
     var regexp, time;
     time = new Date().getTime();
     regexp = new RegExp($(this).data('id'), 'g');
     $(this).before($(this).data('fields').replace(regexp, time));
     event.preventDefault();
+    $("select[name*='team']").selectpicker();
+
+    $("select[name*='team_a_id']").selectpicker().change(function(e) {
+      // revalidate the color when it is changed
+      var imageID = $("select[name*='team_a_id'] option:selected").selectpicker().val();
+      if (imageID > 0) {
+        $.ajax({
+            Default: "GET",
+            dataType: "json",
+            url: "/team_flags/"+imageID,
+            success: function(data){
+              var newPic = data.file_name;
+              $('#teamA').attr('src', "/assets/teams/"+newPic);
+            }
+        });      
+      }
+      else {
+        $('#teamA').attr('src', "/assets/teams/default-team.png");
+      }
+      var teamName = $("select[name*='team_a_id'] option:selected").selectpicker().text();
+      $("select[name*='team_won_toss']").selectpicker().find('[value="Team A"]').remove();
+      $("select[name*='team_won_toss']").append('<option value="'+teamName+'">'+teamName+'</option>');
+      $("select[name*='team_won_toss']").selectpicker('refresh');
+            
+    }).end()
+
+    $("select[name*='team_b_id']").selectpicker().change(function(e) {
+      // revalidate the color when it is changed
+      var imageID = $("select[name*='team_b_id'] option:selected").selectpicker().val();
+      if (imageID > 0) {
+        $.ajax({
+            Default: "GET",
+            dataType: "json",
+            url: "/team_flags/"+imageID,
+            success: function(data){
+              var newPic = data.file_name;
+              $('#teamB').attr('src', "/assets/teams/"+newPic);
+            }
+        });      
+      }
+      else {
+        $('#teamB').attr('src', "/assets/teams/default-team.png");
+      }
+      var teamName = $("select[name*='team_b_id'] option:selected").selectpicker().text();
+      $("select[name*='team_won_toss']").selectpicker().find('[value="Team B"]').remove();
+      $("select[name*='team_won_toss']").append('<option value="'+teamName+'">'+teamName+'</option>');
+      $("select[name*='team_won_toss']").selectpicker('refresh');
+            
+    }).end()
+    $("select[name*='competition']").selectpicker();
+    $("select[name*='venue']").selectpicker();
+    $("select[name*='(1i)']").selectpicker({
+      width: 70
+    });
+    $("select[name*='(2i)']").selectpicker({
+      width: 110
+    });
+    $("select[name*='(3i)']").selectpicker({
+      width: 55
+    });
+    $("select[name*='(4i)']").selectpicker({
+      width: 55
+    });
+    $("select[name*='(5i)']").selectpicker({
+      width: 55
+    });
+  
+    $("input[name*='[umpire_ids][]']").each(function() {
+      $(this).addClass('icheck-me');
+      $(this).attr('data-skin','square');
+      $(this).attr('data-color','green');
+    });
+
+    icheck();
   });
-  // Remove Players fields from team form
+  // Remove fields from the form
   $('form').on('click', '.remove_fields', function(event) {
     $(this).prev('input[type=hidden]').val('1');
     $(this).closest('section').hide();
     event.preventDefault();
   });
+  $("select[name*='(1i)']").selectpicker({
+    width: 70
+  });
+  $("select[name*='(2i)']").selectpicker({
+    width: 110
+  });
+  $("select[name*='(3i)']").selectpicker({
+    width: 55
+  });
+  $("select[name*='(4i)']").selectpicker({
+    width: 55
+  });
+  $("select[name*='(5i)']").selectpicker({
+    width: 55
+  });
+  $("select[name*='team']").selectpicker();
+  $("select[name*='competition']").selectpicker();
+  $("select[name*='venue']").selectpicker();
+
 
 });  
 
@@ -273,6 +419,45 @@ var left_side_width = 220; //Sidebar width in pixels
 $(function() {
     "use strict";
 
+    $('form').find("select[name*='team_a_id']").selectpicker().change(function(e) {
+      // revalidate the color when it is changed
+      var imageID = $("select[name*='team_a_id'] option:selected").selectpicker().val();
+      if (imageID > 0) {
+        $.ajax({
+            Default: "GET",
+            dataType: "json",
+            url: "/team_flags/"+imageID,
+            success: function(data){
+              var newPic = data.file_name;
+              $('#teamA').attr('src', "/assets/teams/"+newPic);
+            }
+        });      
+      }
+      else {
+        $('#teamA').attr('src', "/assets/teams/default-team.png");
+      }
+            
+    }).end()
+
+    $('form').find("select[name*='team_b_id']").selectpicker().change(function(e) {
+      // revalidate the color when it is changed
+      var imageID = $("select[name*='team_b_id'] option:selected").selectpicker().val();
+      if (imageID > 0) {
+        $.ajax({
+            Default: "GET",
+            dataType: "json",
+            url: "/team_flags/"+imageID,
+            success: function(data){
+              var newPic = data.file_name;
+              $('#teamB').attr('src', "/assets/teams/"+newPic);
+            }
+        });      
+      }
+      else {
+        $('#teamB').attr('src', "/assets/teams/default-team.png");
+      }
+            
+    }).end()
     //Enable sidebar toggle
     $("[data-toggle='offcanvas']").click(function(e) {
         e.preventDefault();
@@ -289,6 +474,7 @@ $(function() {
             $(".right-side").toggleClass("strech");
         }
     });
+
 
     //Add hover support for touch devices
     $('.btn').bind('touchstart', function() {
@@ -484,4 +670,23 @@ function fix_sidebar() {
     }
 }(jQuery));
 
-  
+/* iCkeck Checkboxes and Radiobuttons */
+function icheck(){
+  if($(".icheck-me").length > 0){
+    $(".icheck-me").each(function(){
+      var $el = $(this);
+      var skin = ($el.attr('data-skin') !== undefined) ? "_" + $el.attr('data-skin') : "",
+      color = ($el.attr('data-color') !== undefined) ? "-" + $el.attr('data-color') : "";
+      var opt = {
+        checkboxClass: 'icheckbox' + skin + color,
+        radioClass: 'iradio' + skin + color,
+        increaseArea: '10%',
+      }
+      $el.iCheck(opt);
+    });
+  }
+}
+
+// $(function(){
+//   icheck();
+// })  

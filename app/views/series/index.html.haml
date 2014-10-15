@@ -1,23 +1,49 @@
-%h1 Listing series
-
-%table
-  %tr
-    %th Name
-    %th Start date
-    %th End date
-    %th
-    %th
-    %th
-
-  - @series.each do |series|
-    %tr
-      %td= series.name
-      %td= series.start_date
-      %td= series.end_date
-      %td= link_to 'Show', series
-      %td= link_to 'Edit', edit_series_path(series)
-      %td= link_to 'Destroy', series, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
-= link_to 'New Series', new_series_path
+.wrapper.row-offcanvas.row-offcanvas-left
+  / Left side column. contains the logo and sidebar
+  %aside.left-side.sidebar-offcanvas
+    = render 'sidenavbar'
+  / Right side column. Contains the navbar and content of the page
+  %aside.right-side
+    %header.row
+      %section.jumbotron.top-header
+        %figure
+          = image_tag 'logo.png', :alt => "logo", :class => "header_image_responsive" 
+    %section.content-header     
+      %h1 Home
+      %ol.breadcrumb
+        %li
+          %a{:href => root_path}
+            %i.fa.fa-home
+            Home    
+        %li.active
+          %a{:href => series_index_path}
+            %i.fa.fa-trophy
+            Series
+    / /.content-header
+    %section.content
+      .box.box-default
+        .box-header
+          .pull-right.box-tools
+            = link_to 'New Series', new_series_path, :class => 'btn btn-success btn-flat pull-right'
+          %h3.box-title Series      
+        .box-body  
+          .table-responsive 
+            %table.table.table-bordered.table-condensed{id: 'series'}
+              %thead.series_head
+                %tr
+                  %th Name
+                  %th Start date
+                  %th End date
+                  - if current_user.present? && @series.select {|c| c.user_id == current_user.id}
+                    %th
+              %tbody    
+                - @series.each do |series|
+                  %tr
+                    %td= link_to "#{series.name}", series, :title => "View series" 
+                    %td= series.start_date
+                    %td= series.end_date
+                    - if current_user.present? && series.user_id == current_user.id
+                      %td.center
+                        = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_series_path(series), :class => 'btn btn-xs btn-flat btn-default', :title => "Edit venue" 
+                        = link_to '<i class="fa fa-trash-o"></i>'.html_safe, series, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-default', :title => "Remove series" 
+      %br  

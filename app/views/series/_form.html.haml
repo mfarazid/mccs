@@ -1,19 +1,20 @@
-= bootstrap_form_for @series do |f|
+= bootstrap_form_for(@series, inline_errors: false) do |f|
   - if @series.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@series.errors.count, "error")} prohibited this series from being saved:"
-      %ul
-        - @series.errors.full_messages.each do |msg|
-          %li= msg
-
-  .field
-    / = f.label :name
-    = f.text_field :name
-  .field
-    / = f.label :start_date
-    = f.datetime_select :start_date
-  .field
-    / = f.label :end_date
-    = f.datetime_select :end_date
-  .actions
-    = f.submit 'Save'
+    :javascript
+      var count = "Please resolve"+' '+  #{@series.errors.count}  +' '+ "error before submitting your request." ;
+        Command: toastr.warning(count);    
+  - @series.errors.full_messages.each do |msg|
+    :javascript
+      var msg = " #{msg} ";
+      Command: toastr.error(msg);
+  .row
+    .col-sm-4  
+      = f.text_field :name
+      = f.text_field :start_date, :class => 'series_datepicker', :placeholder => "mm/dd/yyyy", append: "<i class='fa fa-calendar'></i>".html_safe
+      = f.text_field :end_date, :class => 'series_datepicker', :placeholder => "mm/dd/yyyy", append: "<i class='fa fa-calendar'></i>".html_safe
+    .col-sm-12
+      = f.fields_for :matches, inline_errors: false do |builder|
+        = render 'match_fields', f: builder
+      = link_to_add_fields '<i class="fa fa-fw fa-plus-square"></i> New Match'.html_safe, f, :matches
+  %hr
+  = f.submit 'Submit', :class => 'btn btn-primary'
