@@ -4,7 +4,11 @@ class PlayersController < ApplicationController
   # GET /players
   # GET /players.json
   def index
-    @players = Player.all
+    if current_user.present?
+      @players = Player.where(:user_id => current_user.id)
+    else
+      @players = Player.all
+    end
   end
 
   # GET /players/1

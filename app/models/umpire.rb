@@ -5,4 +5,7 @@ class Umpire < ActiveRecord::Base
   def name
     self.first_name + ' ' + self.last_name
   end
+
+  validates :first_name, presence: true, length: {in: 3..30}
+  validates :last_name, presence: true, length: {in: 3..30}
 end

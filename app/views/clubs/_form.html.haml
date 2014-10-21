@@ -6,7 +6,7 @@
       - else 
         = image_tag 'clubs/default-club.png', :class => 'flag_large', :id =>"club_flag"   
   .col-sm-5
-    = bootstrap_form_for(@club,inline_errors: false) do |f|
+    = bv_form_for(@club) do |f|
       - if @club.errors.any?
         :javascript
           var count = "Please resolve"+' '+  #{@club.errors.count}  +' '+ "error before submitting your request." ;
@@ -14,6 +14,9 @@
       - @club.errors.full_messages.each do |msg|
         :javascript
           var msg = " #{msg} ";
+          toastr.options = {
+            "positionClass": "toast-bottom-right"
+          }
           Command: toastr.error(msg);
 
       = f.text_field :name, label: "Club Name", :maxlength => 30
@@ -21,3 +24,7 @@
       = f.collection_select :club_flag_id, ClubFlag.all, :id, :name, prompt: true
       = f.hidden_field :user_id
       = f.submit 'Submit', :class => 'btn btn-primary' 
+    :Javascript
+      $(document).ready(function() {
+        $('#new_club').bootstrapValidator();
+      });

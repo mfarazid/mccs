@@ -63,6 +63,11 @@ body > .header {
   background-color: #f9f9f9;
   margin-left: 220px;
 }
+
+.form-group .form-control-feedback {
+  top: 5px;
+  right: 0px;
+}
 /**/
 .club_head {
   border-top: 5px solid #85144B;
@@ -89,10 +94,19 @@ body > .header {
   width: 24px;
   height: 24px;
 }
+.flag_big_icon {
+  width: 60px;
+  height: 60px;
+}
 .flag_small {
   width: 100px;
   height: 100px;
 }
+.font_16px {
+  font-size: 16px;
+  text-align: center;
+}
+
 .icheckbox_square-green, .iradio_square-green {
   margin: 5px;
 }
@@ -104,6 +118,74 @@ body > .header {
   margin-right: auto;
   margin-left: auto; 
 }
+.team_vs_pic {
+  height: 60px;
+  width: 140px;
+}
+.team_vs_name {
+  height: 20px;
+  width: 123px;
+  margin-left: 6px;
+}
+.match-event-box {
+  position: relative;
+  background-color: white;
+  margin: 6px;
+  min-height: 100px;
+}
+
+.match-event-box .matchNumber {
+  float: left;
+  height: 100px;
+  line-height: 100px;
+  background-color: #333;
+  color: white;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 5px;
+  position: relative;
+}
+
+.match-event-box .matchCompetitors {
+  float: left;
+  position: relative;
+  padding-top: 3px;
+  text-align: center;
+  vertical-align: middle;
+
+}
+
+.match-event-box .matchCompetitors h4 {
+  float: left;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  color: #676767;
+  padding-top: 30px;
+  line-height: 19px;
+}
+
+.match-event-box .matchCompetitors .teamLogos {
+  float: left;
+}
+
+.match-event-box .matchCompetitors h5 {
+  float: left;
+  line-height: 80px;
+  /*padding: 0 10px;*/
+  font-size: 15px;
+  color: #909090;
+  text-transform: uppercase;
+  font-weight: normal;
+}
+
+.match-event-box .matchDetails {
+  float: left;
+  position: relative;
+  padding-top: 3px
+}
+
 .panel-collapse {
   border: 1px solid #3d9970 ;
   -webkit-border-radius: 3px;
@@ -1462,7 +1544,7 @@ footer p {
 }
 
 .footer {
-  z-index: 10000;
+  z-index: 1000;
   position: fixed;
   bottom: 0;
   width: 100%;

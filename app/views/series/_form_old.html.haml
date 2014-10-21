@@ -1,0 +1,74 @@
+= bootstrap_form_for(@series, inline_errors: false) do |f|
+  - if @series.errors.any?
+    :javascript
+      var count = "Please resolve"+' '+  #{@series.errors.count}  +' '+ "error before submitting your request." ;
+        Command: toastr.warning(count);    
+  - @series.errors.full_messages.each do |msg|
+    :javascript
+      var msg = " #{msg} ";
+      Command: toastr.error(msg);
+  .row
+    .col-sm-4  
+      = f.text_field :name, required: true
+      = f.text_field :start_date, :class => 'series_datepicker', :placeholder => "mmmm dd, yyyy", append: "<i class='fa fa-calendar'></i>".html_safe, required: true
+      = f.text_field :end_date, :class => 'series_datepicker', :placeholder => "mmmm dd, yyyy", append: "<i class='fa fa-calendar'></i>".html_safe, required: true
+    .col-sm-12
+      = f.fields_for :matches, inline_errors: false do |builder|
+        = render 'match_fields', f: builder
+      = link_to_add_match_fields '<i class="fa fa-fw fa-plus-square"></i> New Match'.html_safe, f, :matches
+  %hr
+  = f.submit 'Submit', :class => 'btn btn-primary'
+:Javascript
+  $(document).ready(function() {
+      $('#series_start_date').on('change', function(e) {
+        $('#new_series, .edit_series').bootstrapValidator('revalidateField', 'series[start_date]');
+      })
+      $('#series_end_date').on('change', function(e) {
+        $('#new_series, .edit_series').bootstrapValidator('revalidateField', 'series[end_date]');
+      })
+      $('#new_series, .edit_series').bootstrapValidator({
+          // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+          excluded: [':disabled', ':hidden', ':not(:visible)'],
+          feedbackIcons: {
+              required: 'fa fa-asterisk',
+              valid: 'fa fa-check',
+              invalid: 'fa fa-remove',
+              validating: 'fa fa-refresh'
+          },
+          fields: {
+              'series[name]': {
+                  message: 'Series name is not valid',
+                  validators: {
+                      notEmpty: {
+                          message: 'Series name is required and cannot be empty'
+                      },
+                      stringLength: {
+                          min: 6,
+                          max: 30,
+                          message: 'Must be more than 6 and less than 30 characters long'
+                      }
+                  }
+              },
+              'series[start_date]': {
+                  validators: {
+                      notEmpty: {
+                          message: 'Series start date is required and cannot be empty'
+                      }
+                  }
+              },
+              'series[end_date]': {
+                  validators: {
+                      notEmpty: {
+                          message: 'Series end date is required and cannot be empty'
+                      }
+                  }
+              }
+          }
+      }).on('success.form.bv', function(e) {
+        // Called when the form is valid
+        var $form = $(e.target);
+        if ($form.data('remote') && $.rails !== undefined) {
+            e.preventDefault();
+        }
+    });
+  });

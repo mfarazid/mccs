@@ -51,10 +51,10 @@
                       %td= team.club.name
                       %td= team.user.name
                       - if current_user.present? && team.user_id == current_user.id
-                        %td
-                          = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_team_path(team), :class => 'btn btn-xs btn-flat btn-default', :title => "Edit team"
-                          = link_to '<i class="fa fa-trash-o"></i>'.html_safe, team, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-default', :title => "Remove team"
+                        %td.center
+                          = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_team_path(team), :class => 'btn btn-xs btn-flat btn-warning', :title => "Edit team"
+                          = link_to '<i class="fa fa-trash-o"></i>'.html_safe, team, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-danger', :title => "Remove team"
       %p
         = link_to '<i class="fa fa-arrow-circle-left"></i>'.html_safe, clubs_path, :class => "btn btn-default", :title => "Back to Clubs"
-        = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_club_path(@club), :class => "btn btn-default", :title => "Edit club"
+        = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_club_path(@club), :class => "btn btn-warning", :title => "Edit club"
       %br    

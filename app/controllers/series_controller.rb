@@ -5,7 +5,11 @@ class SeriesController < ApplicationController
   # GET /series
   # GET /series.json
   def index
-    @series = Series.all
+    if current_user.present?
+      @series = Series.where(:user_id => current_user.id)
+    else
+      @series = Series.all
+    end
   end
 
   # GET /series/1

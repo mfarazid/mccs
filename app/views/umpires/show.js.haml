@@ -1,0 +1,4 @@
+$modal = $('#umpire_show'),
+$modalBody = $('#umpire_show .modal-body'),
+$modalBody.html("#{escape_javascript(render @umpire )}");
+$modal.modal();

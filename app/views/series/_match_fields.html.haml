@@ -33,7 +33,7 @@
           = f.collection_select :competition_overs_limit_id, CompetitionOversLimit.all, :id, :overs, label: "Competition Overs", :prompt => "select", :class => 'select'
       .row
         .col-sm-6
-          = f.select :team_won_toss, [["Team A"], ["Team B"]], label: "Team Won Toss", :prompt => "select", :class => 'select'
+          = f.select :team_won_toss, [["TeamA"], ["TeamB"]], label: "Team Won Toss", :prompt => "select", :class => 'select'
         .col-sm-6  
           = f.select :team_choose_to, [["Batting First"], ["Bowling First"]], label: "Team Choose To", :prompt => "select", :class => 'select'
       .row
@@ -45,38 +45,9 @@
         .col-sm-6
           = f.collection_select :venue_id, Venue.where(:user_id => current_user.id), :id, :name_with_details, label: "Venue", :prompt => "select", :class => 'select'
         .col-sm-6
-          .form-group
-            %label.control-label{:for => "umpires"}
-              Choose Umpires
-            %br  
-            
-            %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#umpires", :class => 'btn bg-olive btn-block'}
-              Select two Umpires:
-            #umpires.panel-collapse.collapse         
-              = f.collection_check_boxes :umpire_ids, Umpire.all, :id, :name, hide_label: true
-            
-            :javascript
-              var countChecked = function() {
-                var n = $( 'input[type="checkbox"]:checked' ).length;
-                if (n == 1) {
-                  Command: toastr.warning("Umpire selection can only be two");
-                    $( 'input[type="checkbox"]' ).not(':checked').each(function() {
-                      $(this).iCheck('disable');
-                    });
-                }
-                else {
-                  $( 'input[type="checkbox"]' ).iCheck('enable'); 
-                }
-              };
-              countChecked();
-           
-              $( 'input[name*="[umpire_ids][]"]' ).each(function() {
+          .form-group       
+            = f.collection_select :umpire_ids, Umpire.all, :id, :name, label: 'Choose Umpires', :prompt => "select"
 
-                  $(this).on('ifClicked', function() {
-                    countChecked();                    
-                  });
-              });
-               
                         
     .box-footer
       %p

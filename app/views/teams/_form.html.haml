@@ -6,6 +6,9 @@
   - @team.errors.full_messages.each do |msg|
     :javascript
       var msg = " #{msg} ";
+      toastr.options = {
+        "positionClass": "toast-bottom-right"
+      }
       Command: toastr.error(msg);
   .row
     .col-sm-5
@@ -15,11 +18,11 @@
         - else
           = image_tag 'teams/default-team.png', :class => 'flag_large', :id =>"team_flag" 
     .col-sm-5
-      = f.text_field :name, label: "Team Name", :maxlength => 30
-      = f.text_field :city, label: "Team City", :maxlength => 30
-      = f.collection_select :team_flag_id, TeamFlag.all, :id, :name, prompt: true
+      = f.text_field :name, label: "Team Name", :maxlength => 30, required: true
+      = f.text_field :city, label: "Team City", :maxlength => 30, required: true
+      = f.collection_select :team_flag_id, TeamFlag.all, :id, :name, required: true, prompt: true
       - if Club.where(:user_id => current_user.id).exists?
-        = f.collection_select :club_id, Club.where(:user_id => current_user.id), :id, :name, prompt: true
+        = f.collection_select :club_id, Club.where(:user_id => current_user.id), :id, :name, required: true, prompt: true
       - else
         .callout.callout-warning 
           %h4 Oh Snap! No clubs found, Please add new club to continue! #{link_to 'New Club', new_club_path, :class => 'btn btn-xs btn-success btn-flat'}
@@ -30,7 +33,121 @@
       = f.fields_for :players, inline_errors: false do |builder|
         = render 'player_fields', f: builder
       %p
-        = link_to_add_fields '<i class="fa fa-fw fa-plus-square"></i> Player'.html_safe, f, :players
+        = link_to_add_player_fields '<i class="fa fa-fw fa-plus-square"></i> Player'.html_safe, f, :players
       %hr
       = f.submit 'Submit', :class => 'btn btn-primary pull-right' 
 
+:Javascript
+  $(document).ready(function() {
+
+      $('#new_team, .edit_team')
+        .find('select[name="team[team_flag_id]"]')
+            .selectpicker()
+            .change(function(e) {
+                // revalidate the field when it is changed
+                $('#new_team, .edit_team').bootstrapValidator('revalidateField', 'team[name]');
+                $('#new_team, .edit_team').bootstrapValidator('revalidateField', 'team[city]');
+            })
+            .end() 
+        .find('select[name="team[club_id]"]')
+            .selectpicker()
+            .change(function(e) {
+                // revalidate the field when it is changed
+                $('#new_team, .edit_team').bootstrapValidator('revalidateField', 'team[name]');
+                $('#new_team, .edit_team').bootstrapValidator('revalidateField', 'team[city]');
+            })
+            .end() 
+        .bootstrapValidator({
+          // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+          excluded: [':disabled', ':hidden', ':not(:visible)'],
+          feedbackIcons: {
+              required: 'fa fa-asterisk',
+              valid: 'fa fa-check',
+              invalid: 'fa fa-times',
+              validating: 'fa fa-refresh'
+          },
+          fields: {
+              'team[name]': {
+                  message: 'Series name is not valid',
+                  validators: {
+                      notEmpty: {
+                          message: 'Series name is required and cannot be empty'
+                      },
+                      stringLength: {
+                          min: 6,
+                          max: 30,
+                          message: 'Must be more than 6 and less than 30 characters long'
+                      },
+                      regexp: {
+                          enabled: true,
+                          regexp: /^[a-zA-Z0-9\s]+$/,
+                          message: 'Series name can only consist of alphabetical, number, and space'
+                      }
+                  }
+              },
+              'team[city]': {
+                  validators: {
+                      notEmpty: {
+                          message: 'Series start date is required and cannot be empty'
+                      },
+                      stringLength: {
+                          min: 6,
+                          max: 30,
+                          message: 'Must be more than 6 and less than 30 characters long'
+                      },
+                      regexp: {
+                          enabled: true,
+                          regexp: /^[a-zA-Z0-9\s]+$/,
+                          message: 'Series name can only consist of alphabetical, number, and space'
+                      }
+                  }
+              }
+          }
+      })
+      .on('success.form.bv', function(e) {
+          var flag = $('#team_team_flag_id :selected').selectpicker().text();
+          var club = $('#team_club_id :selected').selectpicker().text();
+          if (flag == "Please select") {
+            toastr.options = {
+              "positionClass": "toast-bottom-right"
+            }
+            Command: toastr.error('Please select flag.');
+            return false;
+
+          }
+          else if (club == "Please select") {
+            toastr.options = {
+              "positionClass": "toast-bottom-right"
+            }
+            Command: toastr.error('Please select club.');
+            return false;
+
+          }
+          else {
+            return true;
+            // Called when the form is valid
+            var $form = $(e.target);
+            if ($form.data('remote') && $.rails !== undefined) {
+                e.preventDefault();
+            }
+          } 
+      })
+      .on('submit', function(e) {
+          var $form = $(e.target);
+          if ($form.data('remote')) {
+              var numInvalidFields = $form.data('bootstrapValidator').getInvalidFields().length;
+              if (numInvalidFields) {
+                  e.preventDefault();
+                  return false;
+              }
+          }
+      });
+
+    $(''#new_team, .edit_team'').live(function() {
+
+        $('input[name*="[name]"]').each(function() {
+            var value = $(this).val();
+            console.log(value);
+        });
+    });            
+  });

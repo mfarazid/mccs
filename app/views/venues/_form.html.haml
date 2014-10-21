@@ -1,16 +1,49 @@
 .row
-  .col-sm-6
-    = bootstrap_form_for @venue do |f|
+  .col-lg-12
+    - modal ||= false
+    - remote = modal ? true : false  
+    = bv_form_for(@venue, remote: remote, html: {role: :form, 'data-model' => 'venue'}) do |f|
       - if @venue.errors.any?
-        #error_explanation
-          %h2= "#{pluralize(@venue.errors.count, "error")} prohibited this venue from being saved:"
-          %ul
-            - @venue.errors.full_messages.each do |msg|
-              %li= msg
+        - if @venue.errors.any?
+          :javascript
+            var count = "Please resolve"+' '+  #{@venue.errors.count}  +' '+ "error before submitting your request." ;
+              Command: toastr.warning(count);    
+        - @venue.errors.full_messages.each do |msg|
+          :javascript
+            var msg = " #{msg} ";
+            Command: toastr.error(msg);     
+      .col-sm-12
+        = f.text_field :name
+        = f.text_field :address
+        = f.text_field :city
+      .col-sm-6
+        = f.text_field :county_or_state
+      .col-sm-6
+        = f.text_field :country     
+      %hr
+      = f.submit 'Submit', :class => 'btn btn-primary pull-right' 
+    :Javascript
+      $(document).ready(function(){
+        $('.new_venue')
+            .bootstrapValidator()
+              .on('success.form.bv', function(e) {
+                  // Called when the form is valid
+                  var $form = $(e.target);
+                  if ($form.data('remote')) {
+                      e.preventDefault();
+                      return false;
+                  }
+                  Command: toastr.success('Venue was successfully created!');
+              })
+              .on('submit', function(e) {
+                  var $form = $(e.target);
+                  if ($form.data('remote')) {
+                      var numInvalidFields = $form.data('bootstrapValidator').getInvalidFields().length;
+                      if (numInvalidFields) {
+                          e.preventDefault();
+                          return false;
+                      }
+                  }
+              });
 
-      = f.text_field :name
-      = f.text_field :address
-      = f.text_field :city
-      = f.text_field :county_or_state
-      = f.text_field :country
-      = f.submit 'Save'
+      });  

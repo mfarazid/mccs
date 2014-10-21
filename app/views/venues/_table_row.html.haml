@@ -1,0 +1,8 @@
+%tr
+  %td= link_to "#{venue.name}", venue, :remote => true                   
+  %td= venue.address
+  %td= venue.city
+  %td= venue.county_or_state
+  %td= venue.country
+  %td.center
+    = link_to '<i class="fa fa-trash-o"></i>'.html_safe, venue, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-danger', :title => "Remove venue"

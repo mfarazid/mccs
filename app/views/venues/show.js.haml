@@ -1,0 +1,4 @@
+$modal = $('#venue_show'),
+$modalBody = $('#venue_show .modal-body'),
+$modalBody.html("#{escape_javascript(render @venue )}");
+$modal.modal();

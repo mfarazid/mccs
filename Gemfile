@@ -47,6 +47,8 @@ gem 'lodash-rails'
 gem "nested_form"
 gem 'pickadate-rails'
 gem 'icheck-rails',  github: 'ricardodovalle/icheck-rails'
+gem 'bootstrap_validator_rails', '~> 1.1.0'
+gem 'simple_form', github: 'plataformatec/simple_form'
 # ############################
 # Testing
 # ############################

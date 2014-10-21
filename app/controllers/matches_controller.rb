@@ -4,6 +4,11 @@ class MatchesController < ApplicationController
   # GET /matches
   # GET /matches.json
   def index
+    if current_user.present?
+      @matches  = Match.where(:user_id => current_user.id)
+    else
+      @matches  = Match.all
+    end
     @matches = Match.all
   end
 

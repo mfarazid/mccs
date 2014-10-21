@@ -22,9 +22,11 @@
     / flash notifications
     - if flash[:toastr]
       - flash[:toastr].each do |type, message|
-        :javascript
+        :javascript                
+          toastr.options = {
+            "positionClass": "toast-bottom-right"
+          }
           Command: toastr.#{type}(#{raw(message.inspect)});
-
     %header.header
       %span.logo
         %a{:href => "/"} 

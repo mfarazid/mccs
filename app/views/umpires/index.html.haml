@@ -24,7 +24,18 @@
       .box.box-default
         .box-header
           .pull-right.box-tools
-            = link_to 'New Umpire', new_umpire_path, :class => 'btn btn-success btn-flat pull-right'
+            = link_to 'New Umpire', '#new_umpire_modal', 'data-toggle' => 'modal', :class => 'btn btn-success btn-flat pull-right'
+            #new_umpire_modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+                    %h4#myModalLabel.modal-title Create new umpire
+                  .modal-body
+                    = render 'form', modal: true
+                  .modal-footer
+                    %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+
           %h3.box-title Umpires      
         .box-body  
           .table-responsive 
@@ -34,17 +45,73 @@
                   %th
                   %th First name
                   %th Last name
-                  - if current_user.present? && @umpires.select {|c| c.user_id == current_user.id}
-                    %th
+                  %th
+
+                        
               %tbody    
                 - @umpires.each do |umpire|
-                  %tr
-                    %td.center= link_to '<i class="ion ion-android-contact"></i>'.html_safe, umpire, :title => "View umpire" 
-                    %td= umpire.first_name
-                    %td= umpire.last_name
-                    - if current_user.present? && umpire.user_id == current_user.id
-                      %td.center
-                        = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_umpire_path(umpire), :class => 'btn btn-xs btn-flat btn-default', :title => "Edit umpire" 
-                        = link_to '<i class="fa fa-trash-o"></i>'.html_safe, umpire, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-default', :title => "Remove umpire" 
-      %br  
+                  = render partial: 'table_row', locals: {umpire: umpire}
 
+        .modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :id => "umpire_show", :role => "dialog", :tabindex => "-1"}
+          .modal-dialog
+            .modal-content
+              .modal-header
+                %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+                %h4#myModalLabel.modal-title Venue
+              .modal-body
+                
+              .modal-footer
+                %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close  
+      %br  
+:Javascript
+  $(document).ready(function(){
+    
+    $(document).bind('ajaxError', 'form#new_umpire', function(event, jqxhr, settings, exception){
+
+      // note: jqxhr.responseJSON undefined, parsing responseText instead
+      $(event.data).render_form_errors( $.parseJSON(jqxhr.responseText) );
+
+    });
+
+  });
+
+  (function($) {
+
+    $.fn.modal_success = function(){
+      // close modal
+      this.modal('hide');
+
+      // clear form input elements
+      // todo/note: handle textarea, select, etc
+      this.find('form input[type="text"]').val('');
+
+      // clear error state
+      this.clear_previous_errors();
+
+      // reload the current page in order to Datatable work properly.  
+      location.reload();
+
+    };
+
+    $.fn.render_form_errors = function(errors){
+
+      $form = this;
+      this.clear_previous_errors();
+      model = this.data('model');
+
+      // show error messages in input form-group help-block
+      $.each(errors, function(field, messages){
+        $input = $('input[name="' + model + '[' + field + ']"]');
+        $input.closest('.form-group').addClass('has-error').find('.help-block').html( messages.join(' & ') );
+      });
+
+    };
+
+    $.fn.clear_previous_errors = function(){
+      $('.form-group.has-error', this).each(function(){
+        $('.help-block', $(this)).html('');
+        $(this).removeClass('has-error');
+      });
+    }
+
+  }(jQuery)); 
