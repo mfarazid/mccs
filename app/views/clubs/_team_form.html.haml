@@ -1,0 +1,105 @@
+- modal ||= false
+- remote = modal ? true : false  
+= bv_form_for(Team.new, remote: remote, html: {role: :form, 'data-model' => 'team'}) do |f|
+  .row
+    .col-sm-6
+      %p.center
+        = image_tag 'teams/default-team.png', :class => 'flag_large', :id =>"team_flag" 
+    .col-sm-6  
+      = f.text_field :name, label: "Team Name", :maxlength => 30, required: true
+      = f.text_field :city, label: "Team City", :maxlength => 30, required: true
+      = f.collection_select :team_flag_id, TeamFlag.all, :id, :name, required: true, prompt: true
+      = f.hidden_field :club_id, value: club
+      = f.hidden_field :user_id
+      = f.hidden_field "show", value: "club_show"
+      = f.submit 'Submit', :class => 'btn btn-primary' 
+    :Javascript
+      $(document).ready(function() {
+        $(document).bind('ajaxError', 'form#new_team', function(event, jqxhr, settings, exception){
+
+          // note: jqxhr.responseJSON undefined, parsing responseText instead
+          $(event.data).render_form_errors( $.parseJSON(jqxhr.responseText) );
+
+        });
+        // client-side validation
+        $('input[name="commit"]').click(function() {
+          validationSelect();
+        });
+
+        $('#team_team_flag_id').change(function() {
+          validationSelect();
+          $('#new_team').bootstrapValidator('revalidateField', 'team[name]');
+        });
+
+        function validationSelect() {
+          var a = $('#team_team_flag_id option:selected').text();
+          if (a == "Please select") {
+            $('#team_team_flag_id').parent('.form-group').addClass('has-feedback has-error');
+          }
+          else {
+            $('#team_team_flag_id').parent('.form-group').removeClass('has-feedback has-error');
+            $('#team_team_flag_id').parent('.form-group').addClass('has-success');
+          }           
+        }
+           
+        $('#new_team')
+            .bootstrapValidator()
+              .on('success.form.bv', function(e) {
+                  // Called when the form is valid
+                  var $form = $(e.target);
+                  if ($form.data('remote')) {
+                      e.preventDefault();
+                      return false;
+                  }
+              })
+              .on('submit', function(e) {
+                  var $form = $(e.target);
+                  if ($form.data('remote')) {
+                      var numInvalidFields = $form.data('bootstrapValidator').getInvalidFields().length;
+                      if (numInvalidFields) {
+                          e.preventDefault();
+                          return false;
+                      }
+                  }
+              });
+      });
+
+      (function($) {
+
+        $.fn.modal_success = function(){
+          // close modal
+          this.modal('hide');
+
+          // clear form input elements
+          // todo/note: handle textarea, select, etc
+          this.find('form input[type="text"]').val('');
+
+          // clear error state
+          this.clear_previous_errors();
+
+          // reload page 
+          location.reload();
+        };
+
+        $.fn.render_form_errors = function(errors){
+
+          $form = this;
+          this.clear_previous_errors();
+          model = this.data('model');
+
+          // show error messages in input form-group help-block
+          $.each(errors, function(field, messages){
+            $input = $('input[name="' + model + '[' + field + ']"]');
+            $input.closest('.form-group').addClass('has-error').find('.help-block').html( messages.join(' & ') );
+          });
+
+        };
+
+        $.fn.clear_previous_errors = function(){
+          $('.form-group.has-error', this).each(function(){
+            $('.help-block', $(this)).html('');
+            $(this).removeClass('has-error');
+          });
+        }
+
+      }(jQuery));  

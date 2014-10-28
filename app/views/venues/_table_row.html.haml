@@ -5,4 +5,5 @@
   %td= venue.county_or_state
   %td= venue.country
   %td.center
-    = link_to '<i class="fa fa-trash-o"></i>'.html_safe, venue, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-danger', :title => "Remove venue"
+    - if current_user && current_user.id == venue.user_id 
+      = link_to '<i class="fa fa-trash-o"></i>'.html_safe, venue, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-danger', :title => "Remove venue"

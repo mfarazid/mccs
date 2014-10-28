@@ -1,30 +1,60 @@
 .row
-  .col-sm-5
+  .col-sm-6
     %p.center
-      - if params[:action] == 'edit' && @club.club_flag.file_name.present? 
-        = image_tag "clubs/#{@club.club_flag.file_name}", :class => 'flag_large', :id =>"club_flag"
-      - else 
-        = image_tag 'clubs/default-club.png', :class => 'flag_large', :id =>"club_flag"   
-  .col-sm-5
-    = bv_form_for(@club) do |f|
-      - if @club.errors.any?
-        :javascript
-          var count = "Please resolve"+' '+  #{@club.errors.count}  +' '+ "error before submitting your request." ;
-            Command: toastr.warning(count);    
-      - @club.errors.full_messages.each do |msg|
-        :javascript
-          var msg = " #{msg} ";
-          toastr.options = {
-            "positionClass": "toast-bottom-right"
-          }
-          Command: toastr.error(msg);
+      = image_tag 'clubs/default-club.png', :class => 'flag_large', :id =>"club_flag"   
+  .col-sm-6
+    - modal ||= false
+    - remote = modal ? true : false  
+    = bv_form_for(@club, remote: remote, html: {role: :form, 'data-model' => 'club'}) do |f|
 
-      = f.text_field :name, label: "Club Name", :maxlength => 30
-      = f.text_field :county, label: "Club County", :maxlength => 30
-      = f.collection_select :club_flag_id, ClubFlag.all, :id, :name, prompt: true
+      = f.text_field :name, label: "Club Name"
+      = f.text_field :county, label: "Club County"
+      = f.collection_select :club_flag_id, ClubFlag.all, :id, :name, required: true, prompt: true
       = f.hidden_field :user_id
       = f.submit 'Submit', :class => 'btn btn-primary' 
     :Javascript
       $(document).ready(function() {
-        $('#new_club').bootstrapValidator();
+        // client-side validation
+        $('input[name="commit"]').click(function() {
+          validationSelect();
+        });
+
+        $('#club_club_flag_id').change(function() {
+          validationSelect();
+          $('#new_club').bootstrapValidator('revalidateField', 'club[name]');
+        });
+
+        function validationSelect() {
+          var a = $('#club_club_flag_id option:selected').text();
+          console.log(a);
+          if (a == "Please select") {
+            $('#club_club_flag_id').parent('.form-group').addClass('has-feedback has-error');
+
+          }
+          else {
+            $('#club_club_flag_id').parent('.form-group').removeClass('has-feedback has-error');
+            $('#club_club_flag_id').parent('.form-group').addClass('has-success');
+          }           
+        }
+           
+          $('#new_club')
+              .bootstrapValidator()
+                .on('success.form.bv', function(e) {
+                    // Called when the form is valid
+                    var $form = $(e.target);
+                    if ($form.data('remote')) {
+                        e.preventDefault();
+                        return false;
+                    }
+                })
+                .on('submit', function(e) {
+                    var $form = $(e.target);
+                    if ($form.data('remote')) {
+                        var numInvalidFields = $form.data('bootstrapValidator').getInvalidFields().length;
+                        if (numInvalidFields) {
+                            e.preventDefault();
+                            return false;
+                        }
+                    }
+                });
       });

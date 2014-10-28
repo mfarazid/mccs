@@ -1,6 +1,6 @@
 class TeamsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
-  before_action :set_team, only: [:show, :edit, :update, :destroy]
+  before_action :set_team, only: [:add_team, :show, :destroy]
 
   # GET /teams
   # GET /teams.json
@@ -11,7 +11,10 @@ class TeamsController < ApplicationController
       @teams = Team.all
     end
   end
-
+  
+  def add_team
+  end
+  
   # GET /teams/1
   # GET /teams/1.json
   def show
@@ -22,36 +25,25 @@ class TeamsController < ApplicationController
     @team = Team.new
   end
 
-  # GET /teams/1/edit
-  def edit
-  end
-
   # POST /teams
   # POST /teams.json
   def create
     @team = Team.new(team_params)
     @team.user_id = current_user.id
-
     respond_to do |format|
       if @team.save
-        format.html { redirect_to @team, toast('success','Team was successfully created!') }
-        format.json { render action: 'show', status: :created, location: @team }
+        if params[:team][:show].present?
+          club = Club.find(params[:team][:club_id]) 
+          toast('success','Team was successfully created!')
+          format.html { redirect_to @team }
+          format.json { render action: 'add_team', status: :created, location: @team }
+          format.js { render action: 'add_team', status: :created, location: @team }
+        else    
+          format.html { redirect_to @team, toast('success','Team was successfully created!') }
+          format.json { render action: 'show', status: :created, location: @team }
+        end
       else
         format.html { render action: 'new' }
-        format.json { render json: @team.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /teams/1
-  # PATCH/PUT /teams/1.json
-  def update
-    respond_to do |format|
-      if @team.update(team_params)
-        format.html { redirect_to @team, toast('success','Team was successfully updated!') }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
         format.json { render json: @team.errors, status: :unprocessable_entity }
       end
     end
@@ -61,9 +53,18 @@ class TeamsController < ApplicationController
   # DELETE /teams/1.json
   def destroy
     @team.destroy
+
     respond_to do |format|
-      format.html { redirect_to teams_url, toast('success','Team was successfully removed!') }
-      format.json { head :no_content }
+      if params[:show].present?
+        @club = Club.find(@team.club_id) 
+        toast('success','Team was successfully removed!')
+        format.html { redirect_to @club }
+        format.json { render action: 'show', status: :created, location: @club }
+      else    
+        format.html { redirect_to teams_url, toast('success','Team was successfully removed!') }
+        format.json { head :no_content }
+      end
+
     end
   end
 

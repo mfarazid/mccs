@@ -9,7 +9,7 @@ class Team < ActiveRecord::Base
   has_many :matches, :class_name => "Match", :foreign_key => "team_a_id", :dependent => :destroy
   has_many :matches, :class_name => "Match", :foreign_key => "team_b_id", :dependent => :destroy
    
-  validates_presence_of :name, :city, :team_flag, :club, :user_id
+  validates_presence_of :name, :city, :team_flag, :club
 
   def flag_and_name
     ActionController::Base.helpers.image_tag("teams/#{self.team_flag.file_name}", class: "flag_icon") + ' ' + self.name

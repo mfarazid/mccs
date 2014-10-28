@@ -24,12 +24,22 @@
       %section.club_info_box
         %figure= image_tag "clubs/#{@club.club_flag.file_name}", :class => 'flag_small'
         %h4= @club.name
-        - if current_user.present? && @club.user_id == current_user.id
-          %p #{@club.county}
-        - else
-          %p= @club.county
+        %p= @club.county
       %section.box.box-default
         .box-header 
+          .pull-right.box-tools
+            - if current_user
+              = link_to 'New Team', '#new_team_modal', 'data-toggle' => 'modal', :class => 'btn btn-success btn-flat pull-right'
+            #new_team_modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+                    %h4#myModalLabel.modal-title Create new Team
+                  .modal-body
+                    = render 'team_form', modal: true, club: @club.id
+                  .modal-footer
+                    %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close                      
           %h3.box-title Teams     
         .box-body
           - if @club.teams.exists?
@@ -41,8 +51,7 @@
                     %th City
                     %th Club
                     %th User
-                    - if current_user.present? && @club.teams.select {|c| c.user_id == current_user.id}
-                      %th
+                    %th Remove
                 %tbody    
                   - @club.teams.each do |team|
                     %tr
@@ -50,11 +59,9 @@
                       %td= team.city
                       %td= team.club.name
                       %td= team.user.name
-                      - if current_user.present? && team.user_id == current_user.id
-                        %td.center
-                          = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_team_path(team), :class => 'btn btn-xs btn-flat btn-warning', :title => "Edit team"
-                          = link_to '<i class="fa fa-trash-o"></i>'.html_safe, team, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-danger', :title => "Remove team"
+                      %td
+                        - if current_user.present? && team.user_id == current_user.id
+                          = link_to '<i class="fa fa-trash-o"></i>'.html_safe, team_path(team, "show"=>"club_show"), method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-danger', :title => "Remove team"
       %p
         = link_to '<i class="fa fa-arrow-circle-left"></i>'.html_safe, clubs_path, :class => "btn btn-default", :title => "Back to Clubs"
-        = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_club_path(@club), :class => "btn btn-warning", :title => "Edit club"
       %br    

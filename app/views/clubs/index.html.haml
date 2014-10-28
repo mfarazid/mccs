@@ -24,7 +24,18 @@
       %section.box.box-default
         .box-header
           .pull-right.box-tools
-            = link_to 'New Club', new_club_path, :class => 'btn btn-success btn-flat pull-right'
+            - if current_user
+              = link_to 'New Club', '#new_club_modal', 'data-toggle' => 'modal', :class => 'btn btn-success btn-flat pull-right'
+            #new_club_modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+                    %h4#myModalLabel.modal-title Create new club
+                  .modal-body
+                    = render 'form', modal: true
+                  .modal-footer
+                    %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
           %h3.box-title Clubs      
         .box-body
           .table-responsive 
@@ -39,12 +50,67 @@
 
               %tbody
                 - @clubs.each do |club|
-                  %tr
-                    %td #{image_tag "clubs/#{club.club_flag.file_name}", :class => 'flag_icon'} &nbsp; #{link_to "#{club.name}", club, :title => "View club"}
-                    %td= club.county
-                    %td= club.user.name
-                    - if current_user.present? && club.user_id == current_user.id
-                      %td.center
-                        = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_club_path(club), :class => 'btn btn-xs btn-flat btn-warning', :title => "Edit club"
-                        = link_to '<i class="fa fa-trash-o"></i>'.html_safe, club, method: :delete, data: { confirm: 'This club may have one or more teams assigned and by deleting this club will also delete all the teams which are assigned to this club. Are you sure you want to delete?' }, :class => 'btn btn-xs btn-flat btn-danger', :title => "Remove club"
-      %br        
+                  = render partial: 'table_row', locals: {club: club}
+                  
+        .modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :id => "club_show", :role => "dialog", :tabindex => "-1"}
+          .modal-dialog
+            .modal-content
+              .modal-header
+                %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+                %h4#myModalLabel.modal-title Venue
+              .modal-body
+                
+              .modal-footer
+                %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close    
+      %br  
+:Javascript
+  $(document).ready(function(){
+
+    $(document).bind('ajaxError', 'form#new_club', function(event, jqxhr, settings, exception){
+
+      // note: jqxhr.responseJSON undefined, parsing responseText instead
+      $(event.data).render_form_errors( $.parseJSON(jqxhr.responseText) );
+
+    });
+
+  });
+
+  (function($) {
+
+    $.fn.modal_success = function(){
+      // close modal
+      this.modal('hide');
+
+      // clear form input elements
+      // todo/note: handle textarea, select, etc
+      this.find('form input[type="text"]').val('');
+
+      // clear error state
+      this.clear_previous_errors();
+
+      // reload page 
+      location.reload();
+    };
+
+    $.fn.render_form_errors = function(errors){
+
+      $form = this;
+      this.clear_previous_errors();
+      model = this.data('model');
+
+      // show error messages in input form-group help-block
+      $.each(errors, function(field, messages){
+        $input = $('input[name="' + model + '[' + field + ']"]');
+        $input.closest('.form-group').addClass('has-error').find('.help-block').html( messages.join(' & ') );
+      });
+
+    };
+
+    $.fn.clear_previous_errors = function(){
+      $('.form-group.has-error', this).each(function(){
+        $('.help-block', $(this)).html('');
+        $(this).removeClass('has-error');
+      });
+    }
+
+  }(jQuery));          

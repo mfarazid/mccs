@@ -14,11 +14,11 @@ class Authorization < ActiveRecord::Base
     self.save
   end
 
-  # def fetch_details_from_twitter
+  def fetch_details_from_twitter
 
-  # end
+  end
 
-  # def fetch_details_from_google_oauth2
+  def fetch_details_from_google_oauth2
 
-  # end
+  end
 end

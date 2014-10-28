@@ -4,5 +4,7 @@ class Club < ActiveRecord::Base
   belongs_to :user
   has_many :teams, :dependent => :destroy
 
-  validates_presence_of :name, :county, :club_flag_id
+  validates :name, presence: true, length: {in: 3..30}
+  validates :county, presence: true, length: {in: 3..30}
+  validates :club_flag_id, presence: true
 end

@@ -24,7 +24,8 @@
       .box.box-default
         .box-header
           .pull-right.box-tools
-            = link_to 'New Umpire', '#new_umpire_modal', 'data-toggle' => 'modal', :class => 'btn btn-success btn-flat pull-right'
+            - if current_user
+              = link_to 'New Umpire', '#new_umpire_modal', 'data-toggle' => 'modal', :class => 'btn btn-success btn-flat pull-right'
             #new_umpire_modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
               .modal-dialog
                 .modal-content
@@ -45,9 +46,7 @@
                   %th
                   %th First name
                   %th Last name
-                  %th
-
-                        
+                  %th Remove   
               %tbody    
                 - @umpires.each do |umpire|
                   = render partial: 'table_row', locals: {umpire: umpire}

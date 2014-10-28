@@ -1,6 +1,6 @@
 class ClubsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
-  before_action :set_club, only: [:show, :edit, :update, :destroy]
+  before_action :set_club, only: [:add_record, :show, :destroy]
 
   # GET /clubs
   # GET /clubs.json
@@ -10,6 +10,7 @@ class ClubsController < ApplicationController
     else
       @clubs = Club.all
     end
+    @club = Club.new
   end
 
   # GET /clubs/1
@@ -22,8 +23,8 @@ class ClubsController < ApplicationController
     @club = Club.new
   end
 
-  # GET /clubs/1/edit
-  def edit
+  # Add new record to the table
+  def add_record
   end
 
   # POST /clubs
@@ -34,11 +35,14 @@ class ClubsController < ApplicationController
 
     respond_to do |format|
       if @club.save
-        format.html { redirect_to @club, toast('success','Club was successfully created!')}
+        toast('success','Club was successfully created!')
+        format.html { redirect_to @club}
         format.json { render action: 'show', status: :created, location: @club }
+        format.js   { render action: 'add_record', status: :created, location: @club}  
       else
         format.html { render action: 'new' }
         format.json { render json: @club.errors, status: :unprocessable_entity }
+        format.js   { render json: @club.errors, status: :unprocessable_entity }
       end
     end
   end

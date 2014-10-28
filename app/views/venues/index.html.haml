@@ -24,7 +24,8 @@
       .box.box-default
         .box-header
           .pull-right.box-tools
-            = link_to 'New Venue', '#new_venue_modal', 'data-toggle' => 'modal', :class => 'btn btn-success btn-flat pull-right'
+            - if current_user
+              = link_to 'New Venue', '#new_venue_modal', 'data-toggle' => 'modal', :class => 'btn btn-success btn-flat pull-right'
             #new_venue_modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
               .modal-dialog
                 .modal-content
@@ -46,7 +47,7 @@
                   %th City
                   %th County or state
                   %th Country
-                  %th
+                  %th Remove
               %tbody    
                 - @venues.each do |venue|
                   = render partial: 'table_row', locals: {venue: venue}
