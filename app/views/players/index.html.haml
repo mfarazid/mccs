@@ -29,30 +29,30 @@
             %table.table.table-bordered.table-condensed{id: 'players'}
               %thead.player_head
                 %tr
-                  %th Picture
+                  %th
                   %th Name
                   %th Age
                   %th Type
                   %th Batting style
                   %th Blowing style
                   %th Team
-                  - if current_user.present? && @players.select {|c| c.user_id == current_user.id}
-                    %th
+                  %th
               %tbody    
                 - @players.each do |player|
                   %tr
-                    - if player.picture_url?
-                      %td #{image_tag player.picture_url, :class => 'player_pic_small'}
-                    - else
-                      %td #{image_tag "player_default_pic.png", :class => 'player_pic_small'}                  
+                    %td.center
+                      - if player.picture_url?
+                        #{image_tag player.picture_url, :class => 'player_pic_small'}
+                      - else
+                        #{image_tag "player_default_pic.png", :class => 'player_pic_small'}                  
                     %td= link_to "#{player.name}", player, :title => "View player"  
                     %td= player.age(player.date_of_birth) if player.date_of_birth?
                     %td= player.player_type.name
                     %td= player.player_batting_style
                     %td= player.player_bowling_style.name
                     %td= player.team.name               
-                    - if current_user.present? && player.user_id == current_user.id
-                      %td
+                    %td.center
+                      - if current_user.present? && player.user_id == current_user.id
                         = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_player_path(player), :class => 'btn btn-xs btn-flat btn-default', :title => "Edit player" 
-                        = link_to '<i class="fa fa-trash-o"></i>'.html_safe, player, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-default', :title => "Remove player" 
+                        = link_to '<i class="fa fa-trash-o"></i>'.html_safe, player, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-danger', :title => "Remove player" 
       %br 

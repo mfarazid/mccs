@@ -1,6 +1,6 @@
 class ClubsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
-  before_action :set_club, only: [:add_record, :show, :destroy]
+  before_action :authenticate_user!, only: [:new, :create, :destroy]
+  before_action :set_club, only: [:new_club, :show, :destroy]
 
   # GET /clubs
   # GET /clubs.json
@@ -23,8 +23,8 @@ class ClubsController < ApplicationController
     @club = Club.new
   end
 
-  # Add new record to the table
-  def add_record
+  # Add new club
+  def new_club
   end
 
   # POST /clubs
@@ -38,25 +38,11 @@ class ClubsController < ApplicationController
         toast('success','Club was successfully created!')
         format.html { redirect_to @club}
         format.json { render action: 'show', status: :created, location: @club }
-        format.js   { render action: 'add_record', status: :created, location: @club}  
+        format.js   { render action: 'new_club', status: :created, location: @club}  
       else
         format.html { render action: 'new' }
         format.json { render json: @club.errors, status: :unprocessable_entity }
         format.js   { render json: @club.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /clubs/1
-  # PATCH/PUT /clubs/1.json
-  def update
-    respond_to do |format|
-      if @club.update(club_params)
-        format.html { redirect_to @club, toast('success','Club was successfully updated!') }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @club.errors, status: :unprocessable_entity }
       end
     end
   end

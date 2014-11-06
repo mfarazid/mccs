@@ -1,6 +1,6 @@
 class VenuesController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :destroy]
-  before_action :set_venue, only: [:add_record, :show, :destroy]
+  before_action :set_venue, only: [:new_venue, :show, :destroy]
 
   # GET /venues
   # GET /venues.json
@@ -24,7 +24,7 @@ class VenuesController < ApplicationController
   end
 
   # Add new record to the table
-  def add_record
+  def new_venue
   end
 
   # GET /venues/new
@@ -42,8 +42,8 @@ class VenuesController < ApplicationController
       if @venue.save
         toast('success','Venue was successfully created!')
         format.html { redirect_to venues_url }
-        format.json { render action: 'add_record', status: :created, location: @venue }
-        format.js   { render action: 'add_record', status: :created, location: @venue}  
+        format.json { render action: 'show', status: :created, location: @venue }
+        format.js   { render action: 'new_venue', status: :created, location: @venue}  
       else
         format.html { render action: 'new' }
         format.json { render json: @venue.errors, status: :unprocessable_entity }

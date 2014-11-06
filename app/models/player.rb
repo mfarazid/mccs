@@ -5,10 +5,7 @@ class Player < ActiveRecord::Base
   belongs_to :player_type
   belongs_to :player_bowling_style
   
-  validates_presence_of :name, :message => "required."
-  validates_presence_of :player_type, :message => 'required.'
-  validates_presence_of :player_batting_style, :message => "required."
-  validates_presence_of :player_bowling_style, :message => 'required.'
+  validates_presence_of :name, :player_type,:player_batting_style, :player_bowling_style, :date_of_birth
   
   has_attached_file :picture_url
   validates_attachment_content_type :picture_url, 

@@ -1,6 +1,6 @@
 class TeamsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
-  before_action :set_team, only: [:add_team, :show, :destroy]
+  before_action :set_team, only: [:new_team, :show, :destroy]
 
   # GET /teams
   # GET /teams.json
@@ -12,7 +12,7 @@ class TeamsController < ApplicationController
     end
   end
   
-  def add_team
+  def new_team
   end
   
   # GET /teams/1
@@ -32,12 +32,11 @@ class TeamsController < ApplicationController
     @team.user_id = current_user.id
     respond_to do |format|
       if @team.save
-        if params[:team][:show].present?
-          club = Club.find(params[:team][:club_id]) 
+        if params[:team][:show].present? 
           toast('success','Team was successfully created!')
           format.html { redirect_to @team }
           format.json { render action: 'add_team', status: :created, location: @team }
-          format.js { render action: 'add_team', status: :created, location: @team }
+          format.js { render action: 'new_team', status: :created, location: @team }
         else    
           format.html { redirect_to @team, toast('success','Team was successfully created!') }
           format.json { render action: 'show', status: :created, location: @team }

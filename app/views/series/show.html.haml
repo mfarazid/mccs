@@ -38,12 +38,22 @@
                   %th End Date
                   %td= @series.end_date
           %br
-          %hr        
-          - if current_user.present? && @series.user_id == current_user.id 
-            = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_series_path(@series), :class => 'btn btn-flat btn-default', :title => "Edit series" 
       
       .box.box-info
         .box-header
+          .pull-right.box-tools
+            - if current_user
+              = link_to 'New Match', '#new_match_modal', 'data-toggle' => 'modal', :class => 'btn btn-success btn-flat pull-right'
+              #new_match_modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+                .modal-dialog
+                  .modal-content
+                    .modal-header
+                      %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+                      %h4#myModalLabel.modal-title Create New Match
+                    .modal-body
+                      = render 'match_form', modal: true, series: @series.id
+                    .modal-footer
+                      %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close        
           %h3.box-title Series Matches     
         .box-body  
           - @series.matches.each_with_index do |m, index|

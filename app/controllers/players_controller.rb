@@ -1,5 +1,6 @@
 class PlayersController < ApplicationController
-  before_action :set_player, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :set_player, only: [:new_player, :show, :edit, :update, :destroy]
 
   # GET /players
   # GET /players.json
@@ -11,6 +12,9 @@ class PlayersController < ApplicationController
     end
   end
 
+  def new_player
+  end
+
   # GET /players/1
   # GET /players/1.json
   def show
@@ -18,6 +22,29 @@ class PlayersController < ApplicationController
 
   # GET /players/1/edit
   def edit
+  end
+
+  # POST /players
+  # POST /players.json
+  def create
+    @player = Player.new(player_params)
+    @player.user_id = current_user.id
+    respond_to do |format|
+      if @player.save
+        if params[:player][:show].present? 
+          toast('success','Player was successfully created!')
+          format.html { redirect_to @player }
+          format.json { render action: 'show', status: :created, location: @player }
+          format.js { render action: 'new_player', status: :created, location: @player }
+        else    
+          format.html { redirect_to @player, toast('success','Player was successfully created!') }
+          format.json { render action: 'show', status: :created, location: @player }
+        end
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @player.errors, status: :unprocessable_entity }
+      end
+    end
   end
 
   # PATCH/PUT /players/1

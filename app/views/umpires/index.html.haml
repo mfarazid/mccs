@@ -46,10 +46,17 @@
                   %th
                   %th First name
                   %th Last name
-                  %th Remove   
+                  %th  
               %tbody    
                 - @umpires.each do |umpire|
-                  = render partial: 'table_row', locals: {umpire: umpire}
+                  %tr
+                    %td.center
+                      = link_to '<i class="fa fa-user"></i>'.html_safe, umpire, :remote => true, :title => "View umpire" 
+                    %td= umpire.first_name
+                    %td= umpire.last_name  
+                    %td.center 
+                      - if current_user && umpire.user_id == current_user.id
+                        = link_to '<i class="fa fa-trash-o"></i>'.html_safe, umpire, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-default', :title => "Remove umpire" 
 
         .modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :id => "umpire_show", :role => "dialog", :tabindex => "-1"}
           .modal-dialog

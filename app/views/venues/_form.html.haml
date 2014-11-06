@@ -3,15 +3,6 @@
     - modal ||= false
     - remote = modal ? true : false  
     = bv_form_for(@venue, remote: remote, html: {role: :form, 'data-model' => 'venue'}) do |f|
-      - if @venue.errors.any?
-        - if @venue.errors.any?
-          :javascript
-            var count = "Please resolve"+' '+  #{@venue.errors.count}  +' '+ "error before submitting your request." ;
-              Command: toastr.warning(count);    
-        - @venue.errors.full_messages.each do |msg|
-          :javascript
-            var msg = " #{msg} ";
-            Command: toastr.error(msg);     
       .col-sm-12
         = f.text_field :name
         = f.text_field :address
@@ -24,7 +15,7 @@
       = f.submit 'Submit', :class => 'btn btn-primary pull-right' 
     :Javascript
       $(document).ready(function(){
-        $('.new_venue')
+        $('#new_venue')
             .bootstrapValidator()
               .on('success.form.bv', function(e) {
                   // Called when the form is valid

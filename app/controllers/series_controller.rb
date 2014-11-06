@@ -1,15 +1,19 @@
 class SeriesController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
-  before_action :set_series, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:new, :create, :destroy]
+  before_action :set_series, only: [:new_series, :show, :destroy]
 
   # GET /series
   # GET /series.json
   def index
     if current_user.present?
-      @series = Series.where(:user_id => current_user.id)
+      @series_all = Series.where(:user_id => current_user.id)
     else
-      @series = Series.all
+      @series_all = Series.all
     end
+    @series = Series.new
+  end
+
+  def new_series
   end
 
   # GET /series/1
@@ -22,10 +26,6 @@ class SeriesController < ApplicationController
     @series = Series.new
   end
 
-  # GET /series/1/edit
-  def edit
-  end
-
   # POST /series
   # POST /series.json
   def create
@@ -34,25 +34,14 @@ class SeriesController < ApplicationController
     
     respond_to do |format|
       if @series.save
-        format.html { redirect_to @series, notice: 'Series was successfully created.' }
+        toast('success','Series was successfully created!')
+        format.html { redirect_to @series }
         format.json { render action: 'show', status: :created, location: @series }
+        format.js   { render action: 'new_series', status: :created, location: @series}
       else
         format.html { render action: 'new' }
         format.json { render json: @series.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /series/1
-  # PATCH/PUT /series/1.json
-  def update
-    respond_to do |format|
-      if @series.update(series_params)
-        format.html { redirect_to @series, notice: 'Series was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @series.errors, status: :unprocessable_entity }
+        format.js   { render json: @series.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -75,6 +64,6 @@ class SeriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def series_params
-      params.require(:series).permit(:name, :start_date, :end_date, :user_id, matches_attributes: [:team_a_id, :team_b_id, :series_id, :competition_type_id, :venue_id, :team_won_toss, :team_choose_to, :start_date_time, :end_date_time, :competition_overs_limit_id, :user_id, :id, :_destroy])
+      params.require(:series).permit(:name, :start_date, :end_date, :user_id)
     end
 end

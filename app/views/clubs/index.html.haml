@@ -44,20 +44,23 @@
                 %tr
                   %th Name
                   %th County
-                  %th User
-                  - if current_user.present? && @clubs.select {|c| c.user_id == current_user.id}
-                    %th
+                  %th
 
               %tbody
                 - @clubs.each do |club|
-                  = render partial: 'table_row', locals: {club: club}
+                  %tr
+                    %td #{image_tag "clubs/#{club.club_flag.file_name}", :class => 'flag_icon'} &nbsp; #{link_to "#{club.name}", club, :title => "View club"}
+                    %td= club.county
+                    %td.center
+                      - if current_user.present? && club.user_id == current_user.id
+                        = link_to '<i class="fa fa-trash-o"></i>'.html_safe, club, method: :delete, data: { confirm: 'This club may have one or more teams assigned and by deleting this club will also delete all the teams which are assigned to this club. Are you sure you want to delete?' }, :class => 'btn btn-xs btn-flat btn-danger', :title => "Remove club"
                   
         .modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :id => "club_show", :role => "dialog", :tabindex => "-1"}
           .modal-dialog
             .modal-content
               .modal-header
                 %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
-                %h4#myModalLabel.modal-title Venue
+                %h4#myModalLabel.modal-title Club
               .modal-body
                 
               .modal-footer

@@ -127,6 +127,9 @@ body > .header {
   width: 123px;
   margin-left: 6px;
 }
+#umpires_selection {
+  padding-left: 10px;
+}
 .match-event-box {
   position: relative;
   background-color: white;

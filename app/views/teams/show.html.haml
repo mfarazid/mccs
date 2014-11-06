@@ -28,6 +28,19 @@
 
       .box.box-default
         .box-header 
+          .pull-right.box-tools
+            - if current_user
+              = link_to 'New Player', '#new_player_modal', 'data-toggle' => 'modal', :class => 'btn btn-success btn-flat pull-right'
+            #new_player_modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+                    %h4#myModalLabel.modal-title Create New Player
+                  .modal-body
+                    = render 'player_form', modal: true, team: @team.id
+                  .modal-footer
+                    %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close           
           %h3.box-title Players     
         .box-body
           -if @team.players.exists?
@@ -35,30 +48,31 @@
               %table.table.table-bordered.table-striped
                 %thead.player_head
                   %tr
-                    %th Picture
+                    %th
                     %th Name
                     %th Age
                     %th Title
                     %th Played for
                     %th Batting style
                     %th Bowling style
-                    - if current_user.present? && @team.players.select {|c| c.user_id == current_user.id}
-                      %th
+                    %th
                 %tbody
                   - @team.players.each do |player|
                     %tr
-                      - if player.picture_url?
-                        %td= image_tag player.picture_url, :class => "player_pic_small"
-                      - else
-                        %td= image_tag "player_default_pic.png", :class => "player_pic_small"
+                      %td.center  
+                        - if player.picture_url?
+                          = image_tag player.picture_url, :class => "player_pic_small"
+                        - else
+                          = image_tag "player_default_pic.png", :class => "player_pic_small"
                       %td= link_to "#{player.name}", player, :title => "View player" 
                       %td= player.age(player.date_of_birth) if player.date_of_birth?
                       %td= player.player_type.name
                       %td= player.team.name
                       %td= player.player_batting_style
                       %td= player.player_bowling_style.name
-                      - if current_user.present? && player.user_id == current_user.id
-                        %td= link_to '<i class="fa fa-trash-o"></i>'.html_safe, player, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-default', :title => "Remove player"
+                      %td.center
+                        - if current_user.present? && player.user_id == current_user.id
+                          = link_to '<i class="fa fa-trash-o"></i>'.html_safe, player, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-danger', :title => "Remove player"
       %p 
         = link_to '<i class="fa fa-arrow-circle-left"></i>'.html_safe, teams_path, :class => "btn btn-default", :title => "Back to teams"                 
       %br

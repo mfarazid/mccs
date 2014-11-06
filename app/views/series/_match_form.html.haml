@@ -1,0 +1,240 @@
+- modal ||= false
+- remote = modal ? true : false  
+= bv_form_for(Match.new, remote: remote, html: {role: :form, 'data-model' => 'match'}) do |f|
+  .row
+    .col-sm-5
+      .panel.panel-default
+        .panel-heading
+          %h3.panel-title Team A
+        .panel-body.team-pic-box
+          = image_tag 'teams/default-team.png', :class => 'image_responsive', :id =>"teamA"
+          %br/
+          %br/
+          = f.collection_select :team_a_id, Team.where(:user_id => current_user.id), :id, :name, hide_label: true, :prompt => "select", :class => 'select'
+    .col-sm-2
+      .vs-box
+        %span.vs vs
+    .col-sm-5
+      .panel.panel-default
+        .panel-heading
+          %h3.panel-title Team B
+        .panel-body.team-pic-box
+          = image_tag 'teams/default-team.png', :class => 'image_responsive', :id =>"teamB"
+          %br/
+          %br/
+          = f.collection_select :team_b_id, Team.where(:user_id => current_user.id), :id, :name, hide_label: true, :prompt => "select", :class => 'select'
+  %hr        
+  .row
+    .col-sm-6
+      = f.collection_select :competition_type_id, CompetitionType.all, :id, :name, label: "Competition Type", :prompt => "select", :class => 'select'
+    .col-sm-6  
+      = f.collection_select :competition_overs_limit_id, CompetitionOversLimit.all, :id, :overs, label: "Competition Overs", :prompt => "select", :class => 'select'
+  .row
+    .col-sm-6
+      = f.select :team_won_toss, [["TeamA"], ["TeamB"]], label: "Team Won Toss", :prompt => "select", :class => 'select'
+    .col-sm-6  
+      = f.select :team_choose_to, [["Batting First"], ["Bowling First"]], label: "Team Choose To", :prompt => "select", :class => 'select'
+  .row
+    .col-sm-6
+      = f.text_field :start_date, :class => 'series_datepicker', :placeholder => "mmmm dd, yyyy", append: "<i class='fa fa-calendar'></i>".html_safe, required: true
+    .col-sm-6  
+      = f.text_field :end_date, :class => 'series_datepicker', :placeholder => "mmmm dd, yyyy", append: "<i class='fa fa-calendar'></i>".html_safe, required: true
+  .row
+    .col-sm-6
+      = f.collection_select :venue_id, Venue.where(:user_id => current_user.id), :id, :name_with_details, label: "Venue", :prompt => "select", :class => 'select'
+    .col-sm-6
+      .form-group
+        %label#umpire_label Umpires
+        %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#umpires_selection", :class => 'btn btn-block btn-success btn-flat'}
+          Select two Umpires:
+        #umpires_selection.panel-collapse.collapse
+          = f.collection_check_boxes :umpire_ids, Umpire.all, :id, :name, hide_label: true      
+
+  .row
+    .col-sm-12
+      = f.hidden_field :series_id, value: series
+      = f.hidden_field :user_id
+      = f.hidden_field "show", value: "series_show"
+      = f.submit 'Submit', :class => 'btn btn-primary pull-right'        
+    :Javascript
+      $(document).ready(function() {
+        var countChecked = function() {
+          var n = $( 'input[name="match[umpire_ids][]"]:checked' ).length;
+          
+          if (n >= 2) {
+            $( 'input[name="match[umpire_ids][]"]' ).not(':checked').attr("disabled",true);
+          }
+          else {
+            $( 'input[name="match[umpire_ids][]"]' ).not(':checked').attr("disabled",false);
+          }
+        };
+        countChecked();
+     
+        $( 'input[name="match[umpire_ids][]"]' ).on( "click", countChecked ); 
+
+        $(document).bind('ajaxError', 'form#new_match', function(event, jqxhr, settings, exception){
+
+          // note: jqxhr.responseJSON undefined, parsing responseText instead
+          $(event.data).render_form_errors( $.parseJSON(jqxhr.responseText) );
+
+        });
+        // client-side validation
+        $('#match_umpire_ids').attr("multiple","multiple");
+        $('input[name="commit"]').click(function() {
+          validationSelect();
+        });
+        
+        $('#match_start_date, #match_end_date, #match_team_a_id, #match_team_b_id, #match_competition_type_id, #match_competition_overs_limit_id, #match_team_won_toss, #match_team_choose_to, #match_venue_id ').change(function() {
+          validationSelect();
+          $('#new_match').bootstrapValidator('revalidateField', 'match[start_date]');
+          $('#new_match').bootstrapValidator('revalidateField', 'match[end_date]');
+        });
+
+        function validationSelect() {
+          var ta = $('#match_team_a_id option:selected').text();
+          if (ta == "select") {
+            $('#match_team_a_id').parent('.form-group').addClass('has-feedback has-error');
+          }
+          else {
+            $('#match_team_a_id').parent('.form-group').removeClass('has-feedback has-error');
+            $('#match_team_a_id').parent('.form-group').addClass('has-success');
+          }           
+          var tb = $('#match_team_b_id option:selected').text();
+          if (tb == "select") {
+            $('#match_team_b_id').parent('.form-group').addClass('has-feedback has-error');
+          }
+          else {
+            $('#match_team_b_id').parent('.form-group').removeClass('has-feedback has-error');
+            $('#match_team_b_id').parent('.form-group').addClass('has-success');
+          }
+          if ( ta == tb ) {
+            Command: toastr.error("Team vs Team selections can't be same!");
+            $('#match_team_a_id').parent('.form-group').addClass('has-feedback has-error');
+            $('#match_team_b_id').parent('.form-group').addClass('has-feedback has-error');
+          }
+          else {
+            $('#match_team_a_id').parent('.form-group').removeClass('has-feedback has-error');
+            $('#match_team_a_id').parent('.form-group').addClass('has-success');
+            $('#match_team_b_id').parent('.form-group').removeClass('has-feedback has-error');
+            $('#match_team_b_id').parent('.form-group').addClass('has-success');
+          }
+          var ct = $('#match_competition_type_id option:selected').text();
+          if (ct == "select") {
+            $('#match_competition_type_id').parent('.form-group').addClass('has-feedback has-error');
+          }
+          else {
+            $('#match_competition_type_id').parent('.form-group').removeClass('has-feedback has-error');
+            $('#match_competition_type_id').parent('.form-group').addClass('has-success');
+          }
+          var co = $('#match_competition_overs_limit_id option:selected').text();
+          if (co == "select") {
+            $('#match_competition_overs_limit_id').parent('.form-group').addClass('has-feedback has-error');
+          }
+          else {
+            $('#match_competition_overs_limit_id').parent('.form-group').removeClass('has-feedback has-error');
+            $('#match_competition_overs_limit_id').parent('.form-group').addClass('has-success');
+          }          
+          var tw = $('#match_team_won_toss option:selected').text();
+          if (tw == "select") {
+            $('#match_team_won_toss').parent('.form-group').addClass('has-feedback has-error');
+          }
+          else {
+            $('#match_team_won_toss').parent('.form-group').removeClass('has-feedback has-error');
+            $('#match_team_won_toss').parent('.form-group').addClass('has-success');
+          }
+          var tc = $('#match_team_choose_to option:selected').text();
+          if (tc == "select") {
+            $('#match_team_choose_to').parent('.form-group').addClass('has-feedback has-error');
+          }
+          else {
+            $('#match_team_choose_to').parent('.form-group').removeClass('has-feedback has-error');
+            $('#match_team_choose_to').parent('.form-group').addClass('has-success');
+          } 
+          var v = $('#match_venue_id option:selected').text();
+          if (v == "select") {
+            $('#match_venue_id').parent('.form-group').addClass('has-feedback has-error');
+          }
+          else {
+            $('#match_venue_id').parent('.form-group').removeClass('has-feedback has-error');
+            $('#match_venue_id').parent('.form-group').addClass('has-success');
+          } 
+
+          var ump = $( 'input[name="match[umpire_ids][]"]:checked' ).length;
+          if (ump == 0) {
+            $('#umpire_label').parent('.form-group').addClass('has-feedback has-error');
+          }
+          else if (ump == 1) {
+            Command: toastr.error("Umpires selections has be two!");
+            $('#umpire_label').parent('.form-group').addClass('has-feedback has-error');
+          }
+
+          else {
+            $('#new_match').bootstrapValidator('revalidateField', 'match[start_date]');
+            $('#new_match').bootstrapValidator('revalidateField', 'match[end_date]');
+            $('#umpire_label').parent('.form-group').removeClass('has-feedback has-error');
+            $('#umpire_label').parent('.form-group').addClass('has-success');
+          }
+        }
+
+           
+        $('#new_match')
+            .bootstrapValidator()
+              .on('success.form.bv', function(e) {
+                  // Called when the form is valid
+                  var $form = $(e.target);
+                  if ($form.data('remote')) {
+                      e.preventDefault();
+                      return false;
+                  }
+              })
+              .on('submit', function(e) {
+                  var $form = $(e.target);
+                  if ($form.data('remote')) {
+                      var numInvalidFields = $form.data('bootstrapValidator').getInvalidFields().length;
+                      if (numInvalidFields) {
+                          e.preventDefault();
+                          return false;
+                      }
+                  }
+              });
+      });
+
+      (function($) {
+
+        $.fn.modal_success = function(){
+          // close modal
+          this.modal('hide');
+
+          // clear form input elements
+          // todo/note: handle textarea, select, etc
+          this.find('form input[type="text"]').val('');
+
+          // clear error state
+          this.clear_previous_errors();
+
+          // reload page 
+          location.reload();
+        };
+
+        $.fn.render_form_errors = function(errors){
+
+          $form = this;
+          this.clear_previous_errors();
+          model = this.data('model');
+
+          // show error messages in input form-group help-block
+          $.each(errors, function(field, messages){
+            $input = $('input[name="' + model + '[' + field + ']"]');
+            $input.closest('.form-group').addClass('has-error').find('.help-block').html( messages.join(' & ') );
+          });
+
+        };
+
+        $.fn.clear_previous_errors = function(){
+          $('.form-group.has-error', this).each(function(){
+            $('.help-block', $(this)).html('');
+            $(this).removeClass('has-error');
+          });
+        }
+
+      }(jQuery));  

@@ -1,6 +1,6 @@
 class UmpiresController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :destroy]
-  before_action :set_umpire, only: [:add_record, :show, :destroy]
+  before_action :set_umpire, only: [:new_umpire, :show, :destroy]
 
   # GET /umpires
   # GET /umpires.json
@@ -13,8 +13,8 @@ class UmpiresController < ApplicationController
     @umpire = Umpire.new
   end
 
-  # add new record
-  def add_record
+  # Add new umpire
+  def new_umpire
   end
   
   # GET /umpires/1
@@ -41,8 +41,8 @@ class UmpiresController < ApplicationController
     respond_to do |format|
       if @umpire.save
         format.html { redirect_to @umpire, toast('success','Umpire was successfully created!') }
-        format.json { render action: 'add_record', status: :created, location: @umpire }
-        format.js   { render action: 'add_record', status: :created, location: @umpire }      
+        format.json { render action: 'show', status: :created, location: @umpire }
+        format.js   { render action: 'new_umpire', status: :created, location: @umpire }      
       else
         format.html { render action: 'new' }
         format.json { render json: @umpire.errors, status: :unprocessable_entity }

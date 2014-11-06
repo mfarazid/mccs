@@ -6,7 +6,6 @@
     - modal ||= false
     - remote = modal ? true : false  
     = bv_form_for(@club, remote: remote, html: {role: :form, 'data-model' => 'club'}) do |f|
-
       = f.text_field :name, label: "Club Name"
       = f.text_field :county, label: "Club County"
       = f.collection_select :club_flag_id, ClubFlag.all, :id, :name, required: true, prompt: true

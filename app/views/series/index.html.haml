@@ -24,7 +24,18 @@
       .box.box-default
         .box-header
           .pull-right.box-tools
-            = link_to 'New Series', new_series_path, :class => 'btn btn-success btn-flat pull-right'
+            - if current_user
+              = link_to 'New Series', '#new_series_modal', 'data-toggle' => 'modal', :class => 'btn btn-success btn-flat pull-right'
+            #new_series_modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+                    %h4#myModalLabel.modal-title Create new club
+                  .modal-body
+                    = render 'form', modal: true
+                  .modal-footer
+                    %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
           %h3.box-title Series      
         .box-body  
           .table-responsive 
@@ -34,16 +45,14 @@
                   %th Name
                   %th Start date
                   %th End date
-                  - if current_user.present? && @series.select {|c| c.user_id == current_user.id}
-                    %th
+                  %th
               %tbody    
-                - @series.each do |series|
+                - @series_all.each do |series|
                   %tr
                     %td= link_to "#{series.name}", series, :title => "View series" 
                     %td= series.start_date
                     %td= series.end_date
-                    - if current_user.present? && series.user_id == current_user.id
-                      %td.center
-                        = link_to '<i class="fa fa-edit"></i>'.html_safe, edit_series_path(series), :class => 'btn btn-xs btn-flat btn-default', :title => "Edit venue" 
-                        = link_to '<i class="fa fa-trash-o"></i>'.html_safe, series, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-default', :title => "Remove series" 
+                    %td.center
+                      - if current_user.present? && series.user_id == current_user.id
+                        = link_to '<i class="fa fa-trash-o"></i>'.html_safe, series, method: :delete, data: { confirm: 'This series may have one or more match assigned and by deleting this series will also delete all the matches which are assigned to this series. Are you sure you want to delete?' }, :class => 'btn btn-xs btn-flat btn-danger', :title => "Remove series" 
       %br  

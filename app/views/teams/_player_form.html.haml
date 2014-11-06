@@ -1,0 +1,134 @@
+- modal ||= false
+- remote = modal ? true : false  
+= bv_form_for(Player.new, remote: remote, html: {role: :form, 'data-model' => 'player'}) do |f|
+  .row
+    .col-sm-6
+      = f.text_field :name, label: "Player Name", :maxlength => 30, required: true
+      = f.select :player_batting_style, [["Right-handed", "Right-handed"], ["Left-handed", "Left-handed"]], prompt: true
+      = f.collection_select :player_bowling_style_id, PlayerBowlingStyle.all, :id, :name, prompt: true
+    .col-sm-6 
+      = f.text_field :date_of_birth, :class => 'dob_datepicker', :placeholder => "mmmm dd, yyyy", append: "<i class='fa fa-calendar'></i>".html_safe 
+      = f.collection_select :player_type_id, PlayerType.all, :id, :name, prompt: true
+  .row
+    .col-sm-12 
+      = f.file_field :picture_url, label: "Player Picture", accept: 'image/png,image/gif,image/jpeg'
+      .input-group.margin
+        %input#player_image.form-control{:type => "text", :disabled => true}
+        %span.input-group-btn 
+          %a.btn.btn-success.btn-flat{:onclick => "$('input[id=player_picture_url]').click();"} 
+            Browse       
+    = f.hidden_field :team_id, value: team
+    = f.hidden_field :user_id
+    = f.hidden_field "show", value: "team_show"
+  .row
+    .col-sm-12  
+      = f.submit 'Submit', :class => 'btn btn-primary pull-right' 
+    :Javascript
+      $(document).ready(function() {
+        $('input[id=player_picture_url]').change(function() {
+          $('#player_image').val($(this).val());
+        }); 
+        $(document).bind('ajaxError', 'form#new_player', function(event, jqxhr, settings, exception){
+
+          // note: jqxhr.responseJSON undefined, parsing responseText instead
+          $(event.data).render_form_errors( $.parseJSON(jqxhr.responseText) );
+
+        });
+        // client-side validation
+        $('input[name="commit"]').click(function() {
+          validationSelect();
+        });
+
+        $('#player_player_type_id, #player_player_batting_style, #player_player_bowling_style_id ').change(function() {
+          validationSelect();
+          $('#new_player').bootstrapValidator('revalidateField', 'player[name]');
+        });
+
+        function validationSelect() {
+          var pt = $('#player_player_type_id option:selected').text();
+          if (pt == "Please select") {
+            $('#player_player_type_id').parent('.form-group').addClass('has-feedback has-error');
+          }
+          else {
+            $('#player_player_type_id').parent('.form-group').removeClass('has-feedback has-error');
+            $('#player_player_type_id').parent('.form-group').addClass('has-success');
+          }           
+          var pbt = $('#player_player_batting_style option:selected').text();
+          if (pbt == "Please select") {
+            $('#player_player_batting_style').parent('.form-group').addClass('has-feedback has-error');
+          }
+          else {
+            $('#player_player_batting_style').parent('.form-group').removeClass('has-feedback has-error');
+            $('#player_player_batting_style').parent('.form-group').addClass('has-success');
+          } 
+          var pbl = $('#player_player_bowling_style_id option:selected').text();
+          if (pbl == "Please select") {
+            $('#player_player_bowling_style_id').parent('.form-group').addClass('has-feedback has-error');
+          }
+          else {
+            $('#player_player_bowling_style_id').parent('.form-group').removeClass('has-feedback has-error');
+            $('#player_player_bowling_style_id').parent('.form-group').addClass('has-success');
+          }           
+        }
+           
+        $('#new_player')
+            .bootstrapValidator()
+              .on('success.form.bv', function(e) {
+                  // Called when the form is valid
+                  var $form = $(e.target);
+                  if ($form.data('remote')) {
+                      e.preventDefault();
+                      return false;
+                  }
+              })
+              .on('submit', function(e) {
+                  var $form = $(e.target);
+                  if ($form.data('remote')) {
+                      var numInvalidFields = $form.data('bootstrapValidator').getInvalidFields().length;
+                      if (numInvalidFields) {
+                          e.preventDefault();
+                          return false;
+                      }
+                  }
+              });
+      });
+
+      (function($) {
+
+        $.fn.modal_success = function(){
+          // close modal
+          this.modal('hide');
+
+          // clear form input elements
+          // todo/note: handle textarea, select, etc
+          this.find('form input[type="text"]').val('');
+
+          // clear error state
+          this.clear_previous_errors();
+
+          // reload page 
+          location.reload();
+        };
+
+        $.fn.render_form_errors = function(errors){
+
+          $form = this;
+          this.clear_previous_errors();
+          model = this.data('model');
+
+          // show error messages in input form-group help-block
+          $.each(errors, function(field, messages){
+            $input = $('input[name="' + model + '[' + field + ']"]');
+            $input.closest('.form-group').addClass('has-error').find('.help-block').html( messages.join(' & ') );
+          });
+
+        };
+
+        $.fn.clear_previous_errors = function(){
+          $('.form-group.has-error', this).each(function(){
+            $('.help-block', $(this)).html('');
+            $(this).removeClass('has-error');
+          });
+        }
+
+      }(jQuery));  

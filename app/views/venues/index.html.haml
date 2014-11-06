@@ -47,10 +47,18 @@
                   %th City
                   %th County or state
                   %th Country
-                  %th Remove
+                  %th 
               %tbody    
                 - @venues.each do |venue|
-                  = render partial: 'table_row', locals: {venue: venue}
+                  %tr
+                    %td= link_to "#{venue.name}", venue, :remote => true, :title => "View venue"                   
+                    %td= venue.address
+                    %td= venue.city
+                    %td= venue.county_or_state
+                    %td= venue.country
+                    %td.center
+                      - if current_user && current_user.id == venue.user_id 
+                        = link_to '<i class="fa fa-trash-o"></i>'.html_safe, venue, method: :delete, data: { confirm: 'Are you sure?' }, :class => 'btn btn-xs btn-flat btn-danger', :title => "Remove venue"
                   
         .modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :id => "venue_show", :role => "dialog", :tabindex => "-1"}
           .modal-dialog

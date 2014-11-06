@@ -3,14 +3,6 @@
     - modal ||= false
     - remote = modal ? true : false  
     = bv_form_for(@umpire, remote: remote, html: {role: :form, 'data-model' => 'umpire'}) do |f|
-      - if @umpire.errors.any?
-        :javascript
-          var count = "Please resolve"+' '+  #{@umpire.errors.count}  +' '+ "error before submitting your request." ;
-            Command: toastr.warning(count);    
-      - @umpire.errors.full_messages.each do |msg|
-        :javascript
-          var msg = " #{msg} ";
-          Command: toastr.error(msg);
       = f.text_field :first_name
       = f.text_field :last_name
 

@@ -1,4 +1,4 @@
-= simple_form_for(@team, html: {class: 'bv_form'}) do |f|
+= bv_form_for(@team) do |f|
   .row
     .col-sm-5
       %p.center
@@ -12,4 +12,33 @@
 
       %hr
       = f.submit 'Submit', :class => 'btn btn-primary pull-right' 
-= bv_javascript_for @team
+    :Javascript
+      $(document).ready(function() { 
+        $(document).bind('ajaxError', 'form#new_team', function(event, jqxhr, settings, exception){
+
+          // note: jqxhr.responseJSON undefined, parsing responseText instead
+          $(event.data).render_form_errors( $.parseJSON(jqxhr.responseText) );
+
+        });
+
+        $('#new_team')
+            .bootstrapValidator()
+              .on('success.form.bv', function(e) {
+                  // Called when the form is valid
+                  var $form = $(e.target);
+                  if ($form.data('remote')) {
+                      e.preventDefault();
+                      return false;
+                  }
+              })
+              .on('submit', function(e) {
+                  var $form = $(e.target);
+                  if ($form.data('remote')) {
+                      var numInvalidFields = $form.data('bootstrapValidator').getInvalidFields().length;
+                      if (numInvalidFields) {
+                          e.preventDefault();
+                          return false;
+                      }
+                  }
+              });
+      });

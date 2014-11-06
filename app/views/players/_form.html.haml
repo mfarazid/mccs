@@ -12,7 +12,7 @@
       .col-sm-6
         = f.text_field :name
         
-        = f.text_field :date_of_birth, :class => 'dob_datepicker', :placeholder => "mm/dd/yyyy", append: "<i class='fa fa-calendar'></i>".html_safe
+        = f.text_field :date_of_birth, :class => 'dob_datepicker', :placeholder => "mmmm dd, yyyy", append: "<i class='fa fa-calendar'></i>".html_safe
         = f.text_field :best_performance
         = f.text_field :worst_performance
         = f.file_field :picture_url, label: "Add Player Image", accept: 'image/png,image/gif,image/jpeg'
@@ -29,7 +29,7 @@
         = f.select :player_batting_style, [["Right-handed", "Right-handed"], ["Left-handed", "Left-handed"]], :prompt => "select"
         = f.collection_select :player_type_id, PlayerType.all, :id, :name, prompt: true
         = f.collection_select :player_bowling_style_id, PlayerBowlingStyle.all, :id, :name, prompt: true 
-        = f.text_field :odi_debut, :placeholder => "mm/dd/yyyy", :class => 'odi_datepicker', append: "<i class='fa fa-calendar'></i>".html_safe
-        = f.text_field :test_debut, :placeholder => "mm/dd/yyyy", :class => 'test_datepicker', append: "<i class='fa fa-calendar'></i>".html_safe
-        = f.text_field :t20_debut, :placeholder => "mm/dd/yyyy", :class => 't20_datepicker', append: "<i class='fa fa-calendar'></i>".html_safe
+        = f.text_field :odi_debut, :placeholder => "mmmm dd, yyyy", :class => 'odi_datepicker', append: "<i class='fa fa-calendar'></i>".html_safe
+        = f.text_field :test_debut, :placeholder => "mmmm dd, yyyy", :class => 'test_datepicker', append: "<i class='fa fa-calendar'></i>".html_safe
+        = f.text_field :t20_debut, :placeholder => "mmmm dd, yyyy", :class => 't20_datepicker', append: "<i class='fa fa-calendar'></i>".html_safe
       = f.submit 'Update', :class => 'btn btn-primary' 

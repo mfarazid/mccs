@@ -1,7 +1,0 @@
-%tr
-  %td #{image_tag "clubs/#{club.club_flag.file_name}", :class => 'flag_icon'} &nbsp; #{link_to "#{club.name}", club, :title => "View club"}
-  %td= club.county
-  %td= club.user.name
-  %td.center
-    - if current_user.present? && club.user_id == current_user.id
-      = link_to '<i class="fa fa-trash-o"></i>'.html_safe, club, method: :delete, data: { confirm: 'This club may have one or more teams assigned and by deleting this club will also delete all the teams which are assigned to this club. Are you sure you want to delete?' }, :class => 'btn btn-xs btn-flat btn-danger', :title => "Remove club"
