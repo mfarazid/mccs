@@ -41,6 +41,21 @@
 // } 
 
 $(document).ready(function() {
+
+  // $('form').on('click', '.remove_fields', function(event) {
+  //   $(this).prev('input[type=hidden]').val('1');
+  //   $(this).closest('section').hide();
+  //   event.preventDefault();
+  // });
+
+  // $('form').on('click', '.add_fields', function(event) {
+  //   var regexp, time;
+  //   time = new Date().getTime();
+  //   regexp = new RegExp($(this).data('id'), 'g');
+  //   $(this).before($(this).data('fields').replace(regexp, time));
+  //   event.preventDefault();
+  // });
+  
   if ($('.odi_datepicker').length) {
     var maxYear = new Date().getFullYear();
     var maxMonth = new Date().getMonth()+1;
@@ -415,14 +430,13 @@ $(document).ready(function() {
     });   
           
   }).end()
-
-  $("select[name*='umpire_ids']").selectpicker({
-    iconBase: 'fa',
-    tickIcon: 'fa-check',
-    maxOptions: '2',
-    selectMultiple: 'true'
-  });
-
+  // $('input[type="checkbox"]').each(function() {
+  //   $(this).attr('data-skin',"square");
+  //   $(this).attr('data-color',"green");
+  //   $(this).addClass('icheck-me');
+  // });
+  // // Initialize icheck function
+  // icheck();
 });  
 
 var left_side_width = 220; //Sidebar width in pixels

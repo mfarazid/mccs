@@ -1,11 +1,24 @@
 class Player < ActiveRecord::Base
+  belongs_to :team
+  belongs_to :player_type
+  belongs_to :bowling_style
+  has_many :batsman_in_innings
+  has_many :bowler_in_innings
+
+  has_many :batsman_in_innings, :class_name => "BatsmanInInning", :foreign_key => "out_fielder_id"
+  has_many :batsman_in_innings, :class_name => "BatsmanInInning", :foreign_key => "out_bowler_id"
 
   belongs_to :team
   belongs_to :user
   belongs_to :player_type
   belongs_to :player_bowling_style
+  has_many :batsman_in_innings
+  has_many :bowler_in_innings
+
+  has_many :batsman_in_innings, :class_name => "BatsmanInInning", :foreign_key => "out_fielder_id"
+  has_many :batsman_in_innings, :class_name => "BatsmanInInning", :foreign_key => "out_bowler_id" 
   
-  validates_presence_of :name, :player_type,:player_batting_style, :player_bowling_style, :date_of_birth
+  validates_presence_of :name, :player_type,:player_batting_style, :player_bowling_style, :date_of_birth, on: :create
   
   has_attached_file :picture_url
   validates_attachment_content_type :picture_url, 

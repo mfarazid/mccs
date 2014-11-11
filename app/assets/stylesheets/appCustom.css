@@ -90,6 +90,35 @@ body > .header {
 .venue_head {
   border-top: 5px solid #33AD33;
 }
+.batting_head {
+  border-top: 5px solid #d0343a;
+}
+
+.scorecard_batting_head {
+  border-top: 5px solid #d0343a;
+}
+
+.scorecard_batting_head th {
+  border: 1px solid #ccc;
+}
+
+.bowling_head {
+  border-top: 5px solid #8f489a;
+}
+
+.scorecard_bowling_head {
+  border-top: 5px solid #8f489a;
+}
+
+.scorecard_bowling_head th {
+  border: 1px solid #ccc;
+}
+
+
+.extra_head {
+  border-top: 5px solid #009d4f;
+}
+
 .flag_icon {
   width: 24px;
   height: 24px;
@@ -133,27 +162,24 @@ body > .header {
 .match-event-box {
   position: relative;
   background-color: white;
+  border: 1px solid #999;
   margin: 6px;
   min-height: 100px;
+
+}
+.match-event-box > .badge {
+  position: absolute;
+  top: -6px;
+  left: -10px;
+  /*right: -10px;*/
+  font-size: 12px;
+  font-weight: 400;
 }
 
-.match-event-box .matchNumber {
-  float: left;
-  height: 100px;
-  line-height: 100px;
-  background-color: #333;
-  color: white;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  margin-right: 5px;
-  position: relative;
-}
 
 .match-event-box .matchCompetitors {
   float: left;
   position: relative;
-  padding-top: 3px;
   text-align: center;
   vertical-align: middle;
 
@@ -186,10 +212,10 @@ body > .header {
 .match-event-box .matchDetails {
   float: left;
   position: relative;
-  padding-top: 3px
+  padding-top: 3px;
 }
 
-.panel-collapse {
+#umpires_selection {
   border: 1px solid #3d9970 ;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -615,6 +641,9 @@ li.active span.round-tabs.five{
 
   #min_divider {
     display: none;
+  }
+  .match-event-box {
+    padding-bottom: 10px;
   } 
 }
 
@@ -1097,6 +1126,19 @@ body > .header .logo .icon {
     top: 0px;
   }
 }
+
+@media screen and (max-width: 450px) {
+
+  .match-event-box .matchCompetitors h4 {
+    font-size: 14px;
+  }
+
+  .match-event-box .matchCompetitors h5 {
+    font-size: 12px;
+
+  }
+}
+
 /*
     Component: Sidebar
 --------------------------

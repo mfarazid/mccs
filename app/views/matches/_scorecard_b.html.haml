@@ -1,0 +1,66 @@
+.panel.panel-default
+  .panel-heading
+    %h4.panel-title
+      %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#teamB"}
+        = @match.team_b.name
+        Innings
+  #teamB.panel-collapse.collapse
+    .panel-body
+      %h5 Batting
+      .table-responsive
+        %table.table.table-striped.table-bordered
+          %thead.scorecard_batting_head
+            %tr
+              %th Batting
+              %th Out Desc
+              %th R
+              %th B
+              %th 4s
+              %th 6s
+              %th SR
+          %tbody
+            - BatsmanInInning.where(:match_id => @match.id, :team_id => @match.team_b_id ).each do |t|
+              %tr
+                %td= t.player.name
+                %td= t.out_def(t.out_id)
+                %td= t.runs
+                %td= t.balls
+                %td= t.fours
+                %td= t.sixes
+                %td= number_with_precision(t.strike_rate, precision: 2)
+          %tbody
+            %tr
+              %td Extras
+              %td
+              - InningExtra.where(:match_id => @match.id, :team_id => @match.team_b_id ).each do |i|
+                %td{:colspan => "5"}
+                  = i.total_extras.round
+                  (b - #{i.bye}, w - #{i.wide}, nb - #{i.no_ball}, lb - #{i.leg_bye})
+            %tr
+              %td
+                %b Total
+              %td
+              %td{:colspan => "5"}
+                %b
+                  = number_with_precision(@match.total_runs(@match.team_b_id), precision: 0)
+                  (#{@match.total_overs(@match.team_a_id)} - overs, #{@match.total_outs(@match.team_b_id)} - wickets)
+      .table-responsive
+        %h5 Bowling
+        %table.table.table-striped.table-bordered
+          %thead.scorecard_bowling_head
+            %tr
+              %th Bowler
+              %th Overs
+              %th Maiden
+              %th Runs
+              %th Wickets
+              %th E/R
+          %tbody
+            - BowlerInInning.where(:match_id => @match.id, :team_id => @match.team_a_id ).each do |t|
+              %tr
+                %td= t.player.name
+                %td= t.overs
+                %td= t.maiden_overs
+                %td= t.runs
+                %td= t.wickets
+                %td= number_with_precision(t.bowler_econ, precision: 2)

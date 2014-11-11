@@ -1,0 +1,131 @@
+.wrapper.row-offcanvas.row-offcanvas-left
+  / Left side column. contains the logo and sidebar
+  %aside.left-side.sidebar-offcanvas
+    = render 'sidenavbar'
+  / Right side column. Contains the navbar and content of the page
+  %aside.right-side
+    %header.row
+      %section.jumbotron.top-header
+        %figure
+          = image_tag 'logo.png', :alt => "logo", :class => "header_image_responsive" 
+    %section.content-header     
+      %h1 Home
+      %ol.breadcrumb
+        %li
+          %a{:href => root_path}
+            %i.fa.fa-home 
+            Home   
+        %li.active
+          %a{:href => matches_path}
+            %i.fa.fa-maxcdn
+            Matches
+    / /.content-header
+    %section.content   
+      .club_info_box
+        %h3 Match Details
+        %h4
+          = @match.team_a.name
+          = image_tag "teams/#{@match.team_a.team_flag.file_name}", :class => 'flag_small'
+          %span.badge vs
+          = image_tag "teams/#{@match.team_b.team_flag.file_name}", :class => 'flag_small'
+          = @match.team_b.name
+
+      .box.box-default
+        .box-header
+          %h3.box-title 
+            = @match.team_b.name
+            Inning
+        .box-body
+          :css
+            select {
+              width: 100px !important;
+            }
+            .form-group {
+              margin-bottom: 0px !important;
+            }
+
+          = bv_form_for @match do |f|
+            .row
+              .col-lg-12
+                %h4.great Batting
+                %section.table-responsive.count
+                  %table.table.table-bordered
+                    %thead.batting_head
+                      %tr
+                        %th.text-center No
+                        %th Player
+                        %th{:colspan => "3"} Out Description (out, fielder, bowler)
+                        %th Runs
+                        %th Balls
+                        %th 4s
+                        %th 6s
+                    %tbody.fixed_width
+                      - bt = 1
+                      - 11.times do
+                        = f.fields_for :batsman_in_innings, @match.batsman_in_innings.build do |batting|
+                          %tr
+                            = batting.hidden_field(:team_id, :value => "#{@match.team_b_id}")
+                            %td.text-center
+                              %span.badge= bt
+                            %td= batting.collection_select :player_id,  Player.where(:team_id => @match.team_b_id ),:id, :name, :prompt => "select", hide_label: true
+                            %td= batting.collection_select :out_id, Out.all ,:id, :name, :prompt => "select", hide_label: true
+                            %td= batting.collection_select :out_fielder_id, Player.where(:team_id => @match.team_a_id ),:id, :name, :prompt => "select", hide_label: true
+                            %td= batting.collection_select :out_bowler_id, Player.where(:team_id => @match.team_a_id ),:id, :name, :prompt => "select", hide_label: true
+                            %td= batting.text_field :runs, hide_label: true, :placeholder => "000", :style => 'width: 50px'
+                            %td= batting.text_field :balls, hide_label: true, :placeholder => "000", :style => 'width: 50px'
+                            %td= batting.text_field :fours, hide_label: true, :placeholder => "00", :style => 'width: 42px'
+                            %td= batting.text_field :sixes, hide_label: true, :placeholder => "00", :style => 'width: 42px'
+                          - bt = bt + 1
+            %hr/
+            .row
+              .col-lg-8
+                %h4.great Bowling
+                %section.table-responsive.count
+                  %table.table.table-bordered
+                    %thead.bowling_head
+                      %tr
+                        %th.text-center No
+                        %th Name
+                        %th overs
+                        %th maiden overs
+                        %th runs
+                        %th wickets
+                    %tbody.fixed_width
+                      - bl = 1
+                      - 7.times do
+                        = f.fields_for :bowler_in_innings, @match.bowler_in_innings.build do |bowling|
+                          %tr
+                            = bowling.hidden_field(:team_id, :value => "#{@match.team_a_id}")
+                            %td.text-center
+                              %span.badge= bl
+                            %td= bowling.collection_select :player_id, Player.where(:team_id => @match.team_a_id ), :id, :name, :prompt => "select", hide_label: true
+                            %td= bowling.text_field :overs, hide_label: true,:placeholder => "00", :style => 'width: 50px'
+                            %td= bowling.text_field :maiden_overs, hide_label: true,:placeholder => "0", :style => 'width: 42px'
+                            %td= bowling.text_field :runs,  hide_label: true,:placeholder => "000", :style => 'width: 50px'
+                            %td= bowling.text_field :wickets, hide_label: true,:placeholder => "0", :style => 'width: 42px'
+                          - bl = bl + 1
+              .col-lg-4
+                %h4.great Extras
+                .table-responsive
+                  %table.table.table-bordered
+                    %thead.extra_head
+                      %tr
+                        %th Bye
+                        %th Leg Bye
+                        %th Wide
+                        %th No Ball
+                    %tbody.fixed_width
+                      = f.fields_for :inning_extras, @match.inning_extras.build do |extras|
+                        %tr
+                          = extras.hidden_field(:team_id, :value => "#{@match.team_b_id}")
+                          %td= extras.text_field :bye, hide_label: true, :style => 'width: 42px', :placeholder => "00"
+                          %td= extras.text_field :leg_bye, hide_label: true, :style => 'width: 42px', :placeholder => "00"
+                          %td= extras.text_field :wide, hide_label: true, :style => 'width: 42px', :placeholder => "00"
+                          %td= extras.text_field :no_ball, hide_label: true, :style => 'width: 42px', :placeholder => "00"
+          
+            %hr/
+            .row
+              .col-lg-12
+                %span
+                  = f.submit 'Submit', :class => 'btn btn-primary pull-right', id: 'scorecard'
+                  = link_to '<i class="fa fa-arrow-circle-left"></i> Cancel'.html_safe, match_path(@match.id), :class => 'btn btn-default'

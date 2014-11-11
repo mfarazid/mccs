@@ -1,6 +1,6 @@
 class MatchesController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
-  before_action :set_match, only: [:new_match, :show, :destroy]
+  before_action :set_match, only: [:new_match, :team_a_inning, :team_b_inning, :edit, :update, :show, :destroy]
 
   # GET /matches
   # GET /matches.json
@@ -30,6 +30,14 @@ class MatchesController < ApplicationController
   def edit
   end
 
+  def team_a_inning
+
+  end
+
+  def team_b_inning
+
+  end
+  
   # POST /matches
   # POST /matches.json
   def create
@@ -57,13 +65,21 @@ class MatchesController < ApplicationController
   # PATCH/PUT /matches/1
   # PATCH/PUT /matches/1.json
   def update
+    binding.pry
     respond_to do |format|
       if @match.update(match_params)
         format.html { redirect_to @match, notice: 'Match was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
-        format.json { render json: @match.errors, status: :unprocessable_entity }
+
+        team = params[:match][:inning_extras_attributes]["0"][:team_id]     
+        if @match.team_a_id = team
+          format.html { render action: 'team_a_inning' }
+          format.json { render json: @match.errors, status: :unprocessable_entity }
+        elsif  @match.team_b_id = team 
+          format.html { render action: 'team_b_inning' }
+          format.json { render json: @match.errors, status: :unprocessable_entity }
+        end
       end
     end
   end
@@ -73,8 +89,15 @@ class MatchesController < ApplicationController
   def destroy
     @match.destroy
     respond_to do |format|
-      format.html { redirect_to matches_url }
-      format.json { head :no_content }
+      if params[:show].present?
+        @series = Series.find(@match.series_id) 
+        toast('success','Match was successfully removed!')
+        format.html { redirect_to @series }
+        format.json { render action: 'show', status: :created, location: @series }
+      else    
+        format.html { redirect_to matches_url }
+        format.json { head :no_content }
+      end
     end
   end
 
@@ -86,6 +109,9 @@ class MatchesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def match_params
-      params.require(:match).permit(:team_a_id, :team_b_id, :series_id, :competition_type_id, :venue_id, :team_won_toss, :team_choose_to, :start_date, :end_date, :competition_overs_limit_id, :user_id)
+      params.require(:match).permit(:team_a_id, :team_b_id, :series_id, :competition_type_id, :venue_id, :team_won_toss, :team_choose_to, :start_date, :end_date, :competition_overs_limit_id, :user_id,
+        inning_extras_attributes: [:match_id, :team_id, :bye, :leg_bye, :wide, :no_ball, :id, :_destroy],
+        batsman_in_innings_attributes: [:match_id, :team_id, :player_id, :runs, :balls, :fours, :sixes, :minutes, :out_id, :out_bowler_id, :out_fielder_id, :id, :_destroy],
+        bowler_in_innings_attributes: [:player_id, :match_id, :team_id, :overs, :maiden_overs, :runs, :wickets, :id, :_destroy])
     end
 end

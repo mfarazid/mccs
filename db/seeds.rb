@@ -91,3 +91,17 @@ end
 ].each do |compt_overs_limit|
   role = CompetitionOversLimit.find_or_create_by_overs(:overs => compt_overs_limit)
 end
+##################################
+# Outs
+##################################
+[
+  "Caught",
+  "Bowled",
+  "Leg before wicket (lbw)", 
+  "Run out",
+  "Stumped",
+  "Hit wicket",
+  "Not out"
+].each do |out|
+  ot = Out.find_or_create_by_name(:name => out)
+end

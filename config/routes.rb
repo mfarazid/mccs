@@ -6,6 +6,9 @@ Mccs::Application.routes.draw do
 
   resources :players
   resources :matches
+    get 'matches/:id/team_a_inning' => 'matches#team_a_inning', :as => :add_team_a_inning
+    get 'matches/:id/team_b_inning' => 'matches#team_b_inning', :as => :add_team_b_inning
+  resources :innings, only: [:new, :create]
   resources :venues
   resources :umpires
   resources :series

@@ -9,12 +9,11 @@
         %figure
           = image_tag 'logo.png', :alt => "logo", :class => "header_image_responsive" 
     %section.content-header     
-      %h1 Home
+      %h1 Manage Series
       %ol.breadcrumb
         %li
           %a{:href => root_path}
-            %i.fa.fa-home
-            Home    
+            %i.fa.fa-home    
         %li.active
           %a{:href => series_index_path}
             %i.fa.fa-trophy
@@ -58,16 +57,21 @@
         .box-body  
           - @series.matches.each_with_index do |m, index|
             .row.match-event-box 
-              .col-md-1.matchNumber= index+1            
-              .col-md-5.matchCompetitors 
+              %span.badge.bg-teal= index+1            
+              .col-md-6.matchCompetitors 
                 %h4 #{link_to "#{m.team_a.name}", team_path(m.team_a.id), :title => "View team" }
                 .teamLogos #{image_tag "teams/#{m.team_a.team_flag.file_name}", :class => 'flag_small'}
                 %h5 vs
                 .teamLogos #{image_tag "teams/#{m.team_b.team_flag.file_name}", :class => 'flag_small'}                
                 %h4 #{link_to "#{m.team_b.name}", team_path(m.team_b.id), :title => "View team" }
-              .col-md-5.matchDetails
-                %h4 #{m.team_won_toss} won the toss and decided to #{m.team_choose_to} first!             
-                %span= link_to 'Scorecard'.html_safe, series_index_path, :class => "btn btn-default", :title => "Back to series"
-                %span= link_to '<i class="fa fa-fw fa-arrow-circle-left"></i>'.html_safe, series_index_path, :class => "btn btn-default", :title => "Back to series"
+              .col-md-6.matchDetails
+                %h5 #{m.team_won_toss} won the toss and decided to #{m.team_choose_to} first!             
+                %h5 Please complete scorecard entries for match result.
+                %span= link_to '<i class="fa fa-list fa-fw"></i> Scorecard'.html_safe, match_path(m), :class => "btn btn-default", :title => "Back to series"
+                %span= link_to '<i class="fa fa-trash-o"></i>'.html_safe, match_path(m, "show"=>"series_show"), :method => :delete, :data => { :confirm => 'By deleting this match will also delete all of the match details including scorecard and players stats. Are you sure you want to delete?' }, :class => 'btn btn-danger', :title => "Remove match"
+                %br
       %br 
       = link_to '<i class="fa fa-fw fa-arrow-circle-left"></i>'.html_safe, series_index_path, :class => "btn btn-default", :title => "Back to series"
+      %br
+      %br
+      %br      

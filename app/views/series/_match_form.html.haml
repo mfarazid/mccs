@@ -48,7 +48,7 @@
         %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#umpires_selection", :class => 'btn btn-block btn-success btn-flat'}
           Select two Umpires:
         #umpires_selection.panel-collapse.collapse
-          = f.collection_check_boxes :umpire_ids, Umpire.all, :id, :name, hide_label: true      
+          = f.collection_check_boxes :umpire_ids, Umpire.all, :id, :name, hide_label: true, :class => 'icheck-me'      
 
   .row
     .col-sm-12

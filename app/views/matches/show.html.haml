@@ -1,39 +1,47 @@
-%p#notice= notice
+.wrapper.row-offcanvas.row-offcanvas-left
+  / Left side column. contains the logo and sidebar
+  %aside.left-side.sidebar-offcanvas
+    = render 'sidenavbar'
+  / Right side column. Contains the navbar and content of the page
+  %aside.right-side
+    %header.row
+      %section.jumbotron.top-header
+        %figure
+          = image_tag 'logo.png', :alt => "logo", :class => "header_image_responsive" 
+    %section.content-header     
+      %h1 Home
+      %ol.breadcrumb
+        %li
+          %a{:href => root_path}
+            %i.fa.fa-home 
+            Home   
+        %li.active
+          %a{:href => matches_path}
+            %i.fa.fa-maxcdn
+            Matches
+    / /.content-header
+    %section.content
+      
+      .club_info_box
+        %h3 Match Details
+        %h4
+          = @match.team_a.name
+          = image_tag "teams/#{@match.team_a.team_flag.file_name}", :class => 'flag_small'
+          %span.badge vs
+          = image_tag "teams/#{@match.team_b.team_flag.file_name}", :class => 'flag_small'
+          = @match.team_b.name
 
-%p
-  %b Team a:
-  = @match.team_a_id
-%p
-  %b Team b:
-  = @match.team_b_id
-%p
-  %b Series:
-  = @match.series_id
-%p
-  %b Competition type:
-  = @match.competition_type_id
-%p
-  %b Venue:
-  = @match.venue_id
-%p
-  %b Team won toss:
-  = @match.team_won_toss
-%p
-  %b Team choose to:
-  = @match.team_choose_to
-%p
-  %b Start date time:
-  = @match.start_date
-%p
-  %b End date time:
-  = @match.end_date
-%p
-  %b Competition overs limit:
-  = @match.competition_overs_limit_id
-%p
-  %b User:
-  = @match.user_id
+      .box.box-default
+        .box-header
+          %h3.box-title Scorecard
+        .box-body
+          - if Inning(@match.id, @match.team_a_id) && Inning(@match.id, @match.team_b_id)
+            %h4.box-title Match Summer
+            %p #{@match.team_a.name} #{Summary(@match.id, @match.team_a_id)}
+            %p #{@match.team_b.name} #{Summary(@match.id, @match.team_b_id)}
 
-= link_to 'Edit', edit_match_path(@match)
-\|
-= link_to 'Back', matches_path
+          #accordion.panel-group
+            = link_to "Enter Innings Detail for #{@match.team_a.name}", add_team_a_inning_path(@match.id, :team => @match.team_a_id), :class => 'btn btn-primary' if !Inning(@match.id, @match.team_a_id)
+            = link_to "Enter Innings Detail for #{@match.team_b.name}", add_team_b_inning_path(@match.id, :team => @match.team_b_id), :class => 'btn btn-primary' if !Inning(@match.id, @match.team_b_id)
+            = render "scorecard_a" if Inning(@match.id, @match.team_a_id)
+            = render "scorecard_b" if Inning(@match.id, @match.team_b_id)
