@@ -9,25 +9,23 @@
         %figure
           = image_tag 'logo.png', :alt => "logo", :class => "header_image_responsive" 
     %section.content-header     
-      %h1 Home
+      %h1 Scorecard Editing
       %ol.breadcrumb
         %li
           %a{:href => root_path}
-            %i.fa.fa-home 
-            Home   
+            %i.fa.fa-home  
         %li.active
           %a{:href => matches_path}
             %i.fa.fa-maxcdn
             Matches
     / /.content-header
     %section.content   
-      .club_info_box
-        %h3 Match Details
+      .match_info_box
         %h4
           = @match.team_a.name
-          = image_tag "teams/#{@match.team_a.team_flag.file_name}", :class => 'flag_small'
+          = image_tag "teams/#{@match.team_a.team_flag.file_name}", :class => 'flag_small img-thumbnail-circle'
           %span.badge vs
-          = image_tag "teams/#{@match.team_b.team_flag.file_name}", :class => 'flag_small'
+          = image_tag "teams/#{@match.team_b.team_flag.file_name}", :class => 'flag_small img-thumbnail-circle'
           = @match.team_b.name
 
       .box.box-default
@@ -76,7 +74,7 @@
                             %td= batting.text_field :fours, hide_label: true, :placeholder => "00", :style => 'width: 42px'
                             %td= batting.text_field :sixes, hide_label: true, :placeholder => "00", :style => 'width: 42px'
                           - bt = bt + 1
-            %hr/
+            %hr
             .row
               .col-lg-8
                 %h4.great Bowling
@@ -123,9 +121,9 @@
                           %td= extras.text_field :wide, hide_label: true, :style => 'width: 42px', :placeholder => "00"
                           %td= extras.text_field :no_ball, hide_label: true, :style => 'width: 42px', :placeholder => "00"
           
-            %hr/
+            %hr
             .row
               .col-lg-12
                 %span
                   = f.submit 'Submit', :class => 'btn btn-primary pull-right', id: 'scorecard'
-                  = link_to '<i class="fa fa-arrow-circle-left"></i> Cancel'.html_safe, match_path(@match.id), :class => 'btn btn-default'
+                  = link_to '<i class="fa fa-arrow-circle-left"></i> Cancel'.html_safe, match_path(@match.id), :class => 'btn btn-default', :title => "Back to Scorecard"

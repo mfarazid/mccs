@@ -9,9 +9,7 @@ module MatchesHelper
   end
 
   def Summary match, team
-    match = Match.find(match)
-    number_with_precision(total_runs(match.id, team), precision: 0) + "/#{total_outs(match.id, team)}" +
-     " #{total_overs(match.id, team)} overs"
+    number_with_precision(total_runs(match, team), precision: 0) + "/#{total_outs(match, team)}"
   end
 
   def total_runs match, team
@@ -28,4 +26,34 @@ module MatchesHelper
     BowlerInInning.where(:match_id => match, :team_id => team).sum("overs")
   end
 
+  def run_rate match, teamA, teamB
+    total_runs(match, teamA).to_f/total_overs(match, teamB).to_f
+  end
+
+  def Results match, teamA, teamB
+    @match = Match.find(match)
+    if @match.team_won_toss == @match.team_a.name && @match.team_choose_to == "Batting"
+      if total_runs(@match.id, teamA) > total_runs(@match.id, teamB)
+        runs_won_by = total_runs(@match.id, teamA) - total_runs(@match.id, teamB)
+        result = "#{@match.team_a.name} won by #{number_with_precision(runs_won_by, precision: 0)} runs"
+      end
+    else
+      if total_runs(@match.id, teamA) > total_runs(@match.id, teamB)
+        wickets_won_by = 10 - total_outs(@match.id, teamA)
+        result = "#{@match.team_a.name} won by #{wickets_won_by} wickets"
+      end      
+    end  
+    if @match.team_won_toss == @match.team_b.name && @match.team_choose_to == "Batting"
+      if total_runs(@match.id, teamB) > total_runs(@match.id, teamA)
+        runs_won_by = total_runs(@match.id, teamB) - total_runs(@match.id, teamA)
+        result = "#{@match.team_b.name} won by #{number_with_precision(runs_won_by, precision: 0)} runs"
+      end
+    else
+      if total_runs(@match.id, teamB) > total_runs(@match.id, teamA)
+        wickets_won_by = 10 - total_outs(@match.id, teamB)
+        result = "#{@match.team_b.name} won by #{wickets_won_by} wickets"
+      end  
+    end
+
+  end  
 end

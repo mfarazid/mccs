@@ -52,19 +52,26 @@
                     .modal-body
                       = render 'match_form', modal: true, series: @series.id
                     .modal-footer
-                      %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close        
+                      %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close 
+            - else 
+              = link_to 'New Match', new_user_session_path, :class => 'btn btn-success btn-flat pull-right'
+       
           %h3.box-title Series Matches     
         .box-body  
           - @series.matches.each_with_index do |m, index|
-            .row.match-event-box 
-              %span.badge.bg-teal= index+1            
-              .col-md-6.matchCompetitors 
+            .row.match-event-box          
+              .col-md-1.match-type-box 
+                %h6 
+                  %span.badge.bg-teal #{index+1}
+                  %hr
+                  %b #{m.competition_type.name}                
+              .col-md-7.matchCompetitors 
                 %h4 #{link_to "#{m.team_a.name}", team_path(m.team_a.id), :title => "View team" }
-                .teamLogos #{image_tag "teams/#{m.team_a.team_flag.file_name}", :class => 'flag_small'}
+                .teamLogos #{image_tag "teams/#{m.team_a.team_flag.file_name}", :class => 'flag_big_icon img-thumbnail-circle'}
                 %h5 vs
-                .teamLogos #{image_tag "teams/#{m.team_b.team_flag.file_name}", :class => 'flag_small'}                
+                .teamLogos #{image_tag "teams/#{m.team_b.team_flag.file_name}", :class => 'flag_big_icon img-thumbnail-circle'}                
                 %h4 #{link_to "#{m.team_b.name}", team_path(m.team_b.id), :title => "View team" }
-              .col-md-6.matchDetails
+              .col-md-4.matchDetails
                 %h5 #{m.team_won_toss} won the toss and decided to #{m.team_choose_to} first!             
                 %h5 Please complete scorecard entries for match result.
                 %span= link_to '<i class="fa fa-list fa-fw"></i> Scorecard'.html_safe, match_path(m), :class => "btn btn-default", :title => "Back to series"

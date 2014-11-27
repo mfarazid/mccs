@@ -39,9 +39,10 @@
           validationSelect();
         });
 
-        $('#player_player_type_id, #player_player_batting_style, #player_player_bowling_style_id ').change(function() {
+        $('#player_player_type_id, #player_player_batting_style, #player_player_bowling_style_id, #player_date_of_birth').change(function() {
           validationSelect();
           $('#new_player').bootstrapValidator('revalidateField', 'player[name]');
+          $('#new_player').bootstrapValidator('revalidateField', 'player[date_of_birth]');
         });
 
         function validationSelect() {

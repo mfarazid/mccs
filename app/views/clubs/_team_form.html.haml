@@ -6,7 +6,7 @@
       %p.center
         = image_tag 'teams/default-team.png', :class => 'flag_large', :id =>"team_flag" 
     .col-sm-6  
-      = f.text_field :name, label: "Team Name", :maxlength => 30, required: true
+      = f.text_field :name, label: "Team Name", :maxlength => 15, required: true
       = f.text_field :city, label: "Team City", :maxlength => 30, required: true
       = f.collection_select :team_flag_id, TeamFlag.all, :id, :name, required: true, prompt: true
       = f.hidden_field :club_id, value: club

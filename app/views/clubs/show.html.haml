@@ -21,7 +21,7 @@
     / /.content-header
     %section.content
       %section.club_info_box
-        %figure= image_tag "clubs/#{@club.club_flag.file_name}", :class => 'flag_small'
+        %figure= image_tag "clubs/#{@club.club_flag.file_name}", :class => 'flag_small img-thumbnail-square'
         %h4= @club.name
         %p= @club.county
       %section.box.box-default
@@ -29,16 +29,18 @@
           .pull-right.box-tools
             - if current_user
               = link_to 'New Team', '#new_team_modal', 'data-toggle' => 'modal', :class => 'btn btn-success btn-flat pull-right'
-              #new_team_modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
-                .modal-dialog
-                  .modal-content
-                    .modal-header
-                      %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
-                      %h4#myModalLabel.modal-title Create new Team
-                    .modal-body
-                      = render 'team_form', modal: true, club: @club.id
-                    .modal-footer
-                      %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close                      
+            - else 
+              = link_to 'New Team', new_user_session_path, :class => 'btn btn-success btn-flat pull-right'
+            #new_team_modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+                    %h4#myModalLabel.modal-title Create new Team
+                  .modal-body
+                    = render 'team_form', modal: true, club: @club.id
+                  .modal-footer
+                    %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close                      
           %h3.box-title Teams     
         .box-body
           - if @club.teams.exists?

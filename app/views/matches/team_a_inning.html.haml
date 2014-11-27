@@ -9,25 +9,23 @@
         %figure
           = image_tag 'logo.png', :alt => "logo", :class => "header_image_responsive" 
     %section.content-header     
-      %h1 Home
+      %h1 Scorecard Editing
       %ol.breadcrumb
         %li
           %a{:href => root_path}
-            %i.fa.fa-home 
-            Home   
+            %i.fa.fa-home  
         %li.active
           %a{:href => matches_path}
             %i.fa.fa-maxcdn
             Matches
     / /.content-header
     %section.content   
-      .club_info_box
-        %h3 Match Details
+      .match_info_box
         %h4
           = @match.team_a.name
-          = image_tag "teams/#{@match.team_a.team_flag.file_name}", :class => 'flag_small'
+          = image_tag "teams/#{@match.team_a.team_flag.file_name}", :class => 'flag_small img-thumbnail-circle'
           %span.badge vs
-          = image_tag "teams/#{@match.team_b.team_flag.file_name}", :class => 'flag_small'
+          = image_tag "teams/#{@match.team_b.team_flag.file_name}", :class => 'flag_small img-thumbnail-circle'
           = @match.team_b.name
 
       .box.box-default
@@ -61,7 +59,7 @@
                         %th 6s
                     %tbody.fixed_width
                       - bt = 1
-                      - 11.times
+                      - 11.times do
                         = f.fields_for :batsman_in_innings, @match.batsman_in_innings.build do |batting|
                           %tr
                             = batting.hidden_field(:team_id, :value => "#{@match.team_a_id}")
@@ -75,8 +73,8 @@
                             %td= batting.text_field :balls, hide_label: true, :placeholder => "000", :style => 'width: 50px'
                             %td= batting.text_field :fours, hide_label: true, :placeholder => "00", :style => 'width: 42px'
                             %td= batting.text_field :sixes, hide_label: true, :placeholder => "00", :style => 'width: 42px'
-                        - bt = bt + 1
-            %hr/
+                          - bt = bt + 1
+            %hr
             .row
               .col-lg-8
                 %h4.great Bowling
@@ -92,7 +90,7 @@
                         %th wickets
                     %tbody.fixed_width
                       - bl = 1
-                      - 7.times
+                      - 7.times do
                         = f.fields_for :bowler_in_innings, @match.bowler_in_innings.build do |bowling|
                           %tr
                             = bowling.hidden_field(:team_id, :value => "#{@match.team_b_id}")
@@ -103,7 +101,7 @@
                             %td= bowling.text_field :maiden_overs, hide_label: true,:placeholder => "0", :style => 'width: 42px'
                             %td= bowling.text_field :runs,  hide_label: true,:placeholder => "000", :style => 'width: 50px'
                             %td= bowling.text_field :wickets, hide_label: true,:placeholder => "0", :style => 'width: 42px'
-                        - bl = bl + 1
+                          - bl = bl + 1
               .col-lg-4
                 %h4.great Extras
                 .table-responsive
@@ -128,4 +126,4 @@
               .col-lg-12
                 %span
                   = f.submit 'Submit', :class => 'btn btn-primary pull-right', id: 'scorecard'
-                  = link_to '<i class="fa fa-arrow-circle-left"></i> Cancel'.html_safe, match_path(@match.id), :class => 'btn btn-default'
+                  = link_to '<i class="fa fa-arrow-circle-left"></i> Cancel'.html_safe, match_path(@match.id), :class => 'btn btn-default', :title => "Back to Scorecard"

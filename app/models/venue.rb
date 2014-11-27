@@ -10,4 +10,7 @@ class Venue < ActiveRecord::Base
   validates :county_or_state, presence: true, length: {in: 3..30}
   validates :country, presence: true, length: {in: 3..30}
 
+  def details
+    self.name + " (" + self.city + ", " + self.country + ")"
+  end
 end

@@ -396,7 +396,7 @@ $(document).ready(function() {
         }
     });   
           
-  }).end()
+  });
 
   $("#match_team_b_id").change(function(e) {
     var teamB = $("#match_team_b_id :selected").text();
@@ -429,7 +429,52 @@ $(document).ready(function() {
         }
     });   
           
-  }).end()
+  });
+  
+  $("#match_competition_type_id").change(function(){          
+    var value = $(this).find('option:selected').text();
+    
+    switch (value) {
+        case "One Day":
+            $('#match_competition_overs_limit_id option').filter(function () { 
+              if ($(this).html() == "50") {
+                $("#match_competition_overs_limit_id option").removeAttr('disabled');
+                $(this).prop('selected', true);
+              } 
+            });            
+            break;
+        case "T20":
+            $('#match_competition_overs_limit_id option').filter(function () { 
+              if ($(this).html() == "20") {
+                $(this).prop('selected', true);
+              } else {
+                $(this).attr('disabled','disabled');
+              }
+            });            
+            break;
+        case "Test 3 Days":
+            $('#match_competition_overs_limit_id option').filter(function () { 
+              if ($(this).html() == "Unlimited") {
+                $(this).prop('selected', true);
+              } else {
+                $(this).attr('disabled','disabled');
+              }
+            });            
+            break;
+        case "Test 5 Days":
+            $('#match_competition_overs_limit_id option').filter(function () { 
+              if ($(this).html() == "Unlimited") {
+                $(this).prop('selected', true);
+              } else {
+                $(this).attr('disabled','disabled');
+              }
+            });            
+            break;
+        default:
+            $("#match_competition_overs_limit_id option").removeAttr('disabled');
+    }
+    
+  });
   // $('input[type="checkbox"]').each(function() {
   //   $(this).attr('data-skin',"square");
   //   $(this).attr('data-color',"green");

@@ -9,19 +9,18 @@
         %figure
           = image_tag 'logo.png', :alt => "logo", :class => "header_image_responsive" 
     %section.content-header     
-      %h1 Home
+      %h1 Manage Matches
       %ol.breadcrumb
         %li
           %a{:href => root_path}
-            %i.fa.fa-home 
-            Home   
+            %i.fa.fa-home  
         %li.active
           %a{:href => matches_path}
             %i.fa.fa-maxcdn
             Matches
     / /.content-header
     %section.content
-      .box.box-default
+      .box.box-solid.box-success
         .box-header
           %h3.box-title Matches      
         .box-body  
@@ -41,7 +40,10 @@
               %tbody    
                 - @matches.each do |match|
                   %tr
-                    %td #{match.team_a.name} vs #{match.team_b.name}
+                    %td 
+                      %span.label.label-success #{match.team_a.name} 
+                      %span.badge.bg-navy vs 
+                      %span.label.label-success #{match.team_b.name}
                     %td= match.competition_type.name
                     %td= match.series.name
                     %td= match.venue.name
@@ -50,7 +52,7 @@
                     %td= match.start_date
                     %td= match.competition_overs_limit.overs
                     %td
-                      = link_to 'Show', match
-                      = link_to 'Destroy', match, :method => :delete, :data => { :confirm => 'Are you sure?' }
+                      = link_to '<i class="fa fa-eye"></i>'.html_safe, match, :title => "View Scorecard", :class => "btn btn-sm btn-default"
+                      = link_to '<i class="fa fa-trash-o"></i>'.html_safe, match, :method => :delete, :data => { :confirm => 'By deleting this match will also delete all of the match details including scorecard and players stats. Are you sure you want to delete?' }, :title => "Remove Match", :class => 'btn btn-sm btn-danger'
 
       %br 

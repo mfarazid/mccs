@@ -114,7 +114,6 @@ body > .header {
   border: 1px solid #ccc;
 }
 
-
 .extra_head {
   border-top: 5px solid #009d4f;
 }
@@ -123,14 +122,46 @@ body > .header {
   width: 24px;
   height: 24px;
 }
+
 .flag_big_icon {
   width: 60px;
   height: 60px;
 }
+
+.img-thumbnail-circle {
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+  padding: 4px;
+  line-height: 1.42857143;
+  background-color: #fff;
+  border: 3px solid #ddd;
+  border-radius: 50%;
+  -webkit-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;  
+}
+
+.img-thumbnail-square {
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+  padding: 4px;
+  line-height: 1.42857143;
+  background-color: #fff;
+  border: 3px solid #ddd;
+  border-radius: 4px;
+  -webkit-transition: all .2s ease-in-out;
+  -o-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;  
+}
+
 .flag_small {
   width: 100px;
   height: 100px;
+
 }
+
 .font_16px {
   font-size: 16px;
   text-align: center;
@@ -159,6 +190,18 @@ body > .header {
 #umpires_selection {
   padding-left: 10px;
 }
+.match-event-box .match-type-box {
+  float: left;
+  height: 100px;
+  line-height: 100px;
+  background-color: #333;
+  color: white;
+  width: 60px;
+  text-align: center;
+  font-size: 13px;
+  margin-right: 5px;
+  position: relative;
+}
 .match-event-box {
   position: relative;
   background-color: white;
@@ -175,7 +218,6 @@ body > .header {
   font-size: 12px;
   font-weight: 400;
 }
-
 
 .match-event-box .matchCompetitors {
   float: left;
@@ -197,6 +239,7 @@ body > .header {
 
 .match-event-box .matchCompetitors .teamLogos {
   float: left;
+  margin: 20px 6px 6px 6px;
 }
 
 .match-event-box .matchCompetitors h5 {
@@ -213,6 +256,8 @@ body > .header {
   float: left;
   position: relative;
   padding-top: 3px;
+  text-align: right;
+  vertical-align: middle;  
 }
 
 #umpires_selection {
@@ -236,16 +281,57 @@ body > .header {
   font-size: 25px;
   /*line-height: 100px;*/
   padding: 20px;
-
 }
+
 .club_info_box {
-  background-color: #d3cec1;
   text-align: center;
   vertical-align: middle;
   padding: 20px;
   color: #4e4838;
   border: 1px solid #666;
   margin-bottom: 10px;
+  background: rgba(242,233,236,1);
+  background: -moz-linear-gradient(top, rgba(242,233,236,1) 0%, rgba(201,149,162,1) 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(242,233,236,1)), color-stop(100%, rgba(201,149,162,1)));
+  background: -webkit-linear-gradient(top, rgba(242,233,236,1) 0%, rgba(201,149,162,1) 100%);
+  background: -o-linear-gradient(top, rgba(242,233,236,1) 0%, rgba(201,149,162,1) 100%);
+  background: -ms-linear-gradient(top, rgba(242,233,236,1) 0%, rgba(201,149,162,1) 100%);
+  background: linear-gradient(to bottom, rgba(242,233,236,1) 0%, rgba(201,149,162,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2e9ec', endColorstr='#c995a2', GradientType=0 );
+}
+
+.team_info_box {
+  text-align: center;
+  vertical-align: middle;
+  padding: 20px;
+  color: #4e4838;
+  border: 1px solid #666;
+  margin-bottom: 10px;
+  background: rgba(245,245,245,1);
+  background: -moz-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(246,246,246,1) 47%, rgba(222,222,222,1) 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(245,245,245,1)), color-stop(47%, rgba(246,246,246,1)), color-stop(100%, rgba(222,222,222,1)));
+  background: -webkit-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(246,246,246,1) 47%, rgba(222,222,222,1) 100%);
+  background: -o-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(246,246,246,1) 47%, rgba(222,222,222,1) 100%);
+  background: -ms-linear-gradient(top, rgba(245,245,245,1) 0%, rgba(246,246,246,1) 47%, rgba(222,222,222,1) 100%);
+  background: linear-gradient(to bottom, rgba(245,245,245,1) 0%, rgba(246,246,246,1) 47%, rgba(222,222,222,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f5f5f5', endColorstr='#dedede', GradientType=0 );
+}
+
+.match_info_box {
+  text-align: center;
+  vertical-align: middle;
+  padding: 20px;
+  color: #4e4838;
+  border: 1px solid #666;
+  margin-bottom: 10px;
+  background: rgba(235,241,245,1);
+  background: -moz-linear-gradient(top, rgba(235,241,245,1) 0%, rgba(191,217,235,1) 100%);
+  background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(235,241,245,1)), color-stop(100%, rgba(191,217,235,1)));
+  background: -webkit-linear-gradient(top, rgba(235,241,245,1) 0%, rgba(191,217,235,1) 100%);
+  background: -o-linear-gradient(top, rgba(235,241,245,1) 0%, rgba(191,217,235,1) 100%);
+  background: -ms-linear-gradient(top, rgba(235,241,245,1) 0%, rgba(191,217,235,1) 100%);
+  background: linear-gradient(to bottom, rgba(235,241,245,1) 0%, rgba(191,217,235,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebf1f5', endColorstr='#bfd9eb', GradientType=0 );
 }
 
 #links span {
@@ -404,7 +490,7 @@ tbody.player_fields > tr > td > div > select {
 ***********************/
 #box { margin-bottom: 0;}
 .box > .icon { text-align: center; position: relative; }
-.box > .icon > .image img { position: relative; z-index: 2; margin-left: auto; margin-right: auto; margin-bottom: -75px; width: 200px; height: 200px; border: 8px solid #ffffff; line-height: 150px; border-radius: 50%; background: #f1ecdf; vertical-align: middle; }
+.box > .icon > .image img { position: relative; z-index: 2; margin-left: auto; margin-right: auto; margin-bottom: -75px; width: 200px; height: 200px; border: 8px solid #ffffff; line-height: 150px; border-radius: 6px; background: #f1ecdf; vertical-align: middle; }
 /*.box > .icon:hover > .image { background: #333; }*/
 /*.box > .icon > .image > i { font-size: 36px; color: #fff; }
 .box > .icon:hover > .image > i { color: white; }*/
@@ -1129,13 +1215,12 @@ body > .header .logo .icon {
 
 @media screen and (max-width: 450px) {
 
-  .match-event-box .matchCompetitors h4 {
-    font-size: 14px;
-  }
-
   .match-event-box .matchCompetitors h5 {
     font-size: 12px;
 
+  }
+  .match-type-box {
+    width: 100% !important;
   }
 }
 

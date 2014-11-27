@@ -17,11 +17,15 @@
             Home    
     / /.content-header
     %section.content
-      %section.box.box-default
+      .box.box-default
         .box-header
-          .box-title
-            %h3 Welcome to MyClubCricketStats!
+          %h3.box-title Welcome to MyClubCricketStats!      
         .box-body  
-          %p MyClubCricketStats is a club cricket statics management application where user's can create/manage the Club's, Team's, and Player's. MyClubCricketStats will calculate and populates each player and team stats after entering and saving the data. 
-        .box-footer
-          = link_to 'Start here!', clubs_path, :class => 'btn btn-block btn-success btn-flat'         
+          %p MyClubCricketStats is a club cricket statics management application where user's can create/manage the Club's, Team's, and Player's. 
+          %p MyClubCricketStats will calculate and populates each player and team stats after entering and saving the data. 
+          %br
+          %br
+          %br
+          %br
+        .box-footer.text-center
+          = link_to 'Start here!', clubs_path, :class => 'btn btn-large btn-success btn-flat'         

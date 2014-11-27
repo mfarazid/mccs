@@ -25,6 +25,8 @@
           .pull-right.box-tools
             - if current_user
               = link_to 'New Series', '#new_series_modal', 'data-toggle' => 'modal', :class => 'btn btn-success btn-flat pull-right'
+            - else 
+              = link_to 'New Series', new_user_session_path, :class => 'btn btn-success btn-flat pull-right'  
             #new_series_modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
               .modal-dialog
                 .modal-content

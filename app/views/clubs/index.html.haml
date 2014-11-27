@@ -23,8 +23,10 @@
       %section.box.box-default
         .box-header
           .pull-right.box-tools
-            - if current_user
-              = link_to 'New Club', '#new_club_modal', 'data-toggle' => 'modal', :class => 'btn btn-success btn-flat pull-right'
+            - if current_user  
+              = link_to 'New Club', '#new_club_modal', 'data-toggle' => 'modal', :class => 'btn btn-success btn-flat pull-right'            
+            - else 
+              = link_to 'New Club', new_user_session_path, :class => 'btn btn-success btn-flat pull-right'  
             #new_club_modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
               .modal-dialog
                 .modal-content
@@ -35,6 +37,7 @@
                     = render 'form', modal: true
                   .modal-footer
                     %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+   
           %h3.box-title Clubs      
         .box-body
           .table-responsive 

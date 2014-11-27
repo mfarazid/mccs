@@ -3,12 +3,12 @@
     %h4.panel-title
       %a{"data-parent" => "#accordion", "data-toggle" => "collapse", :href => "#teamB"}
         = @match.team_b.name
-        Innings
+        Inning (Run Rate #{number_with_precision(run_rate(@match.id, @match.team_b_id, @match.team_a_id), precision: 2)})
   #teamB.panel-collapse.collapse
     .panel-body
       %h5 Batting
       .table-responsive
-        %table.table.table-striped.table-bordered
+        %table.table.table-bordered
           %thead.scorecard_batting_head
             %tr
               %th Batting
@@ -19,7 +19,7 @@
               %th 6s
               %th SR
           %tbody
-            - BatsmanInInning.where(:match_id => @match.id, :team_id => @match.team_b_id ).each do |t|
+            - @match.batsman_in_innings.where(:team_id => @match.team_b_id ).each do |t|
               %tr
                 %td= t.player.name
                 %td= t.out_def(t.out_id)
@@ -30,23 +30,25 @@
                 %td= number_with_precision(t.strike_rate, precision: 2)
           %tbody
             %tr
-              %td Extras
+              %td 
+                %b Extras
               %td
-              - InningExtra.where(:match_id => @match.id, :team_id => @match.team_b_id ).each do |i|
+              - @match.inning_extras.where(:team_id => @match.team_b_id ).each do |i|
                 %td{:colspan => "5"}
-                  = i.total_extras.round
-                  (b - #{i.bye}, w - #{i.wide}, nb - #{i.no_ball}, lb - #{i.leg_bye})
+                  %b 
+                    = i.total_extras.round
+                    (b - #{i.bye}, w - #{i.wide}, nb - #{i.no_ball}, lb - #{i.leg_bye})
             %tr
               %td
                 %b Total
               %td
               %td{:colspan => "5"}
                 %b
-                  = number_with_precision(@match.total_runs(@match.team_b_id), precision: 0)
-                  (#{@match.total_overs(@match.team_a_id)} - overs, #{@match.total_outs(@match.team_b_id)} - wickets)
+                  = number_with_precision(total_runs(@match.id, @match.team_b_id), precision: 0)
+                  (#{total_overs(@match.id, @match.team_a_id)} - overs, #{total_outs(@match.id, @match.team_b_id)} - wickets)
       .table-responsive
         %h5 Bowling
-        %table.table.table-striped.table-bordered
+        %table.table.table-bordered
           %thead.scorecard_bowling_head
             %tr
               %th Bowler
@@ -56,7 +58,7 @@
               %th Wickets
               %th E/R
           %tbody
-            - BowlerInInning.where(:match_id => @match.id, :team_id => @match.team_a_id ).each do |t|
+            - @match.bowler_in_innings.where(:team_id => @match.team_a_id ).each do |t|
               %tr
                 %td= t.player.name
                 %td= t.overs

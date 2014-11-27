@@ -9,39 +9,54 @@
         %figure
           = image_tag 'logo.png', :alt => "logo", :class => "header_image_responsive" 
     %section.content-header     
-      %h1 Home
+      %h1 Scorecard
       %ol.breadcrumb
         %li
           %a{:href => root_path}
-            %i.fa.fa-home 
-            Home   
+            %i.fa.fa-home  
         %li.active
           %a{:href => matches_path}
             %i.fa.fa-maxcdn
             Matches
     / /.content-header
     %section.content
-      
-      .club_info_box
-        %h3 Match Details
-        %h4
-          = @match.team_a.name
-          = image_tag "teams/#{@match.team_a.team_flag.file_name}", :class => 'flag_small'
-          %span.badge vs
-          = image_tag "teams/#{@match.team_b.team_flag.file_name}", :class => 'flag_small'
-          = @match.team_b.name
-
+      .match_info_box
+        .row#result
+          - if Inning(@match.id, @match.team_a_id) && Inning(@match.id, @match.team_b_id)
+            %h3= Results(@match.id, @match.team_a_id, @match.team_b_id)
+          .col-xs-6.text-right
+            = image_tag "teams/#{@match.team_a.team_flag.file_name}", :class => 'flag_small img-thumbnail-circle'
+            %h3= @match.team_a.name
+            
+            - if Inning(@match.id, @match.team_a_id)
+              %h4= Summary(@match.id, @match.team_a_id)
+              %h5 Run Rate: #{number_with_precision(run_rate(@match.id, @match.team_a_id, @match.team_b_id), precision: 2)}            
+              %h5 Overs #{total_overs(@match.id, @match.team_b_id)}/#{@match.competition_overs_limit.overs}
+          .col-xs-6.text-left
+            = image_tag "teams/#{@match.team_b.team_flag.file_name}", :class => 'flag_small img-thumbnail-circle'
+            %h3= @match.team_b.name
+            - if Inning(@match.id, @match.team_b_id)
+              %h4= Summary(@match.id, @match.team_b_id)
+              %h5 Run Rate: #{number_with_precision(run_rate(@match.id, @match.team_b_id, @match.team_a_id), precision: 2)} 
+              %h5 Overs #{total_overs(@match.id, @match.team_a_id)}/#{@match.competition_overs_limit.overs} 
       .box.box-default
         .box-header
-          %h3.box-title Scorecard
+          %h3.box-title Match Details
         .box-body
-          - if Inning(@match.id, @match.team_a_id) && Inning(@match.id, @match.team_b_id)
-            %h4.box-title Match Summer
-            %p #{@match.team_a.name} #{Summary(@match.id, @match.team_a_id)}
-            %p #{@match.team_b.name} #{Summary(@match.id, @match.team_b_id)}
+          %p 
+            %b Toss: &nbsp;
+            #{@match.team_won_toss} won the toss and choose to #{@match.team_choose_to}!  
+          %p 
+            %b Venue: &nbsp;
+            #{@match.venue.details}
+          %p 
+            %b Umpires: &nbsp;
+            - @match.umpires.each do |u|
+              #{u.name} &nbsp;         
 
           #accordion.panel-group
             = link_to "Enter Innings Detail for #{@match.team_a.name}", add_team_a_inning_path(@match.id, :team => @match.team_a_id), :class => 'btn btn-primary' if !Inning(@match.id, @match.team_a_id)
             = link_to "Enter Innings Detail for #{@match.team_b.name}", add_team_b_inning_path(@match.id, :team => @match.team_b_id), :class => 'btn btn-primary' if !Inning(@match.id, @match.team_b_id)
+            %br
             = render "scorecard_a" if Inning(@match.id, @match.team_a_id)
             = render "scorecard_b" if Inning(@match.id, @match.team_b_id)

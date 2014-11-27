@@ -20,8 +20,8 @@
             Teams
     / /.content-header
     %section.content
-      .club_info_box
-        %figure= image_tag "teams/#{@team.team_flag.file_name}", :class => 'flag_small'   
+      .team_info_box
+        %figure= image_tag "teams/#{@team.team_flag.file_name}", :class => 'flag_small img-thumbnail-circle'   
         %h3 #{@team.name} (#{@team.city}) 
         %h5 #{image_tag "clubs/#{@team.club.club_flag.file_name}", :class => 'flag_icon'} &nbsp; #{link_to "#{@team.club.name}", club_path(@team.club.id), :title => "View club"} 
 
@@ -30,6 +30,8 @@
           .pull-right.box-tools
             - if current_user
               = link_to 'New Player', '#new_player_modal', 'data-toggle' => 'modal', :class => 'btn btn-success btn-flat pull-right'
+            - else 
+              = link_to 'New Player', new_user_session_path, :class => 'btn btn-success btn-flat pull-right'
             #new_player_modal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
               .modal-dialog
                 .modal-content

@@ -7,7 +7,7 @@
         .panel-heading
           %h3.panel-title Team A
         .panel-body.team-pic-box
-          = image_tag 'teams/default-team.png', :class => 'image_responsive', :id =>"teamA"
+          = image_tag 'teams/default-team.png', :class => 'image_responsive img-thumbnail-circle', :id =>"teamA"
           %br/
           %br/
           = f.collection_select :team_a_id, Team.where(:user_id => current_user.id), :id, :name, hide_label: true, :prompt => "select", :class => 'select'
@@ -19,7 +19,7 @@
         .panel-heading
           %h3.panel-title Team B
         .panel-body.team-pic-box
-          = image_tag 'teams/default-team.png', :class => 'image_responsive', :id =>"teamB"
+          = image_tag 'teams/default-team.png', :class => 'image_responsive img-thumbnail-circle', :id =>"teamB"
           %br/
           %br/
           = f.collection_select :team_b_id, Team.where(:user_id => current_user.id), :id, :name, hide_label: true, :prompt => "select", :class => 'select'
@@ -36,11 +36,6 @@
       = f.select :team_choose_to, [["Batting First"], ["Bowling First"]], label: "Team Choose To", :prompt => "select", :class => 'select'
   .row
     .col-sm-6
-      = f.text_field :start_date, :class => 'series_datepicker', :placeholder => "mmmm dd, yyyy", append: "<i class='fa fa-calendar'></i>".html_safe, required: true
-    .col-sm-6  
-      = f.text_field :end_date, :class => 'series_datepicker', :placeholder => "mmmm dd, yyyy", append: "<i class='fa fa-calendar'></i>".html_safe, required: true
-  .row
-    .col-sm-6
       = f.collection_select :venue_id, Venue.where(:user_id => current_user.id), :id, :name_with_details, label: "Venue", :prompt => "select", :class => 'select'
     .col-sm-6
       .form-group
@@ -49,7 +44,11 @@
           Select two Umpires:
         #umpires_selection.panel-collapse.collapse
           = f.collection_check_boxes :umpire_ids, Umpire.all, :id, :name, hide_label: true, :class => 'icheck-me'      
-
+  .row
+    .col-sm-6
+      = f.text_field :start_date, :class => 'series_datepicker', :placeholder => "mmmm dd, yyyy", append: "<i class='fa fa-calendar'></i>".html_safe, required: true
+    #end-date.col-sm-6  
+      = f.text_field :end_date, :class => 'series_datepicker', :placeholder => "mmmm dd, yyyy", append: "<i class='fa fa-calendar'></i>".html_safe
   .row
     .col-sm-12
       = f.hidden_field :series_id, value: series
@@ -63,9 +62,11 @@
           
           if (n >= 2) {
             $( 'input[name="match[umpire_ids][]"]' ).not(':checked').attr("disabled",true);
+            validationSelect();
           }
           else {
             $( 'input[name="match[umpire_ids][]"]' ).not(':checked').attr("disabled",false);
+
           }
         };
         countChecked();
@@ -79,17 +80,67 @@
 
         });
         // client-side validation
-        $('#match_umpire_ids').attr("multiple","multiple");
         $('input[name="commit"]').click(function() {
           validationSelect();
         });
         
-        $('#match_start_date, #match_end_date, #match_team_a_id, #match_team_b_id, #match_competition_type_id, #match_competition_overs_limit_id, #match_team_won_toss, #match_team_choose_to, #match_venue_id ').change(function() {
+        $('#match_start_date, #match_end_date, #match_team_a_id, #match_team_b_id, #match_competition_overs_limit_id, #match_team_won_toss, #match_team_choose_to, #match_venue_id').change(function() {
           validationSelect();
           $('#new_match').bootstrapValidator('revalidateField', 'match[start_date]');
-          $('#new_match').bootstrapValidator('revalidateField', 'match[end_date]');
         });
+        
+        $('#match_end_date').change(function() {
+          if ($('#match_end_date').attr('required')) {
+            var v = $('#match_end_date').val();
+            if ( v.length != 0 ) {
+              $('#end-date > :first').removeClass('has-feedback has-error');
+              $('#end-date > :first').addClass('has-success');
+            }
+            else {
+              $('#end-date > :first').removeClass('has-success');
+              $('#end-date > :first').addClass('has-feedback has-error');
+            } 
+          
+          }
+          $('#new_match').bootstrapValidator('revalidateField', 'match[start_date]');
+        });   
+        $('#match_competition_type_id').change(function() {
+          var value = $(this).find('option:selected').text();
+          var v = $('#match_end_date').val();
+          if ( v.length == 0 ) {
+            switch (value) {
+              case "Test 3 Days":
+                  $('#match_end_date').attr('required', "required");
+                  $('#end-date > :first').addClass('has-feedback has-error');           
+                  break;
+              case "Test 5 Days":
+                  $('#match_end_date').attr('required', "required");
+                  $('#end-date > :first').addClass('has-feedback has-error');          
+                  break;
+              default:
+                  if ($('#match_end_date').attr('required')) {
+                    $('#match_end_date').removeAttr('required');
+                    $('#end-date > :first').removeClass('has-feedback has-error');
+                  }            
+            }
+          } else {
+            switch (value) {
+              case "One Day":
+                  $('#match_end_date').val('');
+                  $('#end-date > :first').removeClass('has-success');         
+                  break;
+              case "T20":
+                  $('#match_end_date').val('');
+                  $('#end-date > :first').removeClass('has-success');          
+                  break;
+              default:
+                             
+            }
 
+          }
+
+          validationSelect(); 
+        });
         function validationSelect() {
           var ta = $('#match_team_a_id option:selected').text();
           if (ta == "select") {
@@ -169,8 +220,7 @@
           }
 
           else {
-            $('#new_match').bootstrapValidator('revalidateField', 'match[start_date]');
-            $('#new_match').bootstrapValidator('revalidateField', 'match[end_date]');
+            $('#new_match').bootstrapValidator('revalidateField', 'match[start_date]'); 
             $('#umpire_label').parent('.form-group').removeClass('has-feedback has-error');
             $('#umpire_label').parent('.form-group').addClass('has-success');
           }

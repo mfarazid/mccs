@@ -40,7 +40,8 @@ class UmpiresController < ApplicationController
     
     respond_to do |format|
       if @umpire.save
-        format.html { redirect_to @umpire, toast('success','Umpire was successfully created!') }
+        toast('success','Umpire was successfully created!')
+        format.html { redirect_to umpires_url}
         format.json { render action: 'show', status: :created, location: @umpire }
         format.js   { render action: 'new_umpire', status: :created, location: @umpire }      
       else

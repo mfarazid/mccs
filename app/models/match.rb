@@ -26,17 +26,17 @@ class Match < ActiveRecord::Base
   validates_presence_of :team_a_id, :team_b_id, :competition_type_id, :competition_overs_limit_id, 
         :team_won_toss, :team_choose_to, on: :create
 
-  def total_runs(team)
-    runs = BatsmanInInning.where(:match_id => self.id, :team_id => team).sum("runs")
-    extra_runs = InningExtra.find_by(:match_id => self.id, :team_id => team).total_extras
-    total_runs = (runs + extra_runs)
-  end
+  # def total_runs(team)
+  #   runs = BatsmanInInning.where(:match_id => self.id, :team_id => team).sum("runs")
+  #   extra_runs = InningExtra.find_by(:match_id => self.id, :team_id => team).total_extras
+  #   total_runs = (runs + extra_runs)
+  # end
   
-  def total_outs(team)
-    BatsmanInInning.where("match_id = #{self.id} and team_id = #{team} and out_id != 7").count
-  end 
+  # def total_outs(team)
+  #   BatsmanInInning.where("match_id = #{self.id} and team_id = #{team} and out_id != 7").count
+  # end 
   
-  def total_overs(team)
-    BowlerInInning.where(:match_id => self.id, :team_id => team).sum("overs")
-  end 
+  # def total_overs(team)
+  #   BowlerInInning.where(:match_id => self.id, :team_id => team).sum("overs")
+  # end 
 end
