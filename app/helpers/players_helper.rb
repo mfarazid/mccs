@@ -6,23 +6,27 @@ module PlayersHelper
     runs = BatsmanInInning.joins("Inner join matches on matches.id = batsman_in_innings.match_id")
                           .select("MAX(batsman_in_innings.runs) as runs")
                           .where("batsman_in_innings.player_id = #{player} and matches.competition_type_id = 2").first.runs    
-    balls = BatsmanInInning.joins("Inner join matches on matches.id = batsman_in_innings.match_id")
-                           .where("batsman_in_innings.player_id = #{player} and matches.competition_type_id = 2
-                                   and batsman_in_innings.runs = #{runs}").first.balls
-    best_batting = "#{runs} runs of #{balls} balls"
+    if runs
+      balls = BatsmanInInning.joins("Inner join matches on matches.id = batsman_in_innings.match_id")
+                             .where("batsman_in_innings.player_id = #{player} and matches.competition_type_id = 2
+                                     and batsman_in_innings.runs = #{runs}").first.balls
+      best_batting = "#{runs} runs of #{balls} balls"
+    end
   end
   
   def t20_best_bowling player
     wickets = BowlerInInning.joins("Inner join matches on matches.id = bowler_in_innings.match_id")
                             .select("MAX(bowler_in_innings.wickets) as wickets")
                             .where("bowler_in_innings.player_id = #{player} and matches.competition_type_id = 2").first.wickets
-    runs = BowlerInInning.joins("Inner join matches on matches.id = bowler_in_innings.match_id")
-                         .where("bowler_in_innings.player_id = #{player} and matches.competition_type_id = 2
-                                 and bowler_in_innings.wickets = #{wickets}").first.runs
-    overs = BowlerInInning.joins("Inner join matches on matches.id = bowler_in_innings.match_id")
-                          .where("bowler_in_innings.player_id = #{player} and matches.competition_type_id = 2
-                                 and bowler_in_innings.wickets = #{wickets}").first.overs.to_f
-    best_bowling = "#{wickets} wickets and #{runs} runs in #{overs} overs"
+    if wickets
+      runs = BowlerInInning.joins("Inner join matches on matches.id = bowler_in_innings.match_id")
+                           .where("bowler_in_innings.player_id = #{player} and matches.competition_type_id = 2
+                                   and bowler_in_innings.wickets = #{wickets}").first.runs
+      overs = BowlerInInning.joins("Inner join matches on matches.id = bowler_in_innings.match_id")
+                            .where("bowler_in_innings.player_id = #{player} and matches.competition_type_id = 2
+                                   and bowler_in_innings.wickets = #{wickets}").first.overs.to_f
+      best_bowling = "#{wickets} wickets and #{runs} runs in #{overs} overs"
+    end
   end
 
   def t20_matches player

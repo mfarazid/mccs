@@ -1,35 +1,35 @@
-.row
-  .col-lg-12
-    = bootstrap_form_for(@player,inline_errors: false) do |f|
-      - if @player.errors.any?
-        :javascript
-          var count = "Please resolve"+' '+  #{@player.errors.count}  +' '+ "error before submitting your request." ;
-            Command: toastr.warning(count);    
-      - @player.errors.full_messages.each do |msg|
-        :javascript
-          var msg = " #{msg} ";
-          Command: toastr.error(msg);
-      .col-sm-6
-        = f.text_field :name
-        
-        = f.text_field :date_of_birth, :class => 'dob_datepicker', :placeholder => "mmmm dd, yyyy", append: "<i class='fa fa-calendar'></i>".html_safe
-        = f.text_field :best_performance
-        = f.text_field :worst_performance
-        = f.file_field :picture_url, label: "Add Player Image", accept: 'image/png,image/gif,image/jpeg'
-        .input-group.margin
-          %input#player_image.form-control{:type => "text", :disabled => true}
-          %span.input-group-btn 
-            %a.btn.btn-success.btn-flat{:onclick => "$('input[id=player_picture_url]').click();"} 
-              Browse
-        :javascript
-          $('input[id=player_picture_url]').change(function() {
-            $('#player_image').val($(this).val());
-          });
-      .col-sm-6
-        = f.select :player_batting_style, [["Right-handed", "Right-handed"], ["Left-handed", "Left-handed"]], :prompt => "select"
-        = f.collection_select :player_type_id, PlayerType.all, :id, :name, prompt: true
-        = f.collection_select :player_bowling_style_id, PlayerBowlingStyle.all, :id, :name, prompt: true 
-        = f.text_field :odi_debut, :placeholder => "mmmm dd, yyyy", :class => 'odi_datepicker', append: "<i class='fa fa-calendar'></i>".html_safe
-        = f.text_field :test_debut, :placeholder => "mmmm dd, yyyy", :class => 'test_datepicker', append: "<i class='fa fa-calendar'></i>".html_safe
-        = f.text_field :t20_debut, :placeholder => "mmmm dd, yyyy", :class => 't20_datepicker', append: "<i class='fa fa-calendar'></i>".html_safe
-      = f.submit 'Update', :class => 'btn btn-primary' 
+
+= bootstrap_form_for(@player,inline_errors: false) do |f|
+  - if @player.errors.any?
+    :javascript
+      var count = "Please resolve"+' '+  #{@player.errors.count}  +' '+ "error before submitting your request." ;
+        Command: toastr.warning(count);    
+  - @player.errors.full_messages.each do |msg|
+    :javascript
+      var msg = " #{msg} ";
+      Command: toastr.error(msg);
+  .row
+    .col-sm-4
+      = f.text_field :name
+      = f.select :player_batting_style, [["Right-handed", "Right-handed"], ["Left-handed", "Left-handed"]], :prompt => "select"
+      = f.collection_select :player_type_id, PlayerType.all, :id, :name, prompt: true
+      = f.collection_select :player_bowling_style_id, PlayerBowlingStyle.all, :id, :name, prompt: true         
+
+      = f.file_field :picture_url, label: "Add Player Image", accept: 'image/png,image/gif,image/jpeg'
+      .input-group.margin
+        %input#player_image.form-control{:type => "text", :disabled => true}
+        %span.input-group-btn 
+          %a.btn.btn-success.btn-flat{:onclick => "$('input[id=player_picture_url]').click();"} 
+            Browse
+      :javascript
+        $('input[id=player_picture_url]').change(function() {
+          $('#player_image').val($(this).val());
+        });
+    .col-sm-4
+      = f.text_field :date_of_birth, :class => 'dob_datepicker', :placeholder => "mmmm dd, yyyy", append: "<i class='fa fa-calendar'></i>".html_safe
+      = f.text_field :odi_debut, :placeholder => "mmmm dd, yyyy", :class => 'odi_datepicker', append: "<i class='fa fa-calendar'></i>".html_safe
+      = f.text_field :test_debut, :placeholder => "mmmm dd, yyyy", :class => 'test_datepicker', append: "<i class='fa fa-calendar'></i>".html_safe
+      = f.text_field :t20_debut, :placeholder => "mmmm dd, yyyy", :class => 't20_datepicker', append: "<i class='fa fa-calendar'></i>".html_safe
+  .row
+    .col-sm-8  
+      = f.submit 'Update', :class => 'btn btn-primary pull-right' 
