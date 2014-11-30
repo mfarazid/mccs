@@ -32,26 +32,38 @@ module MatchesHelper
 
   def Results match, teamA, teamB
     @match = Match.find(match)
-    if @match.team_won_toss == @match.team_a.name && @match.team_choose_to == "Batting"
+
+    if @match.team_won_toss == @match.team_a.name && @match.team_choose_to == "Batting First"
       if total_runs(@match.id, teamA) > total_runs(@match.id, teamB)
         runs_won_by = total_runs(@match.id, teamA) - total_runs(@match.id, teamB)
         result = "#{@match.team_a.name} won by #{number_with_precision(runs_won_by, precision: 0)} runs"
-      end
-    else
+      elsif total_runs(@match.id, teamB) > total_runs(@match.id, teamA)
+        wickets_won_by = 10 - total_outs(@match.id, teamB)
+        result = "#{@match.team_b.name} won by #{wickets_won_by} wickets"
+      end       
+    elsif @match.team_won_toss == @match.team_a.name && @match.team_choose_to == "Bowling First"
       if total_runs(@match.id, teamA) > total_runs(@match.id, teamB)
         wickets_won_by = 10 - total_outs(@match.id, teamA)
         result = "#{@match.team_a.name} won by #{wickets_won_by} wickets"
+      elsif total_runs(@match.id, teamB) > total_runs(@match.id, teamA)
+        runs_won_by = total_runs(@match.id, teamB) - total_runs(@match.id, teamA)
+        result = "#{@match.team_b.name} won by #{number_with_precision(runs_won_by, precision: 0)} runs"      
       end      
-    end  
-    if @match.team_won_toss == @match.team_b.name && @match.team_choose_to == "Batting"
+    elsif @match.team_won_toss == @match.team_b.name && @match.team_choose_to == "Batting First"
       if total_runs(@match.id, teamB) > total_runs(@match.id, teamA)
         runs_won_by = total_runs(@match.id, teamB) - total_runs(@match.id, teamA)
         result = "#{@match.team_b.name} won by #{number_with_precision(runs_won_by, precision: 0)} runs"
+      elsif total_runs(@match.id, teamA) > total_runs(@match.id, teamB)
+        wickets_won_by = 10 - total_outs(@match.id, teamA)
+        result = "#{@match.team_a.name} won by #{wickets_won_by} wickets"
       end
-    else
+    elsif @match.team_won_toss == @match.team_b.name && @match.team_choose_to == "Bowling First"
       if total_runs(@match.id, teamB) > total_runs(@match.id, teamA)
         wickets_won_by = 10 - total_outs(@match.id, teamB)
         result = "#{@match.team_b.name} won by #{wickets_won_by} wickets"
+      elsif total_runs(@match.id, teamA) > total_runs(@match.id, teamB)
+        runs_won_by = total_runs(@match.id, teamA) - total_runs(@match.id, teamB)
+        result = "#{@match.team_a.name} won by #{number_with_precision(runs_won_by, precision: 0)} runs"
       end  
     end
 

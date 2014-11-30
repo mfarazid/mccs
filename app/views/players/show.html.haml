@@ -84,138 +84,156 @@
                       %tr
                         %td Played For
                         %td= @player.team.name
-                      %tr
-                        %td Best Performance
-                        %td= @player.best_performance
-                      %tr
-                        %td Worst Performance
-                        %td= @player.worst_performance
               #t20.tab-pane.fade
                 %section.narrow
                   %h3 Player T20 Statistics
-                  %p Debut: #{@player.t20_debut.to_formatted_s(:long) if @player.t20_debut?}   
+                  %p 
+                    Debut: 
+                    - if @player.t20_debut?
+                      %span.label.label-success 
+                        #{@player.t20_debut.to_formatted_s(:long)}   
+                  %p 
+                    Matches Played: 
+                    %span.label.label-success 
+                      #{t20_matches(@player.id)}
                   .col-sm-6
                     %h5 Batting
                     %table.table.table-bordered
                       %tbody                
                         %tr
-                          %td Matches
-                          %td
-                        %tr
                           %td Innings
-                          %td
+                          %td= t20_bt_innings(@player.id)
                         %tr
                           %td Runs
-                          %td
+                          %td= t20_bt_runs(@player.id)
                         %tr
                           %td Not out
-                          %td
+                          %td= t20_bt_not_out(@player.id)
                         %tr
                           %td Average
-                          %td
+                          %td= t20_bt_average(@player.id)
+                        %tr
+                          %td Best Performance
+                          %td= t20_best_batting(@player.id)
                   .col-sm-6
                     %h5 Bowling
                     %table.table.table-bordered
                       %tbody
                         %tr
-                          %td Matches
-                          %td
-                        %tr
                           %td Innings
-                          %td
+                          %td= t20_bl_innings(@player.id)
                         %tr
                           %td Balls
-                          %td
+                          %td= t20_bl_balls(@player.id)
                         %tr
                           %td Runs
-                          %td
+                          %td= t20_bl_runs(@player.id)
                         %tr
                           %td Wickets
-                          %td
+                          %td= t20_bl_wickets(@player.id)
+                        %tr
+                          %td Best Performance
+                          %td= t20_best_bowling(@player.id)
               #odi.tab-pane.fade
                 %section.narrow
                   %h3 Player ODI Statistics
-                  %p Debut: #{@player.odi_debut.to_formatted_s(:long) if @player.odi_debut?}             
+                  %p 
+                    Debut: 
+                    - if @player.odi_debut?
+                      %span.label.label-success 
+                        #{@player.odi_debut.to_formatted_s(:long)}             
+                  %p 
+                    Matches Played: 
+                    %span.label.label-success 
+                      #{odi_matches(@player.id)}
                   .col-sm-6
                     %h5 Batting
                     %table.table.table-bordered
                       %tbody
                         %tr
-                          %td Matches
-                          %td
-                        %tr
                           %td Innings
-                          %td
+                          %td= odi_bt_innings(@player.id)
                         %tr
                           %td Runs
-                          %td
+                          %td= odi_bt_runs(@player.id)
                         %tr
                           %td Not out
-                          %td
+                          %td= odi_bt_not_out(@player.id)
                         %tr
                           %td Average
-                          %td
+                          %td= odi_bt_average(@player.id)
+                        %tr
+                          %td Best Performance
+                          %td= odi_best_batting(@player.id)
                   .col-sm-6
                     %h5 Bowling
                     %table.table.table-bordered
                       %tbody
                         %tr
-                          %td Matches
-                          %td
-                        %tr
                           %td Innings
-                          %td
+                          %td= odi_bl_innings(@player.id)
                         %tr
                           %td Balls
-                          %td
+                          %td= odi_bl_balls(@player.id)
                         %tr
                           %td Runs
-                          %td
+                          %td= odi_bl_runs(@player.id)
                         %tr
                           %td Wickets
-                          %td
+                          %td= odi_bl_wickets(@player.id)
+                        %tr
+                          %td Best Performance
+                          %td= odi_best_bowling(@player.id)
               #test.tab-pane.fade
                 %section.narrow
                   %h3 Player Test Statistics
-                  %p Debut: #{@player.test_debut.to_formatted_s(:long) if @player.test_debut?}                
+                  %p 
+                    Debut: 
+                    - if @player.test_debut?
+                      %span.label.label-success 
+                        #{@player.test_debut.to_formatted_s(:long)}             
+                  %p 
+                    Matches Played: 
+                    %span.label.label-success 
+                      #{test_matches(@player.id)}                
                   .col-sm-6
                     %h5 Batting
                     %table.table.table-bordered
                       %tbody
                         %tr
-                          %td Matches
-                          %td
-                        %tr
                           %td Innings
-                          %td
+                          %td= test_bt_innings(@player.id)
                         %tr
                           %td Runs
-                          %td
+                          %td= test_bt_runs(@player.id)
                         %tr
                           %td Not out
-                          %td
+                          %td= test_bt_not_out(@player.id)
                         %tr
                           %td Average
-                          %td
+                          %td= test_bt_average(@player.id)
+                        %tr
+                          %td Best Performance
+                          %td= test_best_batting(@player.id)
                   .col-sm-6
                     %h5 Bowling
                     %table.table.table-bordered
                       %tbody
                         %tr
-                          %td Matches
-                          %td
-                        %tr
                           %td Innings
-                          %td
+                          %td= test_bl_innings(@player.id)
                         %tr
                           %td Balls
-                          %td
+                          %td= test_bl_balls(@player.id)
                         %tr
                           %td Runs
-                          %td
+                          %td= test_bl_runs(@player.id)
                         %tr
                           %td Wickets
-                          %td
+                          %td= test_bl_wickets(@player.id)
+                        %tr
+                          %td Best Performance
+                          %td= test_best_bowling(@player.id)
               #comment.tab-pane.fade
                 %section.narrow
                   %h3 Comments about player

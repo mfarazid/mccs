@@ -24,12 +24,16 @@ class BatsmanInInning < ActiveRecord::Base
         else
           "c " + self.out_fielder.name + " b " + self.out_bowler.name 
         end   
-      when 2, 3, 6
+      when 2
         "b " + self.out_bowler.name
+      when 3
+        "lbw " + self.out_bowler.name
       when 4
         "run out ( " + self.out_fielder.name + " )" 
       when 5
         "st ( keeper ) b " + self.out_bowler.name
+      when 6
+        "#{self.out.name} " + self.out_bowler.name
       when 7
         self.out.name    
     end

@@ -208,7 +208,6 @@ body > .header {
   border: 1px solid #999;
   margin: 6px;
   min-height: 100px;
-
 }
 .match-event-box > .badge {
   position: absolute;
@@ -224,7 +223,6 @@ body > .header {
   position: relative;
   text-align: center;
   vertical-align: middle;
-
 }
 
 .match-event-box .matchCompetitors h4 {
@@ -3396,8 +3394,8 @@ Component: timeline
 }
 .skin-red .sidebar > .sidebar-menu > li > a:hover,
 .skin-red .sidebar > .sidebar-menu > li.active > a {
-  color: #222;
-  background: #f9f9f9;
+  color: #fff;
+  background: #8f0223;
 }
 .skin-red .sidebar > .sidebar-menu > li > .treeview-menu {
   margin: 0 1px;

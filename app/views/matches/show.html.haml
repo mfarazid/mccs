@@ -31,14 +31,14 @@
             - if Inning(@match.id, @match.team_a_id)
               %h4= Summary(@match.id, @match.team_a_id)
               %h5 Run Rate: #{number_with_precision(run_rate(@match.id, @match.team_a_id, @match.team_b_id), precision: 2)}            
-              %h5 Overs #{total_overs(@match.id, @match.team_b_id)}/#{@match.competition_overs_limit.overs}
+              %h5 Overs: #{total_overs(@match.id, @match.team_b_id)}/#{@match.competition_overs_limit.overs}
           .col-xs-6.text-left
             = image_tag "teams/#{@match.team_b.team_flag.file_name}", :class => 'flag_small img-thumbnail-circle'
             %h3= @match.team_b.name
             - if Inning(@match.id, @match.team_b_id)
               %h4= Summary(@match.id, @match.team_b_id)
               %h5 Run Rate: #{number_with_precision(run_rate(@match.id, @match.team_b_id, @match.team_a_id), precision: 2)} 
-              %h5 Overs #{total_overs(@match.id, @match.team_a_id)}/#{@match.competition_overs_limit.overs} 
+              %h5 Overs: #{total_overs(@match.id, @match.team_a_id)}/#{@match.competition_overs_limit.overs} 
       .box.box-default
         .box-header
           %h3.box-title Match Details
