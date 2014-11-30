@@ -63,7 +63,7 @@
             .tab-content
               #bio.tab-pane.fade.in.active
                 %section.narrow
-                  %h3 Player Information
+                  %h3.bg-green Player Information
                   %table.table.table-bordered
                     %tbody
                       %tr
@@ -86,16 +86,17 @@
                         %td= @player.team.name
               #t20.tab-pane.fade
                 %section.narrow
-                  %h3 Player T20 Statistics
-                  %p 
-                    Debut: 
-                    - if @player.t20_debut?
+                  %h3.bg-yellow Player T20 Statistics
+                  .text-center
+                    %p 
+                      Debut: 
+                      - if @player.t20_debut?
+                        %span.label.label-success 
+                          #{@player.t20_debut.to_formatted_s(:long)}   
+                    %p 
+                      Matches Played: 
                       %span.label.label-success 
-                        #{@player.t20_debut.to_formatted_s(:long)}   
-                  %p 
-                    Matches Played: 
-                    %span.label.label-success 
-                      #{t20_matches(@player.id)}
+                        #{t20_matches(@player.id)}
                   .col-sm-6
                     %h5 Batting
                     %table.table.table-bordered
@@ -136,16 +137,17 @@
                           %td= t20_best_bowling(@player.id)
               #odi.tab-pane.fade
                 %section.narrow
-                  %h3 Player ODI Statistics
-                  %p 
-                    Debut: 
-                    - if @player.odi_debut?
+                  %h3.bg-navy Player ODI Statistics
+                  .text-center
+                    %p 
+                      Debut: 
+                      - if @player.odi_debut?
+                        %span.label.label-success 
+                          #{@player.odi_debut.to_formatted_s(:long)}             
+                    %p 
+                      Matches Played: 
                       %span.label.label-success 
-                        #{@player.odi_debut.to_formatted_s(:long)}             
-                  %p 
-                    Matches Played: 
-                    %span.label.label-success 
-                      #{odi_matches(@player.id)}
+                        #{odi_matches(@player.id)}
                   .col-sm-6
                     %h5 Batting
                     %table.table.table-bordered
@@ -186,16 +188,17 @@
                           %td= odi_best_bowling(@player.id)
               #test.tab-pane.fade
                 %section.narrow
-                  %h3 Player Test Statistics
-                  %p 
-                    Debut: 
-                    - if @player.test_debut?
+                  %h3.bg-red Player Test Statistics
+                  .text-center
+                    %p 
+                      Debut: 
+                      - if @player.test_debut?
+                        %span.label.label-success 
+                          #{@player.test_debut.to_formatted_s(:long)}             
+                    %p 
+                      Matches Played: 
                       %span.label.label-success 
-                        #{@player.test_debut.to_formatted_s(:long)}             
-                  %p 
-                    Matches Played: 
-                    %span.label.label-success 
-                      #{test_matches(@player.id)}                
+                        #{test_matches(@player.id)}                
                   .col-sm-6
                     %h5 Batting
                     %table.table.table-bordered
@@ -236,7 +239,23 @@
                           %td= test_best_bowling(@player.id)
               #comment.tab-pane.fade
                 %section.narrow
-                  %h3 Comments about player
+                  / Chat box
+                  - if @player.comments.any?
+                    .box.box-solid.box-success
+                      .box-header
+                        %i.fa.fa-comments-o
+                        %h3.box-title Comments
+                      #chat-box.box-body.chat
+                        = render partial: 'comments/comment', collection: @player.comments
+
+                  / /.box (chat box)
+                  / quick email widget
+                  .box.box-solid.box-primary
+                    .box-header
+                      %i.fa.fa-comment-o
+                      %h3.box-title Leave a comment
+                    .box-body
+                      = render partial: 'comments/form'
               .clearfix
         .box-footer
           %p

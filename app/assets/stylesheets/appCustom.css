@@ -44,6 +44,11 @@ a:focus {
   text-align: center;
   vertical-align: middle;
 }
+li.social span {
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px;
+}
 /* Header */
 body > .header {
   position: absolute;
@@ -523,20 +528,20 @@ section.narrow{
   margin: 10px auto;
 }
 section.narrow h3 {
-  background-color: #459ABF;
   text-align:center;
-  color: #404548;
+  color: #ffffff;
   padding: 10px;
 }
-section.narrow p {
-  text-align:center;
-}
+
 section.narrow h5 {
   background-color: #36B0BD;
   text-align:center;
   color: #404548;
   padding: 10px;
 }
+
+
+
 .liner{
   height: 2px;
   background: #ddd;

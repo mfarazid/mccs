@@ -4,7 +4,7 @@ class Player < ActiveRecord::Base
   belongs_to :bowling_style
   has_many :batsman_in_innings
   has_many :bowler_in_innings
-
+  has_many :comments
   has_many :batsman_in_innings, :class_name => "BatsmanInInning", :foreign_key => "out_fielder_id"
   has_many :batsman_in_innings, :class_name => "BatsmanInInning", :foreign_key => "out_bowler_id"
 

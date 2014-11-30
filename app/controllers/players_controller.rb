@@ -18,6 +18,8 @@ class PlayersController < ApplicationController
   # GET /players/1
   # GET /players/1.json
   def show
+    @comment = Comment.new
+    @comment.player_id = @player.id
   end
 
   # GET /players/1/edit
